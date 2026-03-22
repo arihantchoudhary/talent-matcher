@@ -1,80 +1,91 @@
-import fs from "fs";
-import path from "path";
-import { RankedList } from "./ranked-list";
+import { auth } from "@clerk/nextjs/server";
+import Link from "next/link";
 
-interface Candidate {
-  rank: number;
-  id: string;
-  name: string;
-  score: number;
-  reasoning: string;
-  highlights: string[];
-  gaps: string[];
-}
-
-export default function Home() {
-  const filePath = path.join(process.cwd(), "data", "ranked-output.json");
-  const candidates: Candidate[] = JSON.parse(fs.readFileSync(filePath, "utf-8"));
-
-  const avg = Math.round(candidates.reduce((s, c) => s + c.score, 0) / candidates.length);
-  const top = candidates.filter((c) => c.score >= 70).length;
-  const good = candidates.filter((c) => c.score >= 50 && c.score < 70).length;
+export default async function LandingPage() {
+  const { userId } = await auth();
+  const loggedIn = !!userId;
 
   return (
-    <div className="max-w-4xl mx-auto px-4 py-10">
-      {/* Header */}
-      <div className="mb-10">
-        <div className="flex items-center gap-3 mb-4">
-          <div className="w-10 h-10 rounded-xl bg-indigo-600 flex items-center justify-center">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-              <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
-              <circle cx="9" cy="7" r="4" />
-              <path d="M22 21v-2a4 4 0 0 0-3-3.87" />
-              <path d="M16 3.13a4 4 0 0 1 0 7.75" />
-            </svg>
+    <div className="min-h-screen bg-white">
+      {/* Nav */}
+      <nav className="border-b bg-white/80 backdrop-blur-lg sticky top-0 z-50">
+        <div className="max-w-5xl mx-auto px-6 h-16 flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <div className="w-8 h-8 rounded-lg bg-indigo-600 flex items-center justify-center text-white font-bold text-sm">T</div>
+            <span className="font-bold">Talent Matcher</span>
           </div>
-          <div>
-            <h1 className="text-2xl font-bold tracking-tight">Talent Matcher</h1>
-            <p className="text-sm text-zinc-500">Candidate ranking for Founding GTM, Legal</p>
-          </div>
+          {loggedIn ? (
+            <Link href="/rankings" className="px-4 py-2 rounded-lg bg-indigo-600 text-white text-sm font-medium hover:bg-indigo-700 transition-colors">
+              Dashboard
+            </Link>
+          ) : (
+            <div className="flex gap-2">
+              <Link href="/sign-in" className="px-4 py-2 rounded-lg text-sm font-medium text-zinc-600 hover:text-zinc-900 transition-colors">Sign in</Link>
+              <Link href="/sign-up" className="px-4 py-2 rounded-lg bg-indigo-600 text-white text-sm font-medium hover:bg-indigo-700 transition-colors">Get started</Link>
+            </div>
+          )}
         </div>
+      </nav>
 
-        {/* Role summary */}
-        <div className="rounded-xl border border-zinc-200 bg-zinc-50 p-5 mb-6">
-          <h2 className="font-semibold text-sm mb-2">Role: Founding GTM, Legal</h2>
-          <p className="text-sm text-zinc-600 leading-relaxed">
-            Build the Legal go-to-market motion for an AI-native procurement platform (Series B+, multi-eight-figure ARR).
-            High-ownership sales role — own top-of-funnel for Legal, run outbound, qualify opportunities, support deals,
-            run executive events. 1-4 years in law, banking, consulting, startups, or VC. Legal sector familiarity required.
-            In-person Tue-Thu, US-based preferred.
+      {/* Hero */}
+      <section className="pt-24 pb-20 px-6">
+        <div className="max-w-3xl mx-auto text-center">
+          <div className="inline-block px-3 py-1 rounded-full bg-indigo-50 text-indigo-700 text-xs font-semibold mb-6">AI-powered matching</div>
+          <h1 className="text-5xl font-bold tracking-tight mb-6 leading-[1.1]">
+            Match candidates to roles<br /><span className="text-indigo-600">in seconds, not weeks</span>
+          </h1>
+          <p className="text-lg text-zinc-500 max-w-xl mx-auto mb-10">
+            Upload your candidate CSV, score them against any job description with GPT-4o, and export your shortlist. Built for recruiting teams.
           </p>
+          <Link href={loggedIn ? "/rankings" : "/sign-up"}
+            className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-indigo-600 text-white font-semibold hover:bg-indigo-700 transition-colors shadow-sm">
+            {loggedIn ? "Go to dashboard" : "Start matching free"}
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="m9 18 6-6-6-6"/></svg>
+          </Link>
         </div>
+      </section>
 
-        {/* Stats */}
-        <div className="grid grid-cols-4 gap-3">
-          <Stat label="Candidates" value={candidates.length} />
-          <Stat label="Avg Score" value={avg} />
-          <Stat label="Top Tier (70+)" value={top} accent />
-          <Stat label="Good Fit (50-69)" value={good} />
+      {/* How it works */}
+      <section className="py-20 px-6 bg-zinc-50">
+        <div className="max-w-4xl mx-auto">
+          <h2 className="text-2xl font-bold text-center mb-12">How it works</h2>
+          <div className="grid md:grid-cols-3 gap-8">
+            {[
+              { n: "1", t: "Upload CSV", d: "Drop any candidate CSV — we auto-detect names, LinkedIn URLs, and all fields." },
+              { n: "2", t: "AI scores candidates", d: "GPT-4o-mini evaluates each candidate 0-100 against your role with specific reasoning." },
+              { n: "3", t: "Export shortlist", d: "Browse ranked results, shortlist your picks, download CSV or JSON for interviews." },
+            ].map((s) => (
+              <div key={s.n} className="bg-white rounded-2xl border border-zinc-200 p-6 text-center">
+                <div className="w-10 h-10 rounded-full bg-indigo-100 text-indigo-700 font-bold flex items-center justify-center mx-auto mb-4">{s.n}</div>
+                <h3 className="font-semibold mb-2">{s.t}</h3>
+                <p className="text-sm text-zinc-500">{s.d}</p>
+              </div>
+            ))}
+          </div>
         </div>
-      </div>
+      </section>
 
-      {/* Ranked list */}
-      <RankedList candidates={candidates} />
+      {/* Features */}
+      <section className="py-20 px-6">
+        <div className="max-w-4xl mx-auto grid md:grid-cols-2 gap-6">
+          {[
+            { t: "Any CSV format", d: "No rigid templates. Auto-detects columns from any export — ATS, LinkedIn, spreadsheets." },
+            { t: "LinkedIn enrichment", d: "If your CSV has LinkedIn URLs, we pull profiles, photos, and experience data." },
+            { t: "Detailed reasoning", d: "Every score comes with highlights (strengths) and gaps, not just a number." },
+            { t: "Real-time scoring", d: "Watch results stream in live as GPT-4o-mini processes each candidate." },
+          ].map((f) => (
+            <div key={f.t} className="border border-zinc-200 rounded-xl p-5 bg-white">
+              <h3 className="font-semibold mb-1">{f.t}</h3>
+              <p className="text-sm text-zinc-500">{f.d}</p>
+            </div>
+          ))}
+        </div>
+      </section>
 
       {/* Footer */}
-      <div className="mt-10 pt-6 border-t border-zinc-100 text-center text-xs text-zinc-400">
-        Scored with GPT-4o-mini &middot; {candidates.length} candidates &middot; Founding GTM, Legal
-      </div>
-    </div>
-  );
-}
-
-function Stat({ label, value, accent }: { label: string; value: number; accent?: boolean }) {
-  return (
-    <div className={`rounded-xl border p-4 ${accent ? "bg-emerald-50 border-emerald-200" : "border-zinc-200"}`}>
-      <div className={`text-2xl font-bold ${accent ? "text-emerald-700" : ""}`}>{value}</div>
-      <div className="text-xs text-zinc-500 mt-0.5">{label}</div>
+      <footer className="border-t py-8 px-6 text-center text-xs text-zinc-400">
+        Talent Matcher &middot; Powered by GPT-4o-mini
+      </footer>
     </div>
   );
 }

@@ -31,6 +31,16 @@ export default function UploadPage() {
   const [cityFilter, setCityFilter] = useState("All");
   const [roleSearch, setRoleSearch] = useState("");
 
+  // Rubric
+  const [criteria, setCriteria] = useState([
+    { name: "Relevant Experience", weight: 25, description: "Years and quality of experience in relevant roles" },
+    { name: "Industry Fit", weight: 20, description: "Familiarity with the target industry/sector" },
+    { name: "Sales Capability", weight: 20, description: "Track record of sales, pipeline, and revenue generation" },
+    { name: "Stakeholder Presence", weight: 15, description: "Ability to engage with senior decision-makers (VP/C-suite)" },
+    { name: "Cultural Fit", weight: 10, description: "Drive, ambition, coachability, team orientation" },
+    { name: "Location", weight: 10, description: "Proximity to office, willingness to work in-person" },
+  ]);
+
   // Scoring state
   const [step, setStep] = useState<"setup" | "scoring" | "results">("setup");
   const [progress, setProgress] = useState({ done: 0, total: 0 });
@@ -91,7 +101,7 @@ export default function UploadPage() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           candidates: parsed.map(c => ({ id: c.id, name: c.name, fullText: c.fullText, linkedinUrl: c.linkedinUrl || "" })),
-          job_description: `${jobTitle}\n\n${jobDesc}`,
+          job_description: `${jobTitle}\n\n${jobDesc}\n\nSCORING RUBRIC (weight each criterion accordingly):\n${criteria.map(c => `- ${c.name} (${c.weight}%): ${c.description}`).join("\n")}`,
           api_key: getApiKey(),
         }),
       });
@@ -432,11 +442,66 @@ export default function UploadPage() {
           <textarea value={jobDesc} onChange={e => setJobDesc(e.target.value)} rows={5} className="w-full border border-zinc-200 rounded-lg px-3 py-2 text-sm resize-none focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-300" />
         </div>
 
+        {/* Rubric */}
+        <div className="rounded-xl border border-zinc-200 bg-white p-5 mt-6">
+          <div className="flex items-center justify-between mb-3">
+            <h2 className="font-semibold text-sm">4. Scoring Rubric</h2>
+            <span className="text-xs text-zinc-400">
+              Total: {criteria.reduce((s, c) => s + c.weight, 0)}%
+              {criteria.reduce((s, c) => s + c.weight, 0) !== 100 && <span className="text-red-500 ml-1">(should be 100%)</span>}
+            </span>
+          </div>
+          <p className="text-xs text-zinc-500 mb-4">Define what matters for this role. The AI will weight its scoring based on these criteria.</p>
+          <div className="space-y-3">
+            {criteria.map((c, i) => (
+              <div key={i} className="flex items-start gap-3">
+                <div className="flex-1">
+                  <input
+                    value={c.name}
+                    onChange={e => { const next = [...criteria]; next[i] = { ...next[i], name: e.target.value }; setCriteria(next); }}
+                    className="w-full border border-zinc-200 rounded px-2 py-1.5 text-sm font-medium focus:outline-none focus:border-indigo-300"
+                    placeholder="Criterion name"
+                  />
+                  <input
+                    value={c.description}
+                    onChange={e => { const next = [...criteria]; next[i] = { ...next[i], description: e.target.value }; setCriteria(next); }}
+                    className="w-full border border-zinc-100 rounded px-2 py-1 text-xs text-zinc-500 mt-1 focus:outline-none focus:border-indigo-300"
+                    placeholder="What this measures..."
+                  />
+                </div>
+                <div className="shrink-0 w-20 flex items-center gap-1">
+                  <input
+                    type="number"
+                    min={0}
+                    max={100}
+                    value={c.weight}
+                    onChange={e => { const next = [...criteria]; next[i] = { ...next[i], weight: parseInt(e.target.value) || 0 }; setCriteria(next); }}
+                    className="w-14 border border-zinc-200 rounded px-2 py-1.5 text-sm text-center focus:outline-none focus:border-indigo-300"
+                  />
+                  <span className="text-xs text-zinc-400">%</span>
+                </div>
+                <button
+                  onClick={() => setCriteria(criteria.filter((_, j) => j !== i))}
+                  className="shrink-0 text-zinc-300 hover:text-red-500 transition-colors mt-1.5"
+                >
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M18 6 6 18M6 6l12 12" /></svg>
+                </button>
+              </div>
+            ))}
+          </div>
+          <button
+            onClick={() => setCriteria([...criteria, { name: "", weight: 0, description: "" }])}
+            className="mt-3 text-xs text-indigo-600 hover:text-indigo-800 transition-colors"
+          >
+            + Add criterion
+          </button>
+        </div>
+
         {/* Submit */}
         <button
           onClick={startScoring}
           disabled={!csvText || rowCount === 0}
-          className="w-full py-3.5 rounded-xl bg-indigo-600 text-white font-semibold text-sm hover:bg-indigo-700 disabled:opacity-40 disabled:cursor-not-allowed transition-colors mt-6"
+          className="w-full py-3.5 rounded-xl bg-neutral-900 text-white font-semibold text-sm hover:bg-black disabled:opacity-40 disabled:cursor-not-allowed transition-colors mt-6"
         >
           Score {rowCount > 0 ? `${rowCount} candidates` : "candidates"} for {jobTitle}
         </button>

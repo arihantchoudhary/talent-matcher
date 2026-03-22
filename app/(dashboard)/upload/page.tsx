@@ -252,7 +252,7 @@ export default function UploadPage() {
     const elapsed = Math.round((Date.now() - (scoring.isScoring ? Date.now() : Date.now())) / 1000);
 
     return (
-      <div className="max-w-5xl mx-auto px-6 py-8">
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 py-6 sm:py-8">
         <h1 className="text-2xl font-bold tracking-tight mb-1">Matching Algorithm</h1>
         <p className="text-sm text-neutral-500 mb-4">
           {progress.done} of {progress.total} candidates scored for <span className="font-medium text-neutral-900">{jobTitle}</span>
@@ -265,7 +265,7 @@ export default function UploadPage() {
         </div>
 
         {/* Status cards */}
-        <div className="grid grid-cols-4 gap-3 mb-6">
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-6">
           <div className="border border-neutral-200 bg-white rounded-lg p-3 text-center">
             <div className="text-xl font-bold">{progress.total}</div>
             <div className="text-[10px] text-neutral-400 uppercase mt-0.5">Parsed</div>
@@ -348,7 +348,7 @@ export default function UploadPage() {
     const stdDev = scores.length > 0 ? Math.round(Math.sqrt(scores.reduce((s, x) => s + (x - mean) ** 2, 0) / scores.length)) : 0;
 
     return (
-      <div className="max-w-5xl mx-auto px-6 py-8">
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 py-6 sm:py-8">
         {/* Header */}
         <div className="flex items-center justify-between mb-6">
           <div>
@@ -506,7 +506,7 @@ export default function UploadPage() {
 
         {/* CARD VIEW */}
         {viewMode === "card" && (
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
             {results.map(c => (
               <div key={c.id} className="border border-neutral-200 bg-white rounded-lg p-4 hover:shadow-sm transition-shadow">
                 <div className="flex items-center justify-between mb-3">
@@ -564,7 +564,7 @@ export default function UploadPage() {
 
   // ── SETUP — compact, no-scroll power user flow ──
   return (
-    <div className="max-w-5xl mx-auto px-6 py-6">
+    <div className="max-w-5xl mx-auto px-4 sm:px-6 py-4 sm:py-6">
       {/* Header */}
       <h1 className="text-2xl font-bold tracking-tight mb-6">New Match</h1>
 
@@ -625,7 +625,7 @@ export default function UploadPage() {
         </div>
 
         {/* Judge cards — big */}
-        <div className="grid grid-cols-3 md:grid-cols-6 gap-2 mb-5">
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-2 mb-5">
           {Object.entries(PRESETS).map(([key, preset]) => (
             <button key={key} onClick={() => selectPreset(key)}
               className={`rounded-xl p-4 text-center transition-all duration-300 ${selectedPreset === key ? "bg-neutral-900 text-white shadow-lg scale-105 ring-2 ring-neutral-900 ring-offset-2" : "border border-neutral-200 hover:border-neutral-400 hover:shadow-sm"}`}>

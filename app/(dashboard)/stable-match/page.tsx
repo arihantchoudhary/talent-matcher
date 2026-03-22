@@ -190,7 +190,7 @@ export default function StableMatchPage() {
   if (step === "results") {
     const totalMatched = matchResults.reduce((s, m) => s + m.candidates.length, 0);
     return (
-      <div className="max-w-4xl mx-auto px-6 py-8">
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 py-6 sm:py-8">
         <div className="flex items-center justify-between mb-6">
           <div>
             <h1 className="text-2xl font-bold">Stable Matching Results</h1>
@@ -272,7 +272,7 @@ export default function StableMatchPage() {
 
   // ── SETUP ──
   return (
-    <div className="max-w-4xl mx-auto px-6 py-8">
+    <div className="max-w-4xl mx-auto px-4 sm:px-6 py-6 sm:py-8">
       <div className="mb-6">
         <h1 className="text-2xl font-bold tracking-tight">Stable Matching</h1>
         <p className="text-sm text-neutral-500 mt-0.5">Upload a CSV per role, score each, then run Gale-Shapley to optimally assign candidates</p>

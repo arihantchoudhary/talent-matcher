@@ -88,7 +88,7 @@ export default function HistoryPage() {
 
         {/* Stats + distribution */}
         <div className="grid lg:grid-cols-2 gap-6 mb-8">
-          <div className="grid grid-cols-4 gap-3">
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
             <StatCard label="Total" value={results.length} />
             <StatCard label="Avg" value={s.avg_score} />
             <StatCard label="Top Tier" value={topTier.length} accent="dark" />
@@ -111,7 +111,7 @@ export default function HistoryPage() {
         {/* Algorithm info */}
         <div className="border border-neutral-200 bg-white p-5 mb-8">
           <p className="text-xs uppercase tracking-[0.1em] text-neutral-400 mb-3">Matching Algorithm</p>
-          <div className="grid grid-cols-4 gap-4 text-sm">
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 text-sm">
             <div><span className="font-semibold">1. Parse</span><p className="text-xs text-neutral-500 mt-0.5">Extract fields from CSV</p></div>
             <div><span className="font-semibold">2. Enrich</span><p className="text-xs text-neutral-500 mt-0.5">LinkedIn profiles, photos, experience</p></div>
             <div><span className="font-semibold">3. Score</span><p className="text-xs text-neutral-500 mt-0.5">GPT-4o-mini 0-100 with reasoning</p></div>
@@ -142,7 +142,7 @@ export default function HistoryPage() {
   // History list
   return (
     <div className="flex-1 overflow-auto">
-      <div className="max-w-4xl mx-auto px-6 py-8">
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 py-6 sm:py-8">
         <div className="flex items-center justify-between mb-6">
           <div>
             <h1 className="text-2xl font-bold tracking-tight">Match History</h1>

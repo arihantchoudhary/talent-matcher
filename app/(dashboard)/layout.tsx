@@ -1,7 +1,7 @@
-import { UserButton } from "@clerk/nextjs";
 import Link from "next/link";
 import { DashboardNav } from "./nav";
 import { ScoringProvider } from "@/lib/scoring-context";
+import { CustomUserButton } from "./user-button";
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
   return (
@@ -10,7 +10,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
         {/* Mobile header */}
         <header className="md:hidden flex items-center justify-between px-4 py-3 border-b border-neutral-200 bg-white shrink-0">
           <Link href="/upload" className="text-sm font-semibold tracking-tight">Talent Matcher</Link>
-          <UserButton />
+          <CustomUserButton />
         </header>
 
         {/* Mobile nav */}
@@ -25,7 +25,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
           </div>
           <DashboardNav />
           <div className="mt-auto px-5 py-4 border-t border-neutral-100">
-            <UserButton />
+            <CustomUserButton />
           </div>
         </aside>
 

@@ -2,7 +2,7 @@
   {
     "rank": 1,
     "id": "061c45a9-a3d5-450a-a8c5-8996299658b0",
-    "name": "Candidate-c85b2e3c",
+    "name": "Brandon McDonald",
     "score": 73,
     "reasoning": "The candidate has 3 years of experience in a high-performance consulting environment and has worked with legal clients, which aligns well with the role's requirements. However, their experience is primarily in consulting rather than direct sales, and they lack a strong SaaS background, which is a key component for this position.",
     "highlights": [
@@ -13,7 +13,14 @@
       "Limited direct sales experience",
       "No SaaS sales background",
       "Not based in the preferred US location"
-    ]
+    ],
+    "linkedin_name": "Brandon McDonald",
+    "linkedin_headline": "Strategy & Operations @ Rippling",
+    "linkedin_photo": "https://john-whaley-linkedin-photos.s3.amazonaws.com/photos/brandon-mcdonald-0b5380195.jpg",
+    "linkedin_location": "New York, New York, United States",
+    "linkedin_company": "Rippling",
+    "linkedin_education": "University of California San Diego",
+    "linkedin_url": "https://www.linkedin.com/in/brandon-mcdonald-0b5380195"
   },
   {
     "rank": 2,
@@ -30,12 +37,19 @@
       "No experience in the legal sector",
       "Limited years of experience (2 years)",
       "Lacks familiarity with legal buyers or law firms"
-    ]
+    ],
+    "linkedin_name": "Dhruv Chokshi",
+    "linkedin_headline": "GTM @ Brex",
+    "linkedin_photo": "https://john-whaley-linkedin-photos.s3.amazonaws.com/photos/dhruv-c322-d75a82b8.jpg",
+    "linkedin_location": "New York, New York, United States",
+    "linkedin_company": "Brex",
+    "linkedin_education": "Carnegie Mellon University - Tepper School of Business",
+    "linkedin_url": "https://www.linkedin.com/in/dhruv-c322"
   },
   {
     "rank": 3,
     "id": "4d90d8e1-971a-49f4-9f37-347da5eef191",
-    "name": "Candidate-1ab60376",
+    "name": "Jack DuFour",
     "score": 73,
     "reasoning": "Candidate-1ab60376 has 3 years of sales experience in a high-performance environment, which aligns well with the role's requirements. However, their familiarity with the legal sector is limited, as they have primarily worked in tech sales without direct exposure to legal buyers.",
     "highlights": [
@@ -46,12 +60,19 @@
       "Limited familiarity with the legal sector",
       "No direct experience selling to legal buyers or law firms",
       "Not US-based"
-    ]
+    ],
+    "linkedin_name": "",
+    "linkedin_headline": "Data Privacy | Ethyca",
+    "linkedin_photo": "https://john-whaley-linkedin-photos.s3.amazonaws.com/photos/jack-dufour-b792ab224-cd5f0f1f.jpg",
+    "linkedin_location": "",
+    "linkedin_company": "",
+    "linkedin_education": "",
+    "linkedin_url": "https://www.linkedin.com/in/jack-dufour-b792ab224/"
   },
   {
     "rank": 4,
     "id": "848310fc-0956-4589-aad1-cf031651116b",
-    "name": "Candidate-b83dac4c",
+    "name": "Dhanush Sivakaminathan",
     "score": 73,
     "reasoning": "Candidate-b83dac4c has 3 years of sales experience in a high-performance startup environment, which aligns well with the role's requirements. However, they lack direct experience in the legal sector, which is a critical aspect of the position.",
     "highlights": [
@@ -61,12 +82,19 @@
     "gaps": [
       "No direct experience in the legal sector",
       "Limited exposure to C-suite stakeholders"
-    ]
+    ],
+    "linkedin_name": "",
+    "linkedin_headline": "Founding GTM Member @ Graphite (Cursor)",
+    "linkedin_photo": "https://john-whaley-linkedin-photos.s3.amazonaws.com/photos/dhanushsivakaminathan-9772d6c3.jpg",
+    "linkedin_location": "",
+    "linkedin_company": "",
+    "linkedin_education": "",
+    "linkedin_url": "https://www.linkedin.com/in/dhanushsivakaminathan/"
   },
   {
     "rank": 5,
     "id": "c7354444-2956-4b2e-8005-5007aa82cde2",
-    "name": "Candidate-6780337f",
+    "name": "Abbie Tulloch",
     "score": 73,
     "reasoning": "Candidate-6780337f has 3 years of sales experience in a high-performance environment, which aligns well with the role's requirements. However, they lack direct experience in the legal sector, which is a critical component for this position.",
     "highlights": [
@@ -76,12 +104,19 @@
     "gaps": [
       "No direct experience in the legal sector",
       "Limited familiarity with legal buyers or law firms"
-    ]
+    ],
+    "linkedin_name": "",
+    "linkedin_headline": "Banking @ JPMorgan | MLT PE Fellow",
+    "linkedin_photo": "https://john-whaley-linkedin-photos.s3.amazonaws.com/photos/abbietulloch-158701c7.jpg",
+    "linkedin_location": "",
+    "linkedin_company": "",
+    "linkedin_education": "",
+    "linkedin_url": "https://www.linkedin.com/in/abbietulloch/"
   },
   {
     "rank": 6,
     "id": "a73e0725-9404-4421-93dd-4151df8e0c81",
-    "name": "Candidate-7ed11c8a",
+    "name": "Ami Schleifer",
     "score": 72,
     "reasoning": "Candidate has 3 years of sales experience in a high-performance environment, but lacks direct experience in the legal sector. They have a strong track record of selling into enterprise accounts and have demonstrated the ability to engage with C-suite stakeholders, which aligns well with the role's requirements.",
     "highlights": [
@@ -91,12 +126,19 @@
     "gaps": [
       "No direct experience in the legal sector",
       "Missing familiarity with legal buyers or law firms"
-    ]
+    ],
+    "linkedin_name": "",
+    "linkedin_headline": "Growth @Brellium",
+    "linkedin_photo": "https://john-whaley-linkedin-photos.s3.amazonaws.com/photos/awschleifer-9f4ba6df.jpg",
+    "linkedin_location": "",
+    "linkedin_company": "",
+    "linkedin_education": "",
+    "linkedin_url": "https://www.linkedin.com/in/awschleifer/"
   },
   {
     "rank": 7,
     "id": "fb8de826-f02c-437f-8b07-4afa1fe3a94f",
-    "name": "Candidate-0358c05b",
+    "name": "Ciara Benfield",
     "score": 72,
     "reasoning": "Candidate-0358c05b has experience in a high-performance sales environment and has worked with legal buyers, which aligns well with the role's requirements. However, they lack direct experience in the legal sector and their location is not ideal for the position's focus on U.S. expansion.",
     "highlights": [
@@ -106,12 +148,19 @@
     "gaps": [
       "Lack of direct legal sector experience",
       "Not ideally located in the U.S."
-    ]
+    ],
+    "linkedin_name": "",
+    "linkedin_headline": "New Business @ Plaid",
+    "linkedin_photo": "https://john-whaley-linkedin-photos.s3.amazonaws.com/photos/ciara-benfield-ed6a85ee.jpg",
+    "linkedin_location": "",
+    "linkedin_company": "",
+    "linkedin_education": "",
+    "linkedin_url": "https://www.linkedin.com/in/ciara-benfield/"
   },
   {
     "rank": 8,
     "id": "fd5e7bda-0007-4fac-a747-614070c37374",
-    "name": "Candidate-10456847",
+    "name": "Svayam Dialani",
     "score": 72,
     "reasoning": "Candidate-10456847 has 3 years of sales experience in a high-performance environment but lacks direct experience in the legal sector, which is crucial for this role. They have demonstrated strong sales performance and have worked in a startup environment, which aligns well with the company's needs.",
     "highlights": [
@@ -123,7 +172,14 @@
       "No direct experience in the legal sector",
       "Limited familiarity with legal buyers",
       "Not US-based (location unspecified)"
-    ]
+    ],
+    "linkedin_name": "",
+    "linkedin_headline": "Growth at Aura Intelligence",
+    "linkedin_photo": "https://john-whaley-linkedin-photos.s3.amazonaws.com/photos/svayam-dialani-188436198-4ee97cea.jpg",
+    "linkedin_location": "",
+    "linkedin_company": "",
+    "linkedin_education": "",
+    "linkedin_url": "https://www.linkedin.com/in/svayam-dialani-188436198/"
   },
   {
     "rank": 9,
@@ -140,12 +196,19 @@
       "No direct experience in the legal sector",
       "Current role is primarily focused on SMB rather than enterprise sales",
       "Limited experience with C-suite stakeholders in legal contexts"
-    ]
+    ],
+    "linkedin_name": "",
+    "linkedin_headline": "",
+    "linkedin_photo": "https://john-whaley-linkedin-photos.s3.amazonaws.com/photos/ACoAADTBLoABomtDYVWRpmQ1r9UTEN4BtQIRQig-0da51d2f.jpg",
+    "linkedin_location": "",
+    "linkedin_company": "",
+    "linkedin_education": "",
+    "linkedin_url": "https://www.linkedin.com/in/ACoAADTBLoABomtDYVWRpmQ1r9UTEN4BtQIRQig/"
   },
   {
     "rank": 10,
     "id": "9ff95118-7a81-4ce4-a3cf-8ada0ca75d2a",
-    "name": "Candidate-07980815",
+    "name": "Peter Bukary",
     "score": 66,
     "reasoning": "Candidate-07980815 has 3 years of sales experience and is based in New York, which aligns well with the location requirement. However, there is no mention of familiarity with the legal sector or experience selling to legal buyers, which is a critical gap for this role.",
     "highlights": [
@@ -155,12 +218,19 @@
     "gaps": [
       "Lack of familiarity with the legal sector",
       "No experience selling to legal buyers or law firms"
-    ]
+    ],
+    "linkedin_name": "",
+    "linkedin_headline": "Investment Banking Analyst",
+    "linkedin_photo": "https://john-whaley-linkedin-photos.s3.amazonaws.com/photos/peter-bukary-bb28641b0-1348c514.jpg",
+    "linkedin_location": "",
+    "linkedin_company": "",
+    "linkedin_education": "",
+    "linkedin_url": "https://www.linkedin.com/in/peter-bukary-bb28641b0/"
   },
   {
     "rank": 11,
     "id": "019b292f-a84c-4b64-b6fb-5ebb43a4cc55",
-    "name": "Candidate-ba423658",
+    "name": "Taron Arshakian",
     "score": 63,
     "reasoning": "The candidate has 3 years of sales experience and is located in New York, which aligns with the location requirement. However, they lack specific experience in the legal sector and do not demonstrate familiarity with selling to legal buyers or law firms, which is a critical gap for this role.",
     "highlights": [
@@ -170,12 +240,19 @@
     "gaps": [
       "No legal sector experience",
       "Lack of familiarity with legal buyers"
-    ]
+    ],
+    "linkedin_name": "Taron Arshakian",
+    "linkedin_headline": "Investment Banking Associate",
+    "linkedin_photo": "https://john-whaley-linkedin-photos.s3.amazonaws.com/photos/taronarshakian.jpg",
+    "linkedin_location": "New York, New York, United States",
+    "linkedin_company": "Deutsche Bank",
+    "linkedin_education": "Columbia University",
+    "linkedin_url": "https://www.linkedin.com/in/taronarshakian"
   },
   {
     "rank": 12,
     "id": "0a35e807-c204-44eb-a2eb-22d84f236861",
-    "name": "Candidate-b3361534",
+    "name": "Emily Dominguez",
     "score": 63,
     "reasoning": "The candidate has 2 years of sales experience and is located in New York, which aligns with the location requirement. However, they lack familiarity with the legal sector, which is a key criterion for this role.",
     "highlights": [
@@ -185,12 +262,19 @@
     "gaps": [
       "No experience in the legal sector",
       "Limited experience in high-performance environments"
-    ]
+    ],
+    "linkedin_name": "Emily Dominguez",
+    "linkedin_headline": "CS + Bus @UMich | Prev SWE @Apple, Microsoft, & Alza, IB @MS",
+    "linkedin_photo": "https://john-whaley-linkedin-photos.s3.amazonaws.com/photos/emily~dominguez-81a7c21a.jpg",
+    "linkedin_location": "New York, New York, United States",
+    "linkedin_company": "Morgan Stanley",
+    "linkedin_education": "Godwin Heights , Grand Rapids Community College, Management Leadership for Tomorrow, SEO (Sponsors for Educational Opportunity), University of Michigan, University of Michigan - Stephen M. Ross School of Business",
+    "linkedin_url": "https://www.linkedin.com/in/emily%7Edominguez"
   },
   {
     "rank": 13,
     "id": "2e1a2681-b2c1-4ab5-ab26-76d6f524a733",
-    "name": "Candidate-613ddcf1",
+    "name": "Jason Taylor",
     "score": 63,
     "reasoning": "Candidate-613ddcf1 has a solid sales background with 3 years of experience in a high-performance startup environment, but lacks direct experience in the legal sector. While they have demonstrated success in sales, their familiarity with legal buyers is minimal, which is a key requirement for this role.",
     "highlights": [
@@ -200,12 +284,19 @@
     "gaps": [
       "No direct experience in the legal sector",
       "Limited exposure to C-suite stakeholders"
-    ]
+    ],
+    "linkedin_name": "",
+    "linkedin_headline": "I do calisthenics stuff. I also do sales stuff.",
+    "linkedin_photo": "https://john-whaley-linkedin-photos.s3.amazonaws.com/photos/jason-taylor-7981b820b-75d64d3b.jpg",
+    "linkedin_location": "",
+    "linkedin_company": "",
+    "linkedin_education": "",
+    "linkedin_url": "https://www.linkedin.com/in/jason-taylor-7981b820b/"
   },
   {
     "rank": 14,
     "id": "3f6ef2a2-2035-4b9a-8e84-7552d70441de",
-    "name": "Candidate-1681c5ed",
+    "name": "Sifath Mannan",
     "score": 63,
     "reasoning": "The candidate has 2 years of relevant sales experience and has worked in a startup environment, which aligns with the role's requirements. However, they lack direct experience in the legal sector and have primarily sold to technology and government industries, which may not translate well to the legal market.",
     "highlights": [
@@ -217,12 +308,19 @@
       "No direct experience in the legal sector",
       "Limited familiarity with legal buyers or law firms",
       "Sales experience primarily in technology and government, not legal or finance"
-    ]
+    ],
+    "linkedin_name": "",
+    "linkedin_headline": "Founding GTM @ Rillet",
+    "linkedin_photo": "https://john-whaley-linkedin-photos.s3.amazonaws.com/photos/sifathmannan-265d393c.jpg",
+    "linkedin_location": "",
+    "linkedin_company": "",
+    "linkedin_education": "",
+    "linkedin_url": "https://www.linkedin.com/in/sifathmannan/"
   },
   {
     "rank": 15,
     "id": "48299dbd-4bd7-4986-bad9-c321a8ee316f",
-    "name": "Candidate-dfb8c280",
+    "name": "Colin Knittel",
     "score": 63,
     "reasoning": "The candidate has 2 years of sales experience and is located in New York, which meets the location requirement. However, they lack familiarity with the legal sector and do not demonstrate the ambition to own outcomes or experience with C-suite stakeholders.",
     "highlights": [
@@ -233,12 +331,19 @@
       "No familiarity with the legal sector",
       "Lacks experience with C-suite stakeholders",
       "Ambition to own outcomes not demonstrated"
-    ]
+    ],
+    "linkedin_name": "",
+    "linkedin_headline": "Investment Banking Analyst",
+    "linkedin_photo": "https://john-whaley-linkedin-photos.s3.amazonaws.com/photos/colin-knittel-2aa9371b6-2761e8cf.jpg",
+    "linkedin_location": "",
+    "linkedin_company": "",
+    "linkedin_education": "",
+    "linkedin_url": "https://www.linkedin.com/in/colin-knittel-2aa9371b6/"
   },
   {
     "rank": 16,
     "id": "4860db94-1eef-49bb-96a0-d221fd5a4c1b",
-    "name": "Candidate-92607bf4",
+    "name": "Matt Porges",
     "score": 63,
     "reasoning": "Candidate-92607bf4 has 2 years of sales experience and is located in New York, which aligns with the location requirement. However, they lack familiarity with the legal sector and do not demonstrate experience in high-performance environments or enterprise sales, which are critical for this role.",
     "highlights": [
@@ -249,12 +354,19 @@
       "No familiarity with the legal sector",
       "Lacks experience in high-performance environments",
       "No enterprise sales experience"
-    ]
+    ],
+    "linkedin_name": "",
+    "linkedin_headline": "Investments | Strategy | M&A | Insurance & Financial Services",
+    "linkedin_photo": "https://john-whaley-linkedin-photos.s3.amazonaws.com/photos/porges-29875cf3.jpg",
+    "linkedin_location": "",
+    "linkedin_company": "",
+    "linkedin_education": "",
+    "linkedin_url": "https://www.linkedin.com/in/porges/"
   },
   {
     "rank": 17,
     "id": "5745a562-d5e9-4739-95db-02ef1cb590b1",
-    "name": "Candidate-f0181df6",
+    "name": "Sudhir Chowdhry",
     "score": 63,
     "reasoning": "The candidate has 2 years of sales experience and is based in New York, which aligns with the location requirement. However, they lack familiarity with the legal sector, which is a critical gap for this role.",
     "highlights": [
@@ -264,12 +376,19 @@
     "gaps": [
       "No experience in the legal sector",
       "Limited experience in high-performance environments"
-    ]
+    ],
+    "linkedin_name": "",
+    "linkedin_headline": "AI | Strategy | Business Development | Consulting",
+    "linkedin_photo": "https://john-whaley-linkedin-photos.s3.amazonaws.com/photos/sudhir-chowdhry-2a962b23.jpg",
+    "linkedin_location": "",
+    "linkedin_company": "",
+    "linkedin_education": "",
+    "linkedin_url": "https://www.linkedin.com/in/sudhir-chowdhry/"
   },
   {
     "rank": 18,
     "id": "57c7b7d3-5be2-4315-9748-467245bcce9f",
-    "name": "Candidate-2d282541",
+    "name": "Ethan Faber",
     "score": 63,
     "reasoning": "Candidate-2d282541 has 3 years of sales experience in a high-performance environment but lacks direct familiarity with the legal sector. While they have a strong track record in SaaS sales, their experience does not align perfectly with the specific requirements of the legal market.",
     "highlights": [
@@ -280,12 +399,19 @@
       "No direct experience in the legal sector",
       "Lacks familiarity with legal buyers or law firms",
       "Not US-based, which is preferred for the role"
-    ]
+    ],
+    "linkedin_name": "",
+    "linkedin_headline": "Growth @ Traba",
+    "linkedin_photo": "https://john-whaley-linkedin-photos.s3.amazonaws.com/photos/ethanfaber-ab846c1d.jpg",
+    "linkedin_location": "",
+    "linkedin_company": "",
+    "linkedin_education": "",
+    "linkedin_url": "https://www.linkedin.com/in/ethanfaber/"
   },
   {
     "rank": 19,
     "id": "5d78c914-a9c0-4afb-9f4c-560519011817",
-    "name": "Candidate-066bee00",
+    "name": "Andrew Thompson",
     "score": 63,
     "reasoning": "The candidate has three years of sales experience in technology and financial services, which aligns well with the SaaS focus of the role. However, they lack direct experience in the legal sector, which is a critical requirement for this position.",
     "highlights": [
@@ -297,12 +423,19 @@
       "No experience in the legal sector",
       "Limited familiarity with legal buyers",
       "Lacks exceptional charisma and scrappiness"
-    ]
+    ],
+    "linkedin_name": "",
+    "linkedin_headline": "Technical Sales Professional",
+    "linkedin_photo": "https://john-whaley-linkedin-photos.s3.amazonaws.com/photos/andrewthompson123-a36d9d27.jpg",
+    "linkedin_location": "",
+    "linkedin_company": "",
+    "linkedin_education": "",
+    "linkedin_url": "https://www.linkedin.com/in/andrewthompson123/"
   },
   {
     "rank": 20,
     "id": "64a3e666-d367-4d21-a12b-c64dd53edf4c",
-    "name": "Candidate-72cdd3af",
+    "name": "Geovanny Morales",
     "score": 63,
     "reasoning": "Candidate-72cdd3af has a solid sales background with 3 years of experience in a high-performance environment, but lacks direct experience in the legal sector. They have demonstrated success in enterprise sales, which is relevant, but their familiarity with legal buyers is minimal. Additionally, they are based in the US, which is a plus for this role.",
     "highlights": [
@@ -313,12 +446,19 @@
       "No direct experience in the legal sector",
       "Limited familiarity with legal buyers",
       "Lacks experience in startups or high-growth companies"
-    ]
+    ],
+    "linkedin_name": "",
+    "linkedin_headline": "Founder at Abeja Coffee",
+    "linkedin_photo": "https://john-whaley-linkedin-photos.s3.amazonaws.com/photos/geovanny-morales-806690153-f455c04f.jpg",
+    "linkedin_location": "",
+    "linkedin_company": "",
+    "linkedin_education": "",
+    "linkedin_url": "https://www.linkedin.com/in/geovanny-morales-806690153/"
   },
   {
     "rank": 21,
     "id": "6bc4b12e-5d8a-4e14-88bf-e6d423520844",
-    "name": "Candidate-38f545f8",
+    "name": "Aditya Krishna",
     "score": 63,
     "reasoning": "Candidate has 2 years of sales experience and is located in New York, which aligns with the location requirement. However, they lack familiarity with the legal sector, which is a critical gap for this role.",
     "highlights": [
@@ -328,12 +468,19 @@
     "gaps": [
       "No familiarity with the legal sector",
       "Limited experience in high-performance environments"
-    ]
+    ],
+    "linkedin_name": "",
+    "linkedin_headline": "Morgan Stanley - Columbia University",
+    "linkedin_photo": "https://john-whaley-linkedin-photos.s3.amazonaws.com/photos/aditya-krishna-4505a051-576e13f4.jpg",
+    "linkedin_location": "",
+    "linkedin_company": "",
+    "linkedin_education": "",
+    "linkedin_url": "https://www.linkedin.com/in/aditya-krishna-4505a051/"
   },
   {
     "rank": 22,
     "id": "71c39223-2c35-4c0f-b45b-7405bab042f1",
-    "name": "Candidate-841cf733",
+    "name": "Nairi Enright",
     "score": 63,
     "reasoning": "Candidate-841cf733 has 2 years of sales experience and is based in New York, which aligns with the location requirement. However, they lack familiarity with the legal sector, which is a critical gap for this role.",
     "highlights": [
@@ -343,7 +490,14 @@
     "gaps": [
       "No experience in the legal sector",
       "Limited experience in high-performance environments"
-    ]
+    ],
+    "linkedin_name": "",
+    "linkedin_headline": "Investment Banking Leveraged Credit Analyst - TMT",
+    "linkedin_photo": "https://john-whaley-linkedin-photos.s3.amazonaws.com/photos/nairi-enright-55a55aa0.jpg",
+    "linkedin_location": "",
+    "linkedin_company": "",
+    "linkedin_education": "",
+    "linkedin_url": "https://www.linkedin.com/in/nairi-enright/"
   },
   {
     "rank": 23,
@@ -360,12 +514,19 @@
       "No direct experience in the legal sector",
       "Lacks familiarity with legal buyers/law firms",
       "Limited years of experience compared to the ideal candidate profile"
-    ]
+    ],
+    "linkedin_name": "",
+    "linkedin_headline": "",
+    "linkedin_photo": "https://john-whaley-linkedin-photos.s3.amazonaws.com/photos/molly-smith-214b48149-8d014940.jpg",
+    "linkedin_location": "",
+    "linkedin_company": "",
+    "linkedin_education": "",
+    "linkedin_url": "https://www.linkedin.com/in/molly-smith-214b48149/"
   },
   {
     "rank": 24,
     "id": "922d5027-1c9f-416b-8598-19333f6fd96d",
-    "name": "Candidate-eb6773c5",
+    "name": "Nika Volfson",
     "score": 63,
     "reasoning": "The candidate has a solid sales background with experience in a high-performance environment but lacks specific familiarity with the legal sector. They have worked in startups, which is a plus, but their experience does not align closely with the legal market or the required in-person presence.",
     "highlights": [
@@ -377,12 +538,19 @@
       "Lack of legal sector familiarity",
       "Missing in-person availability",
       "Limited experience with C-suite stakeholders"
-    ]
+    ],
+    "linkedin_name": "",
+    "linkedin_headline": "Strategy & Ops @ Camber",
+    "linkedin_photo": "https://john-whaley-linkedin-photos.s3.amazonaws.com/photos/nika-volfson-ce74ce54.jpg",
+    "linkedin_location": "",
+    "linkedin_company": "",
+    "linkedin_education": "",
+    "linkedin_url": "https://www.linkedin.com/in/nika-volfson/"
   },
   {
     "rank": 25,
     "id": "985251cb-ff72-4532-9f21-91a9f095468b",
-    "name": "Candidate-8f3ca6ca",
+    "name": "Benjamin Krimm",
     "score": 63,
     "reasoning": "Candidate has 2 years of sales experience and is based in New York, which aligns with the location requirement. However, they lack familiarity with the legal sector and do not demonstrate a strong presence with C-suite stakeholders, which are critical for this role.",
     "highlights": [
@@ -392,12 +560,19 @@
     "gaps": [
       "No familiarity with the legal sector",
       "Lack of experience engaging with C-suite stakeholders"
-    ]
+    ],
+    "linkedin_name": "",
+    "linkedin_headline": "PNC Investment Banking Analyst",
+    "linkedin_photo": "https://john-whaley-linkedin-photos.s3.amazonaws.com/photos/benjamin-krimm-996264196-97b056a4.jpg",
+    "linkedin_location": "",
+    "linkedin_company": "",
+    "linkedin_education": "",
+    "linkedin_url": "https://www.linkedin.com/in/benjamin-krimm-996264196/"
   },
   {
     "rank": 26,
     "id": "bcde9f5c-b1bc-4bfd-aa60-1f138d3a2fa2",
-    "name": "Candidate-0f00b0c9",
+    "name": "Rebekah Turner",
     "score": 63,
     "reasoning": "The candidate has strong sales experience and has worked in high-performance environments, but lacks direct experience in the legal sector, which is crucial for this role. While they have demonstrated success in enterprise sales, their background does not align closely with the specific needs of the legal market.",
     "highlights": [
@@ -409,12 +584,19 @@
       "No experience in the legal sector",
       "Lacks familiarity with legal buyers or law firms",
       "Missing ambition to own outcomes in a legal context"
-    ]
+    ],
+    "linkedin_name": "",
+    "linkedin_headline": "Growth @ Clarion | Voice AI for Healthcare",
+    "linkedin_photo": "https://john-whaley-linkedin-photos.s3.amazonaws.com/photos/rebekahcturner24-ea180653.jpg",
+    "linkedin_location": "",
+    "linkedin_company": "",
+    "linkedin_education": "",
+    "linkedin_url": "https://www.linkedin.com/in/rebekahcturner24//"
   },
   {
     "rank": 27,
     "id": "c5ffa3c5-02d9-4316-971e-e2791f9630a6",
-    "name": "Candidate-c7a0d287",
+    "name": "Sidney Vallery",
     "score": 63,
     "reasoning": "The candidate has some relevant sales experience but lacks familiarity with the legal sector, which is a key requirement for this role. They have worked in a high-performance environment but do not have direct experience selling to legal buyers or law firms.",
     "highlights": [
@@ -425,12 +607,19 @@
       "Lack of legal sector experience",
       "No familiarity with selling to legal buyers",
       "Missing enterprise sales experience"
-    ]
+    ],
+    "linkedin_name": "Sidney Vallery",
+    "linkedin_headline": "Using Generative AI to set new industry standards in voice automation & voice translation @ Parloa",
+    "linkedin_photo": "https://john-whaley-linkedin-photos.s3.amazonaws.com/photos/6a62a6a5-e5c7-45f0-b3a4-478dcdbe4f6f-57179232.jpg",
+    "linkedin_location": "New York, New York, United States",
+    "linkedin_company": "Parloa",
+    "linkedin_education": "Le Moyne College, Ithaca College",
+    "linkedin_url": "https://www.linkedin.com/in/sidney-vallery-9b1774b8"
   },
   {
     "rank": 28,
     "id": "d7ddf05f-8763-4f5d-8726-e0ebda13afcf",
-    "name": "Candidate-d54aa8b8",
+    "name": "Alexandre Viegas",
     "score": 63,
     "reasoning": "The candidate has 2 years of sales experience in relevant industries and has closed large enterprise deals, which is a strong point. However, they lack direct experience in the legal sector, which is a key requirement for this role, and their communication skills need improvement for engaging C-suite stakeholders effectively.",
     "highlights": [
@@ -442,12 +631,19 @@
       "No familiarity with the legal sector",
       "Communication delivery lacks consistent confidence",
       "Limited experience in a high-performance legal environment"
-    ]
+    ],
+    "linkedin_name": "Alexandre Viegas",
+    "linkedin_headline": "Graduate of Sargent College of Health and Rehabilitation Sciences Boston University",
+    "linkedin_photo": "https://john-whaley-linkedin-photos.s3.amazonaws.com/photos/6a62a6a5-e5c7-45f0-b3a4-478dcdbe4f6f-57179232.jpg",
+    "linkedin_location": "New York, New York, United States",
+    "linkedin_company": "",
+    "linkedin_education": "Boston University",
+    "linkedin_url": "https://www.linkedin.com/in/alexandre-viegas-156a57196"
   },
   {
     "rank": 29,
     "id": "e413c698-04a6-403d-92c1-556de347fd0e",
-    "name": "Candidate-d4c2cb94",
+    "name": "Emily Shih",
     "score": 63,
     "reasoning": "The candidate has 2 years of sales experience in technology and has demonstrated success in closing enterprise deals, which is a positive indicator. However, they lack direct experience in the legal sector, which is a crucial requirement for this role, and their sales focus has primarily been on other departments rather than legal buyers.",
     "highlights": [
@@ -459,12 +655,19 @@
       "No experience in the legal sector or selling to legal buyers",
       "Limited presence and confidence in communication with C-suite stakeholders",
       "Only 2 years of experience, which is on the lower end of the required range"
-    ]
+    ],
+    "linkedin_name": "",
+    "linkedin_headline": "GTM @ Motion | NYU Alum",
+    "linkedin_photo": "https://john-whaley-linkedin-photos.s3.amazonaws.com/photos/-emilyshih-c81692af.jpg",
+    "linkedin_location": "",
+    "linkedin_company": "",
+    "linkedin_education": "",
+    "linkedin_url": "https://www.linkedin.com/in/-emilyshih/"
   },
   {
     "rank": 30,
     "id": "035267a7-3145-4c39-a1f7-0bfe13b0f844",
-    "name": "Candidate-6ac42beb",
+    "name": "Katherine Stiplosek",
     "score": 62,
     "reasoning": "Candidate has a solid sales background with 3 years of experience in a high-performance startup environment, but lacks direct experience in the legal sector. Their familiarity with enterprise sales is a plus, but the absence of legal-specific knowledge is a significant gap for this role.",
     "highlights": [
@@ -474,12 +677,19 @@
     "gaps": [
       "No direct experience in the legal sector",
       "Limited exposure to C-suite stakeholders"
-    ]
+    ],
+    "linkedin_name": "Katherine Stiplosek",
+    "linkedin_headline": "Business Development @ Ramp",
+    "linkedin_photo": "https://john-whaley-linkedin-photos.s3.amazonaws.com/photos/katherinestiplosek.jpg",
+    "linkedin_location": "New York, New York, United States",
+    "linkedin_company": "Ramp",
+    "linkedin_education": "Tufts University",
+    "linkedin_url": "https://www.linkedin.com/in/katherinestiplosek"
   },
   {
     "rank": 31,
     "id": "1436c83f-97ae-4b87-adac-bcc0bc89f8c7",
-    "name": "Candidate-bffc30de",
+    "name": "Sarah Xu",
     "score": 62,
     "reasoning": "The candidate has a solid sales background with experience in high-performance environments but lacks direct familiarity with the legal sector, which is crucial for this role. Additionally, their experience is primarily outside the US, which may hinder their ability to effectively engage with the target market.",
     "highlights": [
@@ -490,12 +700,19 @@
       "Lack of legal sector experience",
       "Not US-based",
       "Limited familiarity with enterprise sales"
-    ]
+    ],
+    "linkedin_name": "",
+    "linkedin_headline": "education + special projects @ clay | stanford alum",
+    "linkedin_photo": "https://john-whaley-linkedin-photos.s3.amazonaws.com/photos/sarah-xu-603971174-63eac532.jpg",
+    "linkedin_location": "",
+    "linkedin_company": "",
+    "linkedin_education": "",
+    "linkedin_url": "https://www.linkedin.com/in/sarah-xu-603971174/"
   },
   {
     "rank": 32,
     "id": "52d1679e-76ed-4aed-a6c2-98cc715102cf",
-    "name": "Candidate-0f93da53",
+    "name": "Ji Sung Lee",
     "score": 62,
     "reasoning": "Candidate-0f93da53 has a solid sales background with 3 years of experience in a high-performance startup environment. However, they lack direct experience in the legal sector, which is a crucial requirement for this role.",
     "highlights": [
@@ -505,12 +722,19 @@
     "gaps": [
       "No experience in the legal sector",
       "Limited exposure to C-suite stakeholders"
-    ]
+    ],
+    "linkedin_name": "",
+    "linkedin_headline": "Provider Growth @ Tandem",
+    "linkedin_photo": "https://john-whaley-linkedin-photos.s3.amazonaws.com/photos/ji-sung-lee-b19d5f52.jpg",
+    "linkedin_location": "",
+    "linkedin_company": "",
+    "linkedin_education": "",
+    "linkedin_url": "https://www.linkedin.com/in/ji-sung-lee/"
   },
   {
     "rank": 33,
     "id": "9a8f6dbc-e63a-4369-83b6-6bc8e8fbcb19",
-    "name": "Candidate-a43f6d59",
+    "name": "Marisa Dell'Anno",
     "score": 62,
     "reasoning": "Candidate-a43f6d59 has experience in sales but lacks direct exposure to the legal sector, which is crucial for this role. They have a solid foundation in a high-performance environment but do not meet the location preference as they are based outside the US.",
     "highlights": [
@@ -521,12 +745,19 @@
       "No legal sector experience",
       "Not US-based",
       "Lacks familiarity with legal buyers"
-    ]
+    ],
+    "linkedin_name": "Marisa Dell'Anno",
+    "linkedin_headline": "Demand Generation @ Vimeo | Full-Funnel GTM Strategy & Pipeline Growth",
+    "linkedin_photo": "https://john-whaley-linkedin-photos.s3.amazonaws.com/photos/marisa-dellanno.jpg",
+    "linkedin_location": "New York City Metropolitan Area",
+    "linkedin_company": "Vimeo",
+    "linkedin_education": "D'Amore-McKim School of Business at Northeastern University",
+    "linkedin_url": "https://www.linkedin.com/in/marisa-dellanno"
   },
   {
     "rank": 34,
     "id": "cc9227bc-f428-4ed6-9dd4-4476131b1f03",
-    "name": "Candidate-fa494289",
+    "name": "Amelia Metters",
     "score": 62,
     "reasoning": "The candidate has some relevant sales experience but lacks direct exposure to the legal sector, which is crucial for this role. They have worked in a high-performance environment, but their experience does not align closely with the specific requirements of selling into legal buyers.",
     "highlights": [
@@ -537,12 +768,19 @@
       "No direct legal sector experience",
       "Lacks familiarity with legal buyers",
       "Not US-based"
-    ]
+    ],
+    "linkedin_name": "",
+    "linkedin_headline": "Growth @ Squad - we're hiring!",
+    "linkedin_photo": "https://john-whaley-linkedin-photos.s3.amazonaws.com/photos/amelia-metters-77b86b1a8-8878bfb3.jpg",
+    "linkedin_location": "",
+    "linkedin_company": "",
+    "linkedin_education": "",
+    "linkedin_url": "https://www.linkedin.com/in/amelia-metters-77b86b1a8/"
   },
   {
     "rank": 35,
     "id": "9ec4bcce-f8d7-4460-92c7-22d581a764ed",
-    "name": "Candidate-5f63ce66",
+    "name": "Swaraj Agarwal",
     "score": 59,
     "reasoning": "The candidate has one year of sales experience in technology and has sold to various departments, but lacks direct experience in the legal sector, which is crucial for this role. While they demonstrate strong analytical skills and a good understanding of complex sales processes, their limited experience and lack of familiarity with legal buyers are significant gaps.",
     "highlights": [
@@ -554,12 +792,19 @@
       "No experience in the legal sector",
       "Only one year of sales experience",
       "Limited presence with C-suite stakeholders"
-    ]
+    ],
+    "linkedin_name": "",
+    "linkedin_headline": "GTM at Chalk | Brown Alum",
+    "linkedin_photo": "https://john-whaley-linkedin-photos.s3.amazonaws.com/photos/swarajagarwal-1d374c97.jpg",
+    "linkedin_location": "",
+    "linkedin_company": "",
+    "linkedin_education": "",
+    "linkedin_url": "https://www.linkedin.com/in/swarajagarwal/"
   },
   {
     "rank": 36,
     "id": "11a2a397-28a5-4605-be4f-b5628c4f7f69",
-    "name": "Candidate-756fd99f",
+    "name": "Thoma Palloj",
     "score": 58,
     "reasoning": "The candidate has 2 years of sales experience in technology and enterprise, but lacks direct experience in the legal sector, which is critical for this role. While they demonstrate strong sales fundamentals and have worked in a startup environment, their experience does not align closely with the specific requirements of building a legal go-to-market strategy.",
     "highlights": [
@@ -571,7 +816,14 @@
       "No experience in the legal sector",
       "Limited familiarity with legal buyers or law firms",
       "Lacks the ambition to own outcomes in a legal context"
-    ]
+    ],
+    "linkedin_name": "Thoma Palloj",
+    "linkedin_headline": "Growth @ Finout | FinOps Certified Practitioner | Centralizing & Contextualizing Cloud Spend at Scale",
+    "linkedin_photo": "https://john-whaley-linkedin-photos.s3.amazonaws.com/photos/thoma-palloj.jpg",
+    "linkedin_location": "New York City Metropolitan Area",
+    "linkedin_company": "Finout",
+    "linkedin_education": "University at Buffalo",
+    "linkedin_url": "https://www.linkedin.com/in/thoma-palloj"
   },
   {
     "rank": 37,
@@ -588,12 +840,19 @@
       "No experience in the legal sector",
       "Limited closing experience (only 1 year)",
       "Lacks familiarity with legal buyer personas"
-    ]
+    ],
+    "linkedin_name": "Clarine Lerby",
+    "linkedin_headline": "Partnerships",
+    "linkedin_photo": "https://john-whaley-linkedin-photos.s3.amazonaws.com/photos/clarinelerby.jpg",
+    "linkedin_location": "United States",
+    "linkedin_company": "Rilla",
+    "linkedin_education": "Columbia University in the City of New York",
+    "linkedin_url": "https://www.linkedin.com/in/clarinelerby/"
   },
   {
     "rank": 38,
     "id": "5736aa33-f5ba-4eb7-899e-f32ab888908c",
-    "name": "Candidate-8d081bfb",
+    "name": "Henry Smith",
     "score": 55,
     "reasoning": "The candidate has 4 years of sales experience and is based in New York, which aligns with the location requirement. However, they lack direct experience in the legal sector and have primarily sold to industries outside of legal, which is a significant gap for this role.",
     "highlights": [
@@ -605,7 +864,14 @@
       "No experience in the legal sector",
       "Limited familiarity with legal buyers or law firms",
       "Sales experience primarily in unrelated industries"
-    ]
+    ],
+    "linkedin_name": "",
+    "linkedin_headline": "GTM Strategy",
+    "linkedin_photo": "https://john-whaley-linkedin-photos.s3.amazonaws.com/photos/henrysmith1997-385e9753.jpg",
+    "linkedin_location": "",
+    "linkedin_company": "",
+    "linkedin_education": "",
+    "linkedin_url": "https://www.linkedin.com/in/henrysmith1997/"
   },
   {
     "rank": 39,
@@ -622,7 +888,14 @@
       "No experience in the legal sector",
       "Limited experience in enterprise sales and full sales cycles",
       "Only one year of sales experience"
-    ]
+    ],
+    "linkedin_name": "",
+    "linkedin_headline": "",
+    "linkedin_photo": "https://john-whaley-linkedin-photos.s3.amazonaws.com/photos/jeremiah-b-172a8218a-85829bf9.jpg",
+    "linkedin_location": "",
+    "linkedin_company": "",
+    "linkedin_education": "",
+    "linkedin_url": "https://www.linkedin.com/in/jeremiah-b-172a8218a/"
   },
   {
     "rank": 40,
@@ -639,12 +912,19 @@
       "No experience in the legal sector",
       "Limited enterprise sales experience",
       "Location is not ideal as it's not in NYC/East Coast"
-    ]
+    ],
+    "linkedin_name": "",
+    "linkedin_headline": "",
+    "linkedin_photo": "https://john-whaley-linkedin-photos.s3.amazonaws.com/photos/ACoAAClnWosBORCpcC7ojmN5hCLwqpwwfvC_t14-551c22c6.jpg",
+    "linkedin_location": "",
+    "linkedin_company": "",
+    "linkedin_education": "",
+    "linkedin_url": "https://www.linkedin.com/in/ACoAAClnWosBORCpcC7ojmN5hCLwqpwwfvC_t14/"
   },
   {
     "rank": 41,
     "id": "a51ed850-e9a8-419a-a8a9-ebacb06e5c07",
-    "name": "Candidate-759d21bd",
+    "name": "Gil Imboywa",
     "score": 54,
     "reasoning": "The candidate has one year of sales experience in financial services and technology, which is not directly aligned with the legal sector. While they are based in New York and have some experience in enterprise sales, their lack of familiarity with legal buyers and limited experience in high-performance environments presents significant gaps for this role.",
     "highlights": [
@@ -656,7 +936,14 @@
       "Only 1 year of sales experience",
       "No familiarity with the legal sector",
       "Limited experience in high-performance environments"
-    ]
+    ],
+    "linkedin_name": "",
+    "linkedin_headline": "GTM @ Siro | AI-powered Conversation Intelligence",
+    "linkedin_photo": "https://john-whaley-linkedin-photos.s3.amazonaws.com/photos/imboywa-c87685f2.jpg",
+    "linkedin_location": "",
+    "linkedin_company": "",
+    "linkedin_education": "",
+    "linkedin_url": "https://www.linkedin.com/in/imboywa/"
   },
   {
     "rank": 42,
@@ -673,7 +960,14 @@
       "No experience in the legal sector or selling to legal buyers",
       "Limited years of experience (only 2 years) compared to the ideal range (1-4 years)",
       "Lacks specific experience with C-suite stakeholders in the legal domain"
-    ]
+    ],
+    "linkedin_name": "Michael Huss",
+    "linkedin_headline": "Sales | Alumni of Rutgers Business School - Leadership and Management, SCM",
+    "linkedin_photo": "https://john-whaley-linkedin-photos.s3.amazonaws.com/photos/michaelhussjr.jpg",
+    "linkedin_location": "New York City Metropolitan Area",
+    "linkedin_company": "",
+    "linkedin_education": "Rutgers University\u2013New Brunswick",
+    "linkedin_url": "https://www.linkedin.com/in/michaelhussjr"
   },
   {
     "rank": 43,
@@ -690,7 +984,14 @@
       "No experience in the legal sector or selling to legal buyers",
       "Limited enterprise sales experience, primarily focused on SMBs",
       "Performance metrics are not top-tier, indicating potential challenges in a high-performance environment"
-    ]
+    ],
+    "linkedin_name": "Christine Huerta",
+    "linkedin_headline": "GTM @ Camber",
+    "linkedin_photo": "https://john-whaley-linkedin-photos.s3.amazonaws.com/photos/christine-huerta-sthm.jpg",
+    "linkedin_location": "New York, New York, United States",
+    "linkedin_company": "Camber",
+    "linkedin_education": "Temple University",
+    "linkedin_url": "https://www.linkedin.com/in/christine-huerta-sthm"
   },
   {
     "rank": 44,
@@ -707,7 +1008,14 @@
       "No legal sector experience",
       "Only 1 year of sales experience",
       "Focus on SMB/mid-market rather than enterprise"
-    ]
+    ],
+    "linkedin_name": "Natalie Radu",
+    "linkedin_headline": "Sales Development Representative @ Pepper",
+    "linkedin_photo": "https://john-whaley-linkedin-photos.s3.amazonaws.com/photos/natalie-radu.jpg",
+    "linkedin_location": "New York City Metropolitan Area",
+    "linkedin_company": "Pepper",
+    "linkedin_education": "Rutgers University\u2013New Brunswick, High Technology High School",
+    "linkedin_url": "https://www.linkedin.com/in/natalie-radu"
   },
   {
     "rank": 45,
@@ -724,12 +1032,19 @@
       "No experience in the legal sector or selling to legal buyers",
       "Lacks experience in closing deals and managing a full sales cycle",
       "Only 1 year of sales experience, which is on the lower end of the required range"
-    ]
+    ],
+    "linkedin_name": "Oscar O'Bradaigh",
+    "linkedin_headline": "Account Specialist | Sales Development @ Intenseye",
+    "linkedin_photo": "https://john-whaley-linkedin-photos.s3.amazonaws.com/photos/oscar-o-bradaigh.jpg",
+    "linkedin_location": "New York City Metropolitan Area",
+    "linkedin_company": "intenseye",
+    "linkedin_education": "Fordham Gabelli School of Business, Lyc\u00e9e Fran\u00e7ais de New York",
+    "linkedin_url": "https://www.linkedin.com/in/oscar-o-bradaigh"
   },
   {
     "rank": 46,
     "id": "985c15a3-2ede-4a7f-8a6b-3004f52d0ec9",
-    "name": "Candidate-477fd98e",
+    "name": "David Keptsi",
     "score": 52,
     "reasoning": "The candidate has some relevant sales experience in a startup environment and is located in New York, which is a plus. However, they lack familiarity with the legal sector and have only one year of experience, which is below the minimum requirement for this role.",
     "highlights": [
@@ -741,12 +1056,19 @@
       "No experience in the legal sector",
       "Only 1 year of sales experience, below the required 1-4 years",
       "Limited exposure to enterprise sales and legal buyers"
-    ]
+    ],
+    "linkedin_name": "",
+    "linkedin_headline": "Director of Product @ Poly Platform | ex-BCG",
+    "linkedin_photo": "https://john-whaley-linkedin-photos.s3.amazonaws.com/photos/ACoAAEC7mrMBAIUcTkhf4NoHPvJLWmwjH55ACwg-36bced25.jpg",
+    "linkedin_location": "",
+    "linkedin_company": "",
+    "linkedin_education": "",
+    "linkedin_url": "https://www.linkedin.com/in/ACoAAEC7mrMBAIUcTkhf4NoHPvJLWmwjH55ACwg/"
   },
   {
     "rank": 47,
     "id": "d2470383-e785-433b-ba2c-6433162075e1",
-    "name": "Candidate-8c0866b2",
+    "name": "Amine Chajar",
     "score": 52,
     "reasoning": "While the candidate has relevant sales experience and a strong scrappy mentality from their startup background, they lack direct experience in the legal sector, which is a critical requirement for this role. Their sales experience is primarily in healthcare and technology, which does not align closely enough with the legal focus needed for this position.",
     "highlights": [
@@ -758,12 +1080,19 @@
       "No experience in the legal sector or selling to legal buyers",
       "Limited experience with enterprise sales and C-suite stakeholders in relevant industries",
       "Location preference may not align with the ideal NYC/East Coast focus"
-    ]
+    ],
+    "linkedin_name": "",
+    "linkedin_headline": "Founder & CEO @ NeuroBioLogic | Brown",
+    "linkedin_photo": "https://john-whaley-linkedin-photos.s3.amazonaws.com/photos/amine-chajar-068f48af.jpg",
+    "linkedin_location": "",
+    "linkedin_company": "",
+    "linkedin_education": "",
+    "linkedin_url": "https://www.linkedin.com/in/amine-chajar"
   },
   {
     "rank": 48,
     "id": "da352c22-ba04-46fa-86a3-5b8780ecfcd1",
-    "name": "Candidate-a7c66e3e",
+    "name": "Caio Teig",
     "score": 52,
     "reasoning": "The candidate has 1 year of sales experience which is on the lower end of the required 1-4 years. While they are based in New York, they lack familiarity with the legal sector, which is a critical gap for this role.",
     "highlights": [
@@ -773,7 +1102,14 @@
     "gaps": [
       "Only 1 year of sales experience",
       "No familiarity with the legal sector"
-    ]
+    ],
+    "linkedin_name": "",
+    "linkedin_headline": "Analyst at Blackstone",
+    "linkedin_photo": "https://john-whaley-linkedin-photos.s3.amazonaws.com/photos/caioteig-22d58d3d.jpg",
+    "linkedin_location": "",
+    "linkedin_company": "",
+    "linkedin_education": "",
+    "linkedin_url": "https://www.linkedin.com/in/caioteig/"
   },
   {
     "rank": 49,
@@ -790,12 +1126,19 @@
       "No experience in the legal sector",
       "Limited familiarity with legal buyers or law firms",
       "Missing ambition to own outcomes in a legal context"
-    ]
+    ],
+    "linkedin_name": "",
+    "linkedin_headline": "",
+    "linkedin_photo": "https://john-whaley-linkedin-photos.s3.amazonaws.com/photos/james-barbato-b2a342233-03235bd3.jpg",
+    "linkedin_location": "",
+    "linkedin_company": "",
+    "linkedin_education": "",
+    "linkedin_url": "https://www.linkedin.com/in/james-barbato-b2a342233/"
   },
   {
     "rank": 50,
     "id": "9be7ce2e-bd1b-435b-a609-921bd77a25e6",
-    "name": "Candidate-678d648c",
+    "name": "Veronica Greydak",
     "score": 49,
     "reasoning": "The candidate has 6 years of sales experience, primarily in financial services, but lacks direct experience in the legal sector, which is a critical requirement for this role. While they have experience with C-suite stakeholders and enterprise sales, their competencies in scrappiness, organization, and charisma are relatively low, indicating potential challenges in a high-performance sales environment.",
     "highlights": [
@@ -807,7 +1150,14 @@
       "No experience in the legal sector",
       "Low scores in key competencies such as scrappiness and organization",
       "Limited evidence of consistent performance in high-pressure environments"
-    ]
+    ],
+    "linkedin_name": "",
+    "linkedin_headline": "Global Corporate Banking at J.P. Morgan",
+    "linkedin_photo": "https://john-whaley-linkedin-photos.s3.amazonaws.com/photos/veronica-greydak-694051190-334fcc60.jpg",
+    "linkedin_location": "",
+    "linkedin_company": "",
+    "linkedin_education": "",
+    "linkedin_url": "https://www.linkedin.com/in/veronica-greydak-694051190/"
   },
   {
     "rank": 51,
@@ -824,7 +1174,14 @@
       "No experience in the legal sector",
       "Lacks quota-carrying experience",
       "Limited exposure to enterprise sales cycles"
-    ]
+    ],
+    "linkedin_name": "Ellie Skinner",
+    "linkedin_headline": "Growth Equity at LLR Partners",
+    "linkedin_photo": "https://john-whaley-linkedin-photos.s3.amazonaws.com/photos/ellie-skinner-10bb00245.jpg",
+    "linkedin_location": "Bedford, New York, United States",
+    "linkedin_company": "LLR Partners",
+    "linkedin_education": "DTech Scholars Program, Duke University, Sacred Heart Greenwich",
+    "linkedin_url": "https://www.linkedin.com/in/ellie-skinner-10bb00245/"
   },
   {
     "rank": 52,
@@ -841,7 +1198,14 @@
       "No experience in the legal sector",
       "Lacks direct SDR/BDR or tech sales prospecting experience",
       "Limited experience in high-performance environments related to legal or enterprise sales"
-    ]
+    ],
+    "linkedin_name": "",
+    "linkedin_headline": "",
+    "linkedin_photo": "https://john-whaley-linkedin-photos.s3.amazonaws.com/photos/dean-zulkofske-b55578130-4274f456.jpg",
+    "linkedin_location": "",
+    "linkedin_company": "",
+    "linkedin_education": "",
+    "linkedin_url": "https://www.linkedin.com/in/dean-zulkofske-b55578130/"
   },
   {
     "rank": 53,
@@ -857,7 +1221,14 @@
       "No experience in the legal sector, which is a must-have for this role.",
       "Limited startup experience; background is mostly with large financial firms.",
       "Lacks the ambition and demonstrated outcomes ownership that the role requires."
-    ]
+    ],
+    "linkedin_name": "",
+    "linkedin_headline": "",
+    "linkedin_photo": "https://john-whaley-linkedin-photos.s3.amazonaws.com/photos/ryan-young-95778a17a-eb66fea7.jpg",
+    "linkedin_location": "",
+    "linkedin_company": "",
+    "linkedin_education": "",
+    "linkedin_url": "https://www.linkedin.com/in/ryan-young-95778a17a/"
   },
   {
     "rank": 54,
@@ -874,12 +1245,19 @@
       "No experience in the legal sector",
       "Lacks tech sales experience, particularly in SaaS",
       "No verifiable closing experience in relevant industries"
-    ]
+    ],
+    "linkedin_name": "",
+    "linkedin_headline": "",
+    "linkedin_photo": "https://john-whaley-linkedin-photos.s3.amazonaws.com/photos/tyler-innes-a8b122182-bc045116.jpg",
+    "linkedin_location": "",
+    "linkedin_company": "",
+    "linkedin_education": "",
+    "linkedin_url": "https://www.linkedin.com/in/tyler-innes-a8b122182/"
   },
   {
     "rank": 55,
     "id": "4f35c6fd-a1fb-442b-9fd4-e4c52fab55c9",
-    "name": "Candidate-383c8f2e",
+    "name": "Noah Burns",
     "score": 46,
     "reasoning": "The candidate has only 1 year of sales experience, which is below the minimum requirement of 1-4 years in a high-performance environment. While they are based in New York, which is ideal, they lack familiarity with the legal sector, which is crucial for this role.",
     "highlights": [
@@ -889,7 +1267,14 @@
     "gaps": [
       "Only 1 year of sales experience",
       "Lack of familiarity with the legal sector"
-    ]
+    ],
+    "linkedin_name": "",
+    "linkedin_headline": "Investment Banking Analyst",
+    "linkedin_photo": "https://john-whaley-linkedin-photos.s3.amazonaws.com/photos/noah-burns-9696331a7-110ffc54.jpg",
+    "linkedin_location": "",
+    "linkedin_company": "",
+    "linkedin_education": "",
+    "linkedin_url": "https://www.linkedin.com/in/noah-burns-9696331a7/"
   },
   {
     "rank": 56,
@@ -905,7 +1290,14 @@
       "Lack of experience in the legal sector",
       "Only 1 year of sales experience",
       "Limited exposure to enterprise sales and C-suite stakeholders"
-    ]
+    ],
+    "linkedin_name": "",
+    "linkedin_headline": "",
+    "linkedin_photo": "https://john-whaley-linkedin-photos.s3.amazonaws.com/photos/ACoAADjd6MABCzR4RgXVPGREWjFaog7YrqHnqAg-d5374ef6.jpg",
+    "linkedin_location": "",
+    "linkedin_company": "",
+    "linkedin_education": "",
+    "linkedin_url": "https://www.linkedin.com/in/ACoAADjd6MABCzR4RgXVPGREWjFaog7YrqHnqAg/"
   },
   {
     "rank": 57,
@@ -922,12 +1314,19 @@
       "No experience in the legal sector",
       "Lacks experience in closing deals and managing full sales cycles",
       "Only 1 year of sales experience, primarily in top-of-funnel activities"
-    ]
+    ],
+    "linkedin_name": "",
+    "linkedin_headline": "",
+    "linkedin_photo": "https://john-whaley-linkedin-photos.s3.amazonaws.com/photos/russellbusso-2e812683.jpg",
+    "linkedin_location": "",
+    "linkedin_company": "",
+    "linkedin_education": "",
+    "linkedin_url": "https://www.linkedin.com/in/russellbusso/"
   },
   {
     "rank": 58,
     "id": "a678d56a-3afc-4598-a8f8-0c7c1be29ed8",
-    "name": "Candidate-7c6f058f",
+    "name": "David Traub",
     "score": 46,
     "reasoning": "The candidate has 5 years of sales experience but lacks direct familiarity with the legal sector, which is a critical requirement for this role. While they have demonstrated success in enterprise sales, their experience is primarily in telecommunications and financial services, which may not translate effectively to the legal market.",
     "highlights": [
@@ -939,7 +1338,14 @@
       "No experience in the legal sector",
       "Limited evidence of building go-to-market strategies",
       "Lacks familiarity with legal buyer personas"
-    ]
+    ],
+    "linkedin_name": "",
+    "linkedin_headline": "University of Chicago Graduate in Business Economics",
+    "linkedin_photo": "https://john-whaley-linkedin-photos.s3.amazonaws.com/photos/davidneiltraub-94e89f29.jpg",
+    "linkedin_location": "",
+    "linkedin_company": "",
+    "linkedin_education": "",
+    "linkedin_url": "https://www.linkedin.com/in/davidneiltraub/"
   },
   {
     "rank": 59,
@@ -956,7 +1362,14 @@
       "No experience in the legal sector",
       "Limited experience in structured B2B tech/SaaS environments",
       "Only 1 month of AE experience with complex sales cycles"
-    ]
+    ],
+    "linkedin_name": "",
+    "linkedin_headline": "",
+    "linkedin_photo": "https://john-whaley-linkedin-photos.s3.amazonaws.com/photos/julian-davis-8a5413154-ce30e0b0.jpg",
+    "linkedin_location": "",
+    "linkedin_company": "",
+    "linkedin_education": "",
+    "linkedin_url": "https://www.linkedin.com/in/julian-davis-8a5413154/"
   },
   {
     "rank": 60,
@@ -973,7 +1386,14 @@
       "Lacks experience in the legal sector or selling to legal buyers",
       "Only 1 year of sales experience, which is below the minimum requirement of 1-4 years",
       "Limited exposure to enterprise-level sales and C-suite stakeholders"
-    ]
+    ],
+    "linkedin_name": "",
+    "linkedin_headline": "",
+    "linkedin_photo": "https://john-whaley-linkedin-photos.s3.amazonaws.com/photos/ACoAABpRaTcBH9VoElZIdKWdH0zMbCJou7Nwuso-f2ae3db0.jpg",
+    "linkedin_location": "",
+    "linkedin_company": "",
+    "linkedin_education": "",
+    "linkedin_url": "https://www.linkedin.com/in/ACoAABpRaTcBH9VoElZIdKWdH0zMbCJou7Nwuso/"
   },
   {
     "rank": 61,
@@ -990,12 +1410,19 @@
       "No experience in the legal sector or selling to legal buyers",
       "Limited closing experience with complex sales cycles",
       "Lacks enterprise sales experience"
-    ]
+    ],
+    "linkedin_name": "",
+    "linkedin_headline": "",
+    "linkedin_photo": "https://john-whaley-linkedin-photos.s3.amazonaws.com/photos/jack-cb-e7d237e1.jpg",
+    "linkedin_location": "",
+    "linkedin_company": "",
+    "linkedin_education": "",
+    "linkedin_url": "https://www.linkedin.com/in/jack-cb/"
   },
   {
     "rank": 62,
     "id": "e2535b08-21e5-4237-b313-c744ff82bb9c",
-    "name": "Candidate-ca26c3af",
+    "name": "Jo-Lin Ferro",
     "score": 46,
     "reasoning": "While the candidate has solid sales experience in enterprise SaaS and ranks in the top 25% of their team, they lack direct experience in the legal sector, which is crucial for this role. Their background in retail and marketing does not align with the specific requirements of building a go-to-market strategy for legal services.",
     "highlights": [
@@ -1007,7 +1434,14 @@
       "No experience in the legal sector",
       "Limited startup experience in 0-1 building",
       "Lacks familiarity with legal buyer personas"
-    ]
+    ],
+    "linkedin_name": "",
+    "linkedin_headline": "Business Development at Wunderkind",
+    "linkedin_photo": "https://john-whaley-linkedin-photos.s3.amazonaws.com/photos/jolinferro-e449d27a.jpg",
+    "linkedin_location": "",
+    "linkedin_company": "",
+    "linkedin_education": "",
+    "linkedin_url": "https://www.linkedin.com/in/jolinferro/"
   },
   {
     "rank": 63,
@@ -1024,7 +1458,14 @@
       "No experience in the legal sector",
       "Lacks enterprise deal closing experience",
       "Limited exposure to C-suite stakeholders"
-    ]
+    ],
+    "linkedin_name": "",
+    "linkedin_headline": "",
+    "linkedin_photo": "https://john-whaley-linkedin-photos.s3.amazonaws.com/photos/claremwu-75dc867e.jpg",
+    "linkedin_location": "",
+    "linkedin_company": "",
+    "linkedin_education": "",
+    "linkedin_url": "https://www.linkedin.com/in/claremwu/"
   },
   {
     "rank": 64,
@@ -1041,12 +1482,19 @@
       "No experience in the legal sector",
       "Limited experience in closing deals and managing sales cycles",
       "Only 1 year of sales experience, primarily in entry-level roles"
-    ]
+    ],
+    "linkedin_name": "",
+    "linkedin_headline": "",
+    "linkedin_photo": "https://john-whaley-linkedin-photos.s3.amazonaws.com/photos/camdentruett-76eb1601.jpg",
+    "linkedin_location": "",
+    "linkedin_company": "",
+    "linkedin_education": "",
+    "linkedin_url": "https://www.linkedin.com/in/camdentruett/"
   },
   {
     "rank": 65,
     "id": "1bfec8a8-0421-43a8-8957-1586a9669389",
-    "name": "Candidate-58e80c06",
+    "name": "Disha Mohta",
     "score": 45,
     "reasoning": "The candidate has only 1 year of sales experience, which is below the minimum requirement of 1-4 years in a high-performance environment. While they are located in New York, which is ideal, they lack familiarity with the legal sector and do not demonstrate the ambition or presence needed for C-suite engagement.",
     "highlights": [
@@ -1057,7 +1505,14 @@
       "Only 1 year of sales experience",
       "No familiarity with the legal sector",
       "Lacks demonstrated ambition to own outcomes"
-    ]
+    ],
+    "linkedin_name": "",
+    "linkedin_headline": "Investment Banking Analyst at Morgan Stanley",
+    "linkedin_photo": "https://john-whaley-linkedin-photos.s3.amazonaws.com/photos/disha-mohta-b688321a9-547c8fe8.jpg",
+    "linkedin_location": "",
+    "linkedin_company": "",
+    "linkedin_education": "",
+    "linkedin_url": "https://www.linkedin.com/in/disha-mohta-b688321a9/"
   },
   {
     "rank": 66,
@@ -1074,7 +1529,14 @@
       "No experience in the legal sector",
       "Lacks closing experience and enterprise sales background",
       "Limited ambition to own outcomes as indicated by AE performance"
-    ]
+    ],
+    "linkedin_name": "",
+    "linkedin_headline": "",
+    "linkedin_photo": "https://john-whaley-linkedin-photos.s3.amazonaws.com/photos/ericjeanos-7d4d87a8.jpg",
+    "linkedin_location": "",
+    "linkedin_company": "",
+    "linkedin_education": "",
+    "linkedin_url": "https://www.linkedin.com/in/ericjeanos/"
   },
   {
     "rank": 67,
@@ -1090,7 +1552,14 @@
       "No experience in the legal sector",
       "Lacks full-cycle Account Executive experience in a B2B tech environment",
       "Limited presence with C-suite stakeholders in relevant industries"
-    ]
+    ],
+    "linkedin_name": "",
+    "linkedin_headline": "",
+    "linkedin_photo": "https://john-whaley-linkedin-photos.s3.amazonaws.com/photos/andrew-romano-45785823b-7abb7f48.jpg",
+    "linkedin_location": "",
+    "linkedin_company": "",
+    "linkedin_education": "",
+    "linkedin_url": "https://www.linkedin.com/in/andrew-romano-45785823b/"
   },
   {
     "rank": 68,
@@ -1107,7 +1576,14 @@
       "No experience in the legal sector or selling into legal buyers",
       "Lacks formal tech sales experience, particularly in SaaS",
       "Sales experience primarily focused on SMBs, not enterprise-level deals"
-    ]
+    ],
+    "linkedin_name": "",
+    "linkedin_headline": "",
+    "linkedin_photo": "https://john-whaley-linkedin-photos.s3.amazonaws.com/photos/dylanoliva-5ac0cef2.jpg",
+    "linkedin_location": "",
+    "linkedin_company": "",
+    "linkedin_education": "",
+    "linkedin_url": "https://www.linkedin.com/in/dylanoliva/"
   },
   {
     "rank": 69,
@@ -1124,12 +1600,19 @@
       "No experience in the legal sector or selling to legal buyers",
       "Lacks closing experience and familiarity with managing sales cycles",
       "Experience primarily in SMB and mid-market, not enterprise sales"
-    ]
+    ],
+    "linkedin_name": "",
+    "linkedin_headline": "",
+    "linkedin_photo": "https://john-whaley-linkedin-photos.s3.amazonaws.com/photos/devika-vanjani-b6f7e869.jpg",
+    "linkedin_location": "",
+    "linkedin_company": "",
+    "linkedin_education": "",
+    "linkedin_url": "https://www.linkedin.com/in/devika-vanjani/"
   },
   {
     "rank": 70,
     "id": "9378683b-ee3f-4a9c-9305-1a96214b3aff",
-    "name": "Candidate-44f86dea",
+    "name": "Daniel Barrett",
     "score": 43,
     "reasoning": "The candidate has limited sales experience (1 year) and has not worked in the legal sector, which is a critical requirement for this role. While they have experience in a startup environment and are based in New York, their focus on SMBs and lack of familiarity with legal buyers significantly hinder their fit for this position.",
     "highlights": [
@@ -1140,7 +1623,14 @@
       "No experience in the legal sector",
       "Only 1 year of sales experience",
       "Focus on SMBs rather than enterprise or legal markets"
-    ]
+    ],
+    "linkedin_name": "",
+    "linkedin_headline": "Graduate of Fordham Gabelli School of Business",
+    "linkedin_photo": "https://john-whaley-linkedin-photos.s3.amazonaws.com/photos/danielmbarrett1-27e978e7.jpg",
+    "linkedin_location": "",
+    "linkedin_company": "",
+    "linkedin_education": "",
+    "linkedin_url": "https://www.linkedin.com/in/danielmbarrett1"
   },
   {
     "rank": 71,
@@ -1157,7 +1647,14 @@
       "No experience in the legal sector",
       "Limited closing experience and no evidence of enterprise sales",
       "Lacks the ambition and track record of owning outcomes in a high-performance environment"
-    ]
+    ],
+    "linkedin_name": "",
+    "linkedin_headline": "",
+    "linkedin_photo": "https://john-whaley-linkedin-photos.s3.amazonaws.com/photos/mike-kuklenski-708617228-b410c94f.jpg",
+    "linkedin_location": "",
+    "linkedin_company": "",
+    "linkedin_education": "",
+    "linkedin_url": "https://www.linkedin.com/in/mike-kuklenski-708617228/"
   },
   {
     "rank": 72,
@@ -1174,12 +1671,19 @@
       "No legal sector experience",
       "Limited closing experience (only 4 months as AE)",
       "Lacks ambition to own outcomes and carry a number"
-    ]
+    ],
+    "linkedin_name": "",
+    "linkedin_headline": "",
+    "linkedin_photo": "https://john-whaley-linkedin-photos.s3.amazonaws.com/photos/steve-silverberg-656983200-69857ee8.jpg",
+    "linkedin_location": "",
+    "linkedin_company": "",
+    "linkedin_education": "",
+    "linkedin_url": "https://www.linkedin.com/in/steve-silverberg-656983200/"
   },
   {
     "rank": 73,
     "id": "f90a2fe2-5345-4e16-bda8-1227ce591ec2",
-    "name": "Candidate-308afd24",
+    "name": "Arjun Raman",
     "score": 43,
     "reasoning": "The candidate has only 1 year of sales experience primarily in the education sector, which does not align well with the legal focus required for this role. While they demonstrate strong sales competencies and a scrappy entrepreneurial spirit, their lack of familiarity with the legal sector and experience selling to C-suite stakeholders in that domain is a significant gap.",
     "highlights": [
@@ -1191,12 +1695,19 @@
       "Only 1 year of sales experience",
       "No experience in the legal sector",
       "Limited experience with enterprise sales or legal buyer personas"
-    ]
+    ],
+    "linkedin_name": "Arjun Raman",
+    "linkedin_headline": "econ/political science @ kcl, prev @ deloitte",
+    "linkedin_photo": "https://john-whaley-linkedin-photos.s3.amazonaws.com/photos/6a62a6a5-e5c7-45f0-b3a4-478dcdbe4f6f-57179232.jpg",
+    "linkedin_location": "Philadelphia, Pennsylvania, United States",
+    "linkedin_company": "Self Employed",
+    "linkedin_education": "King's College London",
+    "linkedin_url": "https://linkedin.com/in/arjunr111"
   },
   {
     "rank": 74,
     "id": "73cc55fa-bea5-431b-bfb3-23c93d081a32",
-    "name": "Candidate-448582b5",
+    "name": "Felix Becu",
     "score": 42,
     "reasoning": "The candidate has 2 years of sales experience in technology and retail, but lacks familiarity with the legal sector, which is a critical requirement for this role. While they demonstrate some strong sales fundamentals and have experience in a startup environment, their limited exposure to enterprise sales and the legal market significantly impacts their fit.",
     "highlights": [
@@ -1208,7 +1719,14 @@
       "No experience in the legal sector",
       "Limited enterprise sales experience",
       "Only 2 years of sales experience, primarily focused on SMBs"
-    ]
+    ],
+    "linkedin_name": "",
+    "linkedin_headline": "Strategy & Business Development Associate | ESSEC Business School & UC Berkeley",
+    "linkedin_photo": "https://john-whaley-linkedin-photos.s3.amazonaws.com/photos/felix-becu-893601d6.jpg",
+    "linkedin_location": "",
+    "linkedin_company": "",
+    "linkedin_education": "",
+    "linkedin_url": "https://www.linkedin.com/in/felix-becu/"
   },
   {
     "rank": 75,
@@ -1225,7 +1743,14 @@
       "No experience in the legal sector",
       "Lacks closing experience and full sales cycle management",
       "Limited overall sales experience (only 1 year)"
-    ]
+    ],
+    "linkedin_name": "",
+    "linkedin_headline": "",
+    "linkedin_photo": "https://john-whaley-linkedin-photos.s3.amazonaws.com/photos/bobby-jones-a312682b0-55d7fb75.jpg",
+    "linkedin_location": "",
+    "linkedin_company": "",
+    "linkedin_education": "",
+    "linkedin_url": "https://www.linkedin.com/in/bobby-jones-a312682b0/"
   },
   {
     "rank": 76,
@@ -1242,12 +1767,19 @@
       "No experience in the legal sector",
       "Limited sales experience (only 1 year)",
       "Focus on SMB rather than enterprise sales"
-    ]
+    ],
+    "linkedin_name": "",
+    "linkedin_headline": "",
+    "linkedin_photo": "https://john-whaley-linkedin-photos.s3.amazonaws.com/photos/stacyboey-523e6cf0.jpg",
+    "linkedin_location": "",
+    "linkedin_company": "",
+    "linkedin_education": "",
+    "linkedin_url": "https://www.linkedin.com/in/stacyboey/"
   },
   {
     "rank": 77,
     "id": "9f672e0e-efe8-4039-b381-59714d5e08c0",
-    "name": "Candidate-f98d0ada",
+    "name": "David Keptsi",
     "score": 40,
     "reasoning": "While the candidate has 7 years of sales experience, they lack specific familiarity with the legal sector, which is crucial for this role. Additionally, their experience may not align with the high-performance environments emphasized in the job description.",
     "highlights": [
@@ -1257,7 +1789,14 @@
     "gaps": [
       "No familiarity with the legal sector",
       "Lacks experience in high-performance environments relevant to legal or enterprise sales"
-    ]
+    ],
+    "linkedin_name": "David Keptsi",
+    "linkedin_headline": "Director of Product @ Poly Platform | ex-BCG | Digital Government Expert | Crypto and AI Enthusiast",
+    "linkedin_photo": "https://john-whaley-linkedin-photos.s3.amazonaws.com/photos/davidkeptsi.jpg",
+    "linkedin_location": "Washington, District of Columbia, United States",
+    "linkedin_company": "Poly Platform",
+    "linkedin_education": "Georgetown University McDonough School of Business, Binghamton University, The University of Edinburgh, Oceanside High School",
+    "linkedin_url": "https://www.linkedin.com/in/davidkeptsi"
   },
   {
     "rank": 78,
@@ -1274,7 +1813,14 @@
       "No experience in the legal sector",
       "Lacks familiarity with legal buyers/law firms",
       "Sales experience primarily in retail and media, not relevant to legal or enterprise"
-    ]
+    ],
+    "linkedin_name": "Evangelia Skoumbakis",
+    "linkedin_headline": "A yes is earned through no | Exited Founder ",
+    "linkedin_photo": "https://john-whaley-linkedin-photos.s3.amazonaws.com/photos/ACoAADd-mCIBe9QNickSx6EceR-6YAtpLot3_bA.jpg",
+    "linkedin_location": "New York City Metropolitan Area",
+    "linkedin_company": "",
+    "linkedin_education": "Isenberg School of Management, UMass Amherst, University of Massachusetts Amherst, Long Island University",
+    "linkedin_url": "https://www.linkedin.com/in/ACoAADd-mCIBe9QNickSx6EceR-6YAtpLot3_bA"
   },
   {
     "rank": 79,
@@ -1290,7 +1836,14 @@
       "No experience in the legal sector",
       "Limited sales experience (1 year) with no demonstrated quota achievement",
       "Weak communication skills and difficulty engaging with senior stakeholders"
-    ]
+    ],
+    "linkedin_name": "Siddharth Niel P.",
+    "linkedin_headline": "GTM @ Espresso AI | Helping Teams Optimize Snowflake and Databricks Spend \u2744\ufe0f \ud83e\uddf1",
+    "linkedin_photo": "https://john-whaley-linkedin-photos.s3.amazonaws.com/photos/niel-p.jpg",
+    "linkedin_location": "New York, New York, United States",
+    "linkedin_company": "Espresso AI",
+    "linkedin_education": "University of California San Diego",
+    "linkedin_url": "https://www.linkedin.com/in/niel-p"
   },
   {
     "rank": 80,
@@ -1306,7 +1859,14 @@
       "No experience in the legal sector",
       "Lacks closing experience and has never carried a quota",
       "Limited presence with C-suite stakeholders"
-    ]
+    ],
+    "linkedin_name": "",
+    "linkedin_headline": "",
+    "linkedin_photo": "https://john-whaley-linkedin-photos.s3.amazonaws.com/photos/rychard-tymakhovych-aa88485d.jpg",
+    "linkedin_location": "",
+    "linkedin_company": "",
+    "linkedin_education": "",
+    "linkedin_url": "https://www.linkedin.com/in/rychard-tymakhovych/"
   },
   {
     "rank": 81,
@@ -1323,7 +1883,14 @@
       "No experience in the legal sector",
       "Lacks enterprise sales experience",
       "No history of carrying a quota or closing deals"
-    ]
+    ],
+    "linkedin_name": "",
+    "linkedin_headline": "",
+    "linkedin_photo": "https://john-whaley-linkedin-photos.s3.amazonaws.com/photos/emma-naidrich-20684b263-e3c6e87d.jpg",
+    "linkedin_location": "",
+    "linkedin_company": "",
+    "linkedin_education": "",
+    "linkedin_url": "https://www.linkedin.com/in/emma-naidrich-20684b263/"
   },
   {
     "rank": 82,
@@ -1339,7 +1906,14 @@
       "No experience in the legal sector",
       "Lacks closing experience and enterprise sales background",
       "Only 1 year of sales experience, primarily in unrelated industries"
-    ]
+    ],
+    "linkedin_name": "Jared Gornstein",
+    "linkedin_headline": "Corporate Stock Benefit Consultant",
+    "linkedin_photo": "https://john-whaley-linkedin-photos.s3.amazonaws.com/photos/jaredgornstein.jpg",
+    "linkedin_location": "New York, New York, United States",
+    "linkedin_company": "",
+    "linkedin_education": "American Heritage School - Delray Beach, Florida, Indiana University - Kelley School of Business",
+    "linkedin_url": "https://www.linkedin.com/in/jaredgornstein"
   },
   {
     "rank": 83,
@@ -1356,7 +1930,14 @@
       "No experience in the legal sector",
       "Only 6 months of sales experience, primarily as an SDR",
       "Lacks closing experience and enterprise sales background"
-    ]
+    ],
+    "linkedin_name": "Seth O\u2019Connor",
+    "linkedin_headline": "Growth @ Ramp",
+    "linkedin_photo": "https://john-whaley-linkedin-photos.s3.amazonaws.com/photos/seth-oconnor-b63879260-f750bb8a.jpg",
+    "linkedin_location": "New York, New York, United States",
+    "linkedin_company": "Ramp",
+    "linkedin_education": "Princeton University, The Royal Grammar School, High Wycombe",
+    "linkedin_url": "https://www.linkedin.com/in/seth-o%E2%80%99connor-b63879260"
   },
   {
     "rank": 84,
@@ -1373,7 +1954,14 @@
       "Lacks direct sales experience in the legal sector",
       "No experience managing a B2B sales cycle or closing deals",
       "Limited experience with C-suite stakeholders"
-    ]
+    ],
+    "linkedin_name": "",
+    "linkedin_headline": "",
+    "linkedin_photo": "https://john-whaley-linkedin-photos.s3.amazonaws.com/photos/ha-sima-9eeca886.jpg",
+    "linkedin_location": "",
+    "linkedin_company": "",
+    "linkedin_education": "",
+    "linkedin_url": "https://www.linkedin.com/in/ha-sima/"
   },
   {
     "rank": 85,
@@ -1390,7 +1978,14 @@
       "No experience in the legal sector",
       "Zero closing experience and no sales quota history",
       "Lacks the necessary competencies for a sales role, particularly in enterprise sales"
-    ]
+    ],
+    "linkedin_name": "",
+    "linkedin_headline": "",
+    "linkedin_photo": "https://john-whaley-linkedin-photos.s3.amazonaws.com/photos/gary-law-391851207-302014be.jpg",
+    "linkedin_location": "",
+    "linkedin_company": "",
+    "linkedin_education": "",
+    "linkedin_url": "https://www.linkedin.com/in/gary-law-391851207/"
   },
   {
     "rank": 86,
@@ -1407,7 +2002,14 @@
       "Lacks enterprise sales experience",
       "Only 1 year of sales experience, primarily in B2C",
       "No experience managing complex deals or relationships with C-suite stakeholders"
-    ]
+    ],
+    "linkedin_name": "",
+    "linkedin_headline": "",
+    "linkedin_photo": "https://john-whaley-linkedin-photos.s3.amazonaws.com/photos/thomas-bonina-471241213-e78765cd.jpg",
+    "linkedin_location": "",
+    "linkedin_company": "",
+    "linkedin_education": "",
+    "linkedin_url": "https://www.linkedin.com/in/thomas-bonina-471241213/"
   },
   {
     "rank": 87,
@@ -1424,7 +2026,14 @@
       "No experience in the legal sector",
       "Zero closing experience as an AE",
       "Lacks familiarity with enterprise sales cycles"
-    ]
+    ],
+    "linkedin_name": "",
+    "linkedin_headline": "",
+    "linkedin_photo": "https://john-whaley-linkedin-photos.s3.amazonaws.com/photos/benjamin-austin-ab445523b-5fa526cb.jpg",
+    "linkedin_location": "",
+    "linkedin_company": "",
+    "linkedin_education": "",
+    "linkedin_url": "https://www.linkedin.com/in/benjamin-austin-ab445523b/"
   },
   {
     "rank": 88,
@@ -1441,7 +2050,14 @@
       "No experience in the legal sector or selling to legal buyers",
       "Lacks significant closing experience and enterprise sales background",
       "Limited presence with C-suite stakeholders"
-    ]
+    ],
+    "linkedin_name": "",
+    "linkedin_headline": "",
+    "linkedin_photo": "https://john-whaley-linkedin-photos.s3.amazonaws.com/photos/jonathan-taylor-0a6b71293-6b782da6.jpg",
+    "linkedin_location": "",
+    "linkedin_company": "",
+    "linkedin_education": "",
+    "linkedin_url": "https://www.linkedin.com/in/jonathan-taylor-0a6b71293/"
   },
   {
     "rank": 89,
@@ -1458,7 +2074,14 @@
       "No experience in the legal sector or selling to legal buyers",
       "Lacks B2B and tech sales experience",
       "Limited understanding of complex sales cycles and enterprise deal management"
-    ]
+    ],
+    "linkedin_name": "",
+    "linkedin_headline": "",
+    "linkedin_photo": "https://john-whaley-linkedin-photos.s3.amazonaws.com/photos/lachlan-scott69345-cbf4d02a.jpg",
+    "linkedin_location": "",
+    "linkedin_company": "",
+    "linkedin_education": "",
+    "linkedin_url": "https://www.linkedin.com/in/lachlan-scott69345/"
   },
   {
     "rank": 90,
@@ -1475,7 +2098,14 @@
       "No experience in the legal sector",
       "Lacks enterprise sales experience",
       "Limited overall sales experience with only one month in a non-tech environment"
-    ]
+    ],
+    "linkedin_name": "Reece Kauffman",
+    "linkedin_headline": "Integrative Physiology Graduate | Aspiring Medical Sales Representative",
+    "linkedin_photo": "",
+    "linkedin_location": "",
+    "linkedin_company": "",
+    "linkedin_education": "",
+    "linkedin_url": "https://www.linkedin.com/in/reece-kauffman-ab9a6b343/"
   },
   {
     "rank": 91,
@@ -1492,12 +2122,19 @@
       "No experience in the legal sector",
       "Lacks enterprise sales experience",
       "No experience managing a full sales cycle or closing deals"
-    ]
+    ],
+    "linkedin_name": "Ben Gillin",
+    "linkedin_headline": "Client Services Associate at Masterworks | Denison University Graduate",
+    "linkedin_photo": "https://john-whaley-linkedin-photos.s3.amazonaws.com/photos/ben-gillin-0083b8152.jpg",
+    "linkedin_location": "New York, New York, United States",
+    "linkedin_company": "Masterworks",
+    "linkedin_education": "Denison University, IAU Institute for American Universities, The Shipley School",
+    "linkedin_url": "https://www.linkedin.com/in/ben-gillin-0083b8152"
   },
   {
     "rank": 92,
     "id": "5831ab31-544c-45d8-b5a2-7d474bf3dbc1",
-    "name": "Candidate-2a03a822",
+    "name": "Kyle Reinheimer",
     "score": 25,
     "reasoning": "The candidate has no relevant sales experience in the legal sector, which is a critical requirement for this role. While they have some sales experience in healthcare and demonstrate a builder mentality, their lack of direct experience in legal sales and enterprise deal closing significantly limits their fit for this position.",
     "highlights": [
@@ -1509,12 +2146,19 @@
       "No experience in the legal sector",
       "Only 3 months of sales experience, primarily as an SDR",
       "Lacks familiarity with legal buyers or law firms"
-    ]
+    ],
+    "linkedin_name": "",
+    "linkedin_headline": "Partnerships @ Rilla | World Record Holder",
+    "linkedin_photo": "https://john-whaley-linkedin-photos.s3.amazonaws.com/photos/kylereinheimer-c0565d1e.jpg",
+    "linkedin_location": "",
+    "linkedin_company": "",
+    "linkedin_education": "",
+    "linkedin_url": "https://www.linkedin.com/in/kylereinheimer/"
   },
   {
     "rank": 93,
     "id": "412b102e-7949-4990-8cd4-1c7d4d5bc84d",
-    "name": "Candidate-24ea85c1",
+    "name": "Jacob T.",
     "score": 11,
     "reasoning": "The candidate has no sales experience, which is a critical requirement for this role. Additionally, the lack of familiarity with the legal sector further diminishes their fit for the position.",
     "highlights": [],
@@ -1522,6 +2166,13 @@
       "No sales experience",
       "No familiarity with the legal sector",
       "Lacks ambition to own outcomes"
-    ]
+    ],
+    "linkedin_name": "Jacob T.",
+    "linkedin_headline": "Growth @ Brex",
+    "linkedin_photo": "https://john-whaley-linkedin-photos.s3.amazonaws.com/photos/jacob-tamkin-30b9211d.jpg",
+    "linkedin_location": "New York, New York, United States",
+    "linkedin_company": "Brex",
+    "linkedin_education": "Beijing Normal University, Zhuhai, New York University, University of Southern California",
+    "linkedin_url": "https://www.linkedin.com/in/jacob-tamkin"
   }
 ]

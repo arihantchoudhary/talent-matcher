@@ -10,6 +10,11 @@ interface Candidate {
   reasoning: string;
   highlights: string[];
   gaps: string[];
+  linkedin_headline?: string;
+  linkedin_photo?: string;
+  linkedin_url?: string;
+  linkedin_company?: string;
+  linkedin_location?: string;
 }
 
 function scoreColor(score: number) {
@@ -102,10 +107,19 @@ export function RankedList({ candidates }: { candidates: Candidate[] }) {
                 onClick={() => setExpanded(isOpen ? null : c.id)}
                 className="w-full text-left px-4 py-3.5 flex items-start gap-3"
               >
-                {/* Rank */}
-                <span className="shrink-0 w-8 h-8 rounded-full bg-zinc-100 flex items-center justify-center text-xs font-bold text-zinc-500">
-                  {c.rank}
-                </span>
+                {/* Photo + rank */}
+                <div className="shrink-0 relative">
+                  {c.linkedin_photo ? (
+                    <img src={c.linkedin_photo} alt={c.name} className="w-10 h-10 rounded-full object-cover border border-zinc-200" />
+                  ) : (
+                    <span className="w-10 h-10 rounded-full bg-zinc-100 flex items-center justify-center text-xs font-bold text-zinc-500">
+                      {c.name.charAt(0)}
+                    </span>
+                  )}
+                  <span className="absolute -bottom-1 -right-1 w-5 h-5 rounded-full bg-white border border-zinc-200 flex items-center justify-center text-[9px] font-bold text-zinc-500">
+                    {c.rank}
+                  </span>
+                </div>
 
                 {/* Info */}
                 <div className="flex-1 min-w-0">
@@ -115,7 +129,10 @@ export function RankedList({ candidates }: { candidates: Candidate[] }) {
                       {c.score} &middot; {scoreLabel(c.score)}
                     </span>
                   </div>
-                  <p className="text-xs text-zinc-500 line-clamp-2 leading-relaxed">{c.reasoning}</p>
+                  {c.linkedin_headline && (
+                    <p className="text-xs text-zinc-600 mb-0.5 truncate">{c.linkedin_headline}</p>
+                  )}
+                  <p className="text-xs text-zinc-400 line-clamp-1 leading-relaxed">{c.reasoning}</p>
                 </div>
 
                 {/* Expand arrow */}
@@ -137,7 +154,14 @@ export function RankedList({ candidates }: { candidates: Candidate[] }) {
                     </div>
                   </div>
 
-                  {/* Reasoning */}
+                  {/* LinkedIn + Reasoning */}
+                  {c.linkedin_url && (
+                    <a href={c.linkedin_url} target="_blank" rel="noopener noreferrer"
+                      className="inline-flex items-center gap-1 text-xs text-indigo-600 hover:text-indigo-800 mb-3">
+                      <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+                      View LinkedIn profile
+                    </a>
+                  )}
                   <p className="text-sm text-zinc-700 leading-relaxed mb-4">{c.reasoning}</p>
 
                   {/* Highlights + Gaps */}

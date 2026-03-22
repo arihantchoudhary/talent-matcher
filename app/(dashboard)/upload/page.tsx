@@ -111,14 +111,15 @@ export default function UploadPage() {
   const [scoreFilter, setScoreFilter] = useState<number | null>(null);
   const [topK, setTopK] = useState(100); // How many to GPT-score (rest pre-filtered by embeddings)
   const [elapsed, setElapsed] = useState(0);
-  const [startTime] = useState(() => Date.now());
+  const scoringStartRef = useRef(0);
 
-  // Elapsed timer
+  // Elapsed timer — starts when scoring begins
   useEffect(() => {
     if (step !== "scoring") return;
-    const interval = setInterval(() => setElapsed(Math.round((Date.now() - startTime) / 1000)), 1000);
+    if (!scoringStartRef.current) scoringStartRef.current = Date.now();
+    const interval = setInterval(() => setElapsed(Math.round((Date.now() - scoringStartRef.current) / 1000)), 1000);
     return () => clearInterval(interval);
-  }, [step, startTime]);
+  }, [step]);
 
   // Sync from global context
   useEffect(() => {
@@ -153,9 +154,12 @@ export default function UploadPage() {
     if (parsed.length === 0) return;
 
     const jd = `${jobTitle}\n\n${jobDesc}\n\nSCORING RUBRIC (weight each criterion accordingly):\n${criteria.map(c => `- ${c.name} (${c.weight}%): ${c.description}`).join("\n")}`;
-    scoring.startScoring(parsed.map(c => ({ id: c.id, name: c.name, fullText: c.fullText, linkedinUrl: c.linkedinUrl })), jobTitle, jd, getApiKey());
+    // Don't use context scoring — we handle SSE locally
+    // scoring.startScoring(...);
 
     setStep("scoring");
+    scoringStartRef.current = Date.now();
+    setElapsed(0);
     setProgress({ done: 0, total: parsed.length });
     setResults([]); setLogs([]); setTotalTokens(0); setTotalCost(0);
 
@@ -185,6 +189,10 @@ export default function UploadPage() {
           if (!line.startsWith("data: ")) continue;
           try {
             const data = JSON.parse(line.slice(6));
+            if (data.type === "start") {
+              // Backend tells us actual number being scored (after pre-filter)
+              setProgress(prev => ({ ...prev, total: data.total }));
+            }
             if (data.type === "log") setLogs(prev => [{ name: data.name, step: data.step, detail: data.detail }, ...prev].slice(0, 100));
             if (data.type === "scored" || data.type === "error") {
               doneCount++;

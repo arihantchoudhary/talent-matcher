@@ -432,21 +432,37 @@ export default function UploadPage() {
               const color = c.score >= 70 ? "bg-emerald-50 border-emerald-200 text-emerald-700" : c.score >= 50 ? "bg-indigo-50 border-indigo-200 text-indigo-700" : c.score >= 30 ? "bg-amber-50 border-amber-200 text-amber-700" : "bg-red-50 border-red-200 text-red-600";
               const bar = c.score >= 70 ? "bg-emerald-500" : c.score >= 50 ? "bg-indigo-500" : c.score >= 30 ? "bg-amber-500" : "bg-red-400";
               return (
-                <div key={c.id} className="rounded-xl border border-zinc-200 bg-white overflow-hidden">
-                  <button onClick={() => setExpanded(isOpen ? null : c.id)} className="w-full text-left px-4 py-3.5 flex items-start gap-3">
-                    {c.photo_url ? (
-                      <img src={c.photo_url} alt={c.name} className="shrink-0 w-8 h-8 rounded-full object-cover border border-neutral-200" />
-                    ) : (
-                      <span className="shrink-0 w-8 h-8 rounded-full bg-zinc-100 flex items-center justify-center text-xs font-bold text-zinc-500">{c.rank}</span>
-                    )}
+                <div key={c.id} className="rounded-xl border border-neutral-200 bg-white overflow-hidden">
+                  <button onClick={() => setExpanded(isOpen ? null : c.id)} className="w-full text-left p-4 flex items-start gap-4">
+                    {/* Photo — big */}
+                    <div className="shrink-0">
+                      {c.photo_url ? (
+                        <img src={c.photo_url} alt={c.name} className="w-14 h-14 rounded-xl object-cover border border-neutral-200" />
+                      ) : (
+                        <div className="w-14 h-14 rounded-xl bg-neutral-100 flex items-center justify-center text-lg font-bold text-neutral-400">
+                          {c.name?.charAt(0) || "#"}
+                        </div>
+                      )}
+                    </div>
+
+                    {/* Info */}
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-2 mb-0.5">
-                        <span className="font-semibold text-sm">{c.name}</span>
-                        <span className={`px-2 py-0.5 rounded-full text-xs font-bold border ${color}`}>{c.score}</span>
+                        <span className="text-xs text-neutral-400 font-mono">#{c.rank}</span>
+                        <span className="font-semibold">{c.name}</span>
+                        <span className={`px-2 py-0.5 text-xs font-bold ${c.score >= 70 ? "bg-neutral-900 text-white" : c.score >= 50 ? "bg-neutral-100 text-neutral-700" : "text-neutral-400 bg-neutral-50"}`}>{c.score}</span>
                       </div>
-                      <p className="text-xs text-zinc-500 line-clamp-1">{c.reasoning}</p>
+                      <p className="text-xs text-neutral-500 line-clamp-2 leading-relaxed">{c.reasoning}</p>
+                      {c.linkedin_url && (
+                        <a href={c.linkedin_url} target="_blank" rel="noopener noreferrer" onClick={e => e.stopPropagation()}
+                          className="inline-flex items-center gap-1 text-[10px] text-neutral-400 hover:text-neutral-700 mt-1.5">
+                          <svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+                          LinkedIn
+                        </a>
+                      )}
                     </div>
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className={`shrink-0 mt-1.5 text-zinc-400 transition-transform ${isOpen ? "rotate-180" : ""}`}><path d="m6 9 6 6 6-6" /></svg>
+
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className={`shrink-0 mt-2 text-neutral-400 transition-transform ${isOpen ? "rotate-180" : ""}`}><path d="m6 9 6 6 6-6" /></svg>
                   </button>
                   {isOpen && (
                     <div className="px-4 pb-4 border-t border-zinc-100 fade-in">

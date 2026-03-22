@@ -14,18 +14,20 @@ export default function SettingsPage() {
     if (user?.id) getSubscription(user.id).then(setSub);
   }, [user?.id]);
 
+  const API = "https://aicm3pweed.us-east-1.awsapprunner.com";
   async function handleUpgrade() {
     const priceId = process.env.NEXT_PUBLIC_STRIPE_PRO_PRICE_ID;
-    if (!priceId) { alert("Stripe not configured yet — add NEXT_PUBLIC_STRIPE_PRO_PRICE_ID to .env.local"); return; }
+    if (!priceId) { alert("Stripe not configured — add NEXT_PUBLIC_STRIPE_PRO_PRICE_ID"); return; }
     setLoading(true);
     try {
-      const resp = await fetch("/api/checkout", {
+      const resp = await fetch(`${API}/talent-pluto/checkout`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ priceId }),
+        body: JSON.stringify({ user_id: user?.id || "anonymous", price_id: priceId, success_url: `${window.location.origin}/settings?upgraded=true`, cancel_url: `${window.location.origin}/settings` }),
       });
-      const { url } = await resp.json();
-      if (url) window.location.href = url;
+      const data = await resp.json();
+      if (data.url) window.location.href = data.url;
+      else alert("Checkout failed — Stripe may not be configured on backend");
     } catch { alert("Checkout failed"); }
     setLoading(false);
   }

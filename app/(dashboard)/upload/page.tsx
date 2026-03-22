@@ -30,66 +30,42 @@ export default function UploadPage() {
   const [cityFilter, setCityFilter] = useState("All");
   const [roleSearch, setRoleSearch] = useState("");
 
-  // Rubric presets (judges)
+  // Rubric presets (judges) — same 6 criteria, different weights
   type Criterion = { name: string; weight: number; description: string };
+  const CRITERIA_DEFS: Criterion[] = [
+    { name: "Relevant Experience", weight: 0, description: "Years and quality of experience in relevant roles" },
+    { name: "Industry Fit", weight: 0, description: "Familiarity with the target industry/sector" },
+    { name: "Sales Capability", weight: 0, description: "Track record of sales, pipeline, and revenue generation" },
+    { name: "Stakeholder Presence", weight: 0, description: "Ability to engage with senior decision-makers" },
+    { name: "Cultural Fit", weight: 0, description: "Drive, ambition, coachability, team orientation" },
+    { name: "Location", weight: 0, description: "Proximity to office, willingness to work in-person" },
+  ];
+  const makeWeights = (w: number[]) => CRITERIA_DEFS.map((c, i) => ({ ...c, weight: w[i] }));
   const PRESETS: Record<string, { label: string; desc: string; criteria: Criterion[]; idealCandidate: string }> = {
     balanced: { label: "The Generalist", desc: "Equal weight across all criteria",
       idealCandidate: "2-3 years in consulting or banking. Strong communicator who can engage C-suite buyers. Some exposure to legal or procurement. Based in NYC or SF. Ambitious, coachable, team player. Has carried a quota or driven pipeline.",
-      criteria: [
-        { name: "Relevant Experience", weight: 25, description: "Years and quality of experience in relevant roles" },
-        { name: "Industry Fit", weight: 20, description: "Familiarity with the target industry/sector" },
-        { name: "Sales Capability", weight: 20, description: "Track record of sales, pipeline, and revenue generation" },
-        { name: "Stakeholder Presence", weight: 15, description: "Ability to engage with senior decision-makers" },
-        { name: "Cultural Fit", weight: 10, description: "Drive, ambition, coachability, team orientation" },
-        { name: "Location", weight: 10, description: "Proximity to office, willingness to work in-person" },
-      ]},
+      criteria: makeWeights([20, 20, 20, 15, 15, 10]) },
     hunter: { label: "The Hunter", desc: "Prioritize outbound, prospecting, cold outreach",
       idealCandidate: "Top-performing SDR/BDR with 1-3 years of high-volume outbound. 100+ calls/day, cold email sequences, LinkedIn prospecting. President's Club or top 10% of team. Uses Salesforce, Outreach, Apollo. Resilient, competitive, loves the hunt.",
-      criteria: [
-        { name: "Outbound & Prospecting", weight: 30, description: "Cold calling, email sequences, multi-channel outreach" },
-        { name: "Pipeline Generation", weight: 25, description: "Track record of building qualified pipeline from scratch" },
-        { name: "Sales Tools", weight: 15, description: "Proficiency with Salesforce, Outreach, LinkedIn Sales Navigator" },
-        { name: "Relevant Experience", weight: 15, description: "Years in SDR/BDR or top-of-funnel roles" },
-        { name: "Drive & Resilience", weight: 10, description: "High activity volume, handles rejection well" },
-        { name: "Location", weight: 5, description: "Proximity to office" },
-      ]},
+      criteria: makeWeights([15, 10, 35, 10, 25, 5]) },
     closer: { label: "The Closer", desc: "Prioritize closing, deal sizes, enterprise selling",
       idealCandidate: "3-5 years closing B2B SaaS deals $100K+ ACV. Enterprise sales cycles 6+ months. Sold to VP/C-suite. MEDDIC or Challenger methodology. Consistently hit quota. Managed complex multi-stakeholder deals with legal, procurement, IT involved.",
-      criteria: [
-        { name: "Closing Experience", weight: 30, description: "Track record of closing deals, quota attainment" },
-        { name: "Deal Size", weight: 20, description: "Average deal size, enterprise vs SMB experience" },
-        { name: "Enterprise Selling", weight: 20, description: "Multi-stakeholder, 6+ month sales cycles" },
-        { name: "Stakeholder Presence", weight: 15, description: "Engaging VP/C-suite decision makers" },
-        { name: "Industry Fit", weight: 10, description: "Familiarity with the target sector" },
-        { name: "Location", weight: 5, description: "Proximity to office" },
-      ]},
+      criteria: makeWeights([20, 15, 30, 20, 10, 5]) },
     pedigree: { label: "The Pedigree", desc: "Prioritize top companies, elite schools, brand names",
       idealCandidate: "Goldman Sachs, McKinsey, BCG, or top-tier tech (Stripe, Google, Brex). Ivy League or Stanford/MIT. Fast promotions — analyst to associate in 2 years. JD or MBA from a top-10 program. Articulate, polished, trusted by senior executives.",
-      criteria: [
-        { name: "Company Quality", weight: 35, description: "Top-tier employers (Goldman, McKinsey, Google, Stripe, etc.)" },
-        { name: "Education", weight: 25, description: "Elite universities, relevant degrees" },
-        { name: "Career Trajectory", weight: 20, description: "Fast promotions, increasing responsibility" },
-        { name: "Relevant Experience", weight: 10, description: "Years in relevant roles" },
-        { name: "Cultural Fit", weight: 5, description: "Drive, ambition, team orientation" },
-        { name: "Location", weight: 5, description: "Proximity to office" },
-      ]},
+      criteria: makeWeights([30, 15, 10, 15, 25, 5]) },
     scrappy: { label: "The Builder", desc: "Prioritize founders, 0-1 builders, scrappiness",
       idealCandidate: "Founded or co-founded a company. Built a team or product from zero. Wore many hats — sales, ops, product. Comfortable with ambiguity and limited resources. Startup experience at seed/Series A. High ownership mentality, low ego.",
-      criteria: [
-        { name: "Founding / 0→1 Experience", weight: 30, description: "Built something from scratch — company, team, or product" },
-        { name: "Scrappiness", weight: 25, description: "Operated with limited resources, wore many hats" },
-        { name: "Ownership Mentality", weight: 20, description: "Took initiative without being told, drove outcomes" },
-        { name: "Sales Capability", weight: 15, description: "Revenue generation in any context" },
-        { name: "Cultural Fit", weight: 5, description: "High drive, low ego, team player" },
-        { name: "Location", weight: 5, description: "Proximity to office" },
-      ]},
-    custom: { label: "Custom", desc: "Define your own criteria and weights", criteria: [],
+      criteria: makeWeights([15, 10, 20, 10, 40, 5]) },
+    custom: { label: "Custom", desc: "Define your own criteria and weights",
+      criteria: makeWeights([20, 20, 20, 15, 15, 10]),
       idealCandidate: "" },
   };
 
   const [selectedPreset, setSelectedPreset] = useState("balanced");
   const [criteria, setCriteria] = useState(PRESETS.balanced.criteria);
   const [idealCandidate, setIdealCandidate] = useState(PRESETS.balanced.idealCandidate);
+  const [profileMode, setProfileMode] = useState<"fields" | "text">("fields");
   const [idealProfile, setIdealProfile] = useState({
     years_experience: "2-3",
     industries: "financial-services, technology",
@@ -721,12 +697,57 @@ export default function UploadPage() {
           ))}
         </div>
 
-        {/* Ideal candidate profile — editable textarea */}
+        {/* Ideal candidate profile — inline editable fields + freeform */}
         <div className="mb-5">
-          <p className="text-xs font-medium text-neutral-500 mb-2">Ideal Candidate Profile</p>
-          <textarea value={idealCandidate} onChange={e => { setIdealCandidate(e.target.value); setSelectedPreset("custom"); }}
-            rows={4} placeholder="Describe your ideal candidate in plain language..."
-            className="w-full border border-neutral-200 rounded-lg px-3 py-2.5 text-sm text-neutral-700 resize-y focus:outline-none focus:border-neutral-400 leading-relaxed" />
+          <div className="flex items-center justify-between mb-2">
+            <p className="text-xs font-medium text-neutral-500">Ideal Candidate Profile</p>
+            <button onClick={() => setProfileMode(profileMode === "fields" ? "text" : "fields")}
+              className="text-[10px] text-neutral-400 hover:text-neutral-600 transition-colors">
+              {profileMode === "fields" ? "Edit as text" : "Back to fields"}
+            </button>
+          </div>
+          {profileMode === "text" ? (
+            <textarea value={idealCandidate} onChange={e => { setIdealCandidate(e.target.value); setSelectedPreset("custom"); }}
+              rows={4} placeholder="Describe your ideal candidate in plain language..."
+              className="w-full border border-neutral-200 rounded-lg px-3 py-2.5 text-sm text-neutral-700 resize-y focus:outline-none focus:border-neutral-400 leading-relaxed" />
+          ) : (
+            <div className="border border-neutral-200 rounded-lg p-3 space-y-2">
+              {([
+                ["years_experience", "Experience", ["1-2 years", "2-3 years", "3-5 years", "5-8 years", "8+ years"]],
+                ["industries", "Industries", ["technology", "financial-services", "legal", "consulting", "healthcare", "SaaS"]],
+                ["sales_focus", "Sales Focus", ["SMB", "mid-market", "enterprise", "PLG"]],
+                ["buyer_personas", "Buyer Persona", ["c-suite", "VP/director", "department-head", "technical-evaluator", "end-user"]],
+                ["location", "Location", ["New York, NY", "San Francisco, CA", "Remote", "Austin, TX", "Chicago, IL", "Boston, MA"]],
+                ["background", "Background", ["consulting", "banking", "law", "startup founder", "big tech", "SDR/BDR"]],
+              ] as [keyof typeof idealProfile, string, string[]][]).map(([key, label, options]) => (
+                <div key={key} className="flex items-start gap-2">
+                  <span className="text-[10px] text-neutral-400 w-20 shrink-0 pt-1.5 text-right uppercase tracking-wider">{label}</span>
+                  <div className="flex flex-wrap gap-1 flex-1">
+                    {options.map(opt => {
+                      const current = idealProfile[key].toLowerCase();
+                      const active = current.includes(opt.toLowerCase()) || current.includes(opt.split(" ")[0].toLowerCase());
+                      return (
+                        <button key={opt} onClick={() => {
+                          const val = idealProfile[key];
+                          const newVal = active
+                            ? val.split(",").map(s => s.trim()).filter(s => !s.toLowerCase().includes(opt.toLowerCase())).join(", ")
+                            : val ? `${val}, ${opt}` : opt;
+                          setIdealProfile(prev => ({ ...prev, [key]: newVal }));
+                          setSelectedPreset("custom");
+                        }}
+                          className={`px-2 py-1 rounded text-[11px] transition-colors ${active ? "bg-neutral-900 text-white" : "bg-neutral-100 text-neutral-500 hover:bg-neutral-200"}`}>
+                          {opt}
+                        </button>
+                      );
+                    })}
+                    <input value={idealProfile[key]}
+                      onChange={e => { setIdealProfile(prev => ({ ...prev, [key]: e.target.value })); setSelectedPreset("custom"); }}
+                      className="flex-1 min-w-[120px] border-b border-neutral-200 px-1 py-0.5 text-[11px] text-neutral-600 focus:outline-none focus:border-neutral-400" />
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
         </div>
 
         {/* Criteria weights */}

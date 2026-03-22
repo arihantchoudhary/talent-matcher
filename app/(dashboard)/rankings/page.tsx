@@ -11,7 +11,20 @@ export default function HistoryPage() {
   const [judgeFilter, setJudgeFilter] = useState("all");
 
   useEffect(() => {
-    getSessions().then((s) => { setSessions(s); setLoading(false); });
+    getSessions().then((raw) => {
+      // Deduplicate sessions created within 2s with same role + candidate_count
+      const deduped: MatchSession[] = [];
+      const seen = new Set<string>();
+      for (const s of raw) {
+        const ts = Math.floor(new Date(s.created_at).getTime() / 2000);
+        const key = `${s.role}|${s.candidate_count}|${ts}`;
+        if (seen.has(key)) continue;
+        seen.add(key);
+        deduped.push(s);
+      }
+      setSessions(deduped);
+      setLoading(false);
+    });
   }, []);
 
   // Get unique judges
@@ -191,37 +204,66 @@ export default function HistoryPage() {
                 </h2>
                 <div className="space-y-2">
                   {groupSessions.map((s) => (
-                    <div key={s.session_id} className="rounded-xl border border-neutral-200 bg-white hover:shadow-sm transition-shadow">
-                      <button onClick={() => handleView(s)} className="w-full text-left p-4 flex items-center gap-4">
-                        {/* Score ring */}
-                        <div className={`shrink-0 w-12 h-12 rounded-full border-[3px] flex items-center justify-center text-sm font-bold ${
+                    <div key={s.session_id} className="rounded-xl border border-neutral-200 bg-white hover:shadow-md transition-shadow">
+                      <button onClick={() => handleView(s)} className="w-full text-left p-5 flex items-start gap-5">
+                        {/* Score ring — bigger */}
+                        <div className={`shrink-0 w-16 h-16 rounded-full border-[3px] flex items-center justify-center text-lg font-bold ${
                           s.avg_score >= 60 ? "border-emerald-400 text-emerald-700" : s.avg_score >= 40 ? "border-neutral-400 text-neutral-700" : "border-neutral-300 text-neutral-600"
                         }`}>
                           {s.avg_score}
                         </div>
 
                         <div className="flex-1 min-w-0">
-                          <div className="font-semibold text-sm">{s.role}</div>
-                          <div className="text-xs text-neutral-500 mt-0.5">
-                            {s.candidate_count} candidates &middot; {s.file_name} &middot; {new Date(s.created_at).toLocaleDateString()} {new Date(s.created_at).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
-                            {"user_name" in s && s.user_name ? <> &middot; by {String(s.user_name)}</> : null}
+                          {/* Title + judge */}
+                          <div className="flex items-center gap-2 flex-wrap">
+                            <span className="font-semibold text-base">{s.role}</span>
+                            {s.judge && <span className="px-2 py-0.5 rounded-full bg-neutral-900 text-white text-[10px] font-medium">{s.judge}</span>}
                           </div>
-                          <div className="flex gap-3 mt-1.5 flex-wrap">
-                            {s.judge && <span className="text-xs text-neutral-700 font-serif italic">{s.judge}</span>}
-                            <span className="text-xs text-emerald-600 font-medium">{s.top_tier} top tier</span>
-                            <span className="text-xs text-neutral-900 font-medium">{s.good_fit} good fit</span>
-                            {s.duration ? <span className="text-xs text-neutral-400">{s.duration}s</span> : null}
-                            {s.cost ? <span className="text-xs text-neutral-400">${Number(s.cost).toFixed(3)}</span> : null}
+
+                          {/* Meta line */}
+                          <div className="text-xs text-neutral-500 mt-1">
+                            {s.candidate_count} candidates &middot; {s.file_name} &middot; {new Date(s.created_at).toLocaleDateString()} {new Date(s.created_at).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
+                            {"user_name" in s && s.user_name ? <> &middot; {String(s.user_name)}</> : null}
+                          </div>
+
+                          {/* Stats row — big and prominent */}
+                          <div className="flex gap-4 mt-3 flex-wrap">
+                            <div className="flex flex-col">
+                              <span className="text-lg font-bold text-emerald-600">{s.top_tier}</span>
+                              <span className="text-[10px] text-neutral-400 uppercase tracking-wider">Top Tier</span>
+                            </div>
+                            <div className="flex flex-col">
+                              <span className="text-lg font-bold text-neutral-800">{s.good_fit}</span>
+                              <span className="text-[10px] text-neutral-400 uppercase tracking-wider">Good Fit</span>
+                            </div>
+                            {(s.duration != null && s.duration > 0) && (
+                              <div className="flex flex-col">
+                                <span className="text-lg font-bold text-neutral-600">{s.duration}s</span>
+                                <span className="text-[10px] text-neutral-400 uppercase tracking-wider">Duration</span>
+                              </div>
+                            )}
+                            {(s.cost != null && Number(s.cost) > 0) && (
+                              <div className="flex flex-col">
+                                <span className="text-lg font-bold text-neutral-600">${Number(s.cost).toFixed(3)}</span>
+                                <span className="text-[10px] text-neutral-400 uppercase tracking-wider">Cost</span>
+                              </div>
+                            )}
+                            {(s.tokens != null && Number(s.tokens) > 0) && (
+                              <div className="flex flex-col">
+                                <span className="text-lg font-bold text-neutral-600">{(Number(s.tokens) / 1000).toFixed(1)}k</span>
+                                <span className="text-[10px] text-neutral-400 uppercase tracking-wider">Tokens</span>
+                              </div>
+                            )}
                           </div>
                         </div>
 
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="shrink-0 text-neutral-400"><path d="m9 18 6-6-6-6" /></svg>
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="shrink-0 text-neutral-300 mt-2"><path d="m9 18 6-6-6-6" /></svg>
                       </button>
 
                       {/* Delete */}
-                      <div className="px-4 pb-3 flex justify-end">
+                      <div className="px-5 pb-3 flex justify-end border-t border-neutral-100">
                         <button onClick={(e) => { e.stopPropagation(); handleDelete(s.session_id); }}
-                          className="text-xs text-neutral-400 hover:text-red-500 transition-colors">
+                          className="text-xs text-neutral-400 hover:text-red-500 transition-colors pt-2">
                           Delete
                         </button>
                       </div>

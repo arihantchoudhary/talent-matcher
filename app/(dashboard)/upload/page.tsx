@@ -224,6 +224,8 @@ export default function UploadPage() {
     const scoredMap = new Map<string, ScoredCandidate>();
     let doneCount = 0;
     let doneHandled = false;
+    let localTokens = 0;
+    let localCost = 0;
     const API = "https://aicm3pweed.us-east-1.awsapprunner.com";
 
     try {
@@ -261,14 +263,14 @@ export default function UploadPage() {
                 photo_url: data.photo_url || "", linkedin_url: data.linkedin_url || "",
                 evidence: data.evidence || {}, criteria: data.criteria || [],
               });
-              if (data.tokens) setTotalTokens(prev => prev + (data.tokens.prompt || 0) + (data.tokens.completion || 0));
-              if (data.cost) setTotalCost(prev => prev + data.cost);
+              if (data.tokens) { const t = (data.tokens.prompt || 0) + (data.tokens.completion || 0); localTokens += t; setTotalTokens(prev => prev + t); }
+              if (data.cost) { localCost += data.cost; setTotalCost(prev => prev + data.cost); }
               setProgress({ done: doneCount, total: parsed.length });
               const sorted = [...scoredMap.values()].sort((a, b) => b.score - a.score);
               sorted.forEach((s, i) => s.rank = i + 1);
               setResults([...sorted]);
             }
-            if (data.type === "done") {
+            if (data.type === "done" && !doneHandled) {
               doneHandled = true;
               const duration = Math.round((Date.now() - startTime) / 1000);
               const finalResults = [...scoredMap.values()].sort((a, b) => b.score - a.score);
@@ -278,7 +280,7 @@ export default function UploadPage() {
                 role: jobTitle, roleCategory: ROLES[selectedIdx]?.category || "Custom", description: jobDesc.substring(0, 300),
                 fileName: fileName || "unknown.csv", candidateCount: parsed.length,
                 topTier: finalResults.filter(r => r.score >= 70).length, goodFit: finalResults.filter(r => r.score >= 50 && r.score < 70).length,
-                avgScore: Math.round(finalResults.reduce((s, r) => s + r.score, 0) / finalResults.length), judge: PRESETS[selectedPreset]?.label || "Custom", results: finalResults, duration, tokens: totalTokens, cost: Math.round(totalCost * 10000) / 10000,
+                avgScore: Math.round(finalResults.reduce((s, r) => s + r.score, 0) / finalResults.length), judge: PRESETS[selectedPreset]?.label || "Custom", results: finalResults, duration, tokens: localTokens, cost: Math.round(localCost * 10000) / 10000,
               });
               setStep("results");
             }

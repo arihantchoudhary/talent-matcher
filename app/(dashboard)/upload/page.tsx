@@ -108,6 +108,64 @@ export default function UploadPage() {
     return `${p.years_experience} years sales experience in ${p.industries}. Sold to ${p.departments_sold_to} departments. Buyer personas: ${p.buyer_personas}. Focus: ${p.sales_focus}. SDR grade ${p.sdr_grade}, AE grade ${p.ae_grade}. Location: ${p.location}. Skills: ${p.skills}. Background: ${p.background}.`;
   }
 
+  // Dropdown options for natural language builder
+  const NL_OPTIONS = {
+    experience: ["0-1 years", "1-2 years", "2-3 years", "3-5 years", "5-7 years", "7-10 years", "10+ years"],
+    background: ["consulting", "banking", "law", "SaaS sales", "SDR/BDR", "enterprise AE", "founder", "startup early employee", "Big Tech", "private equity", "venture capital", "real estate"],
+    industries: ["technology", "financial services", "legal", "healthcare", "SaaS", "fintech", "real estate", "enterprise software", "AI/ML", "cybersecurity", "edtech", "consulting"],
+    buyer_personas: ["C-suite", "VP/Director", "Department heads", "Technical evaluators", "Procurement", "Legal", "Finance leaders", "Founders/CEOs"],
+    sales_focus: ["Enterprise ($100K+ ACV)", "Mid-market ($25-100K)", "SMB (< $25K)", "Outbound/cold calling", "Inbound/closing", "Full-cycle", "Channel/partnerships"],
+    skills: ["Salesforce", "Outreach", "Apollo", "LinkedIn Sales Nav", "HubSpot", "Gong", "MEDDIC", "Challenger", "SPIN", "cold calling", "email sequences", "demo skills"],
+    traits: ["quota attainment", "President's Club", "fast promotions", "high activity volume", "built from zero", "wore many hats", "low ego", "coachable", "competitive", "resilient"],
+    location: ["New York, NY", "San Francisco, CA", "Los Angeles, CA", "Chicago, IL", "Boston, MA", "Austin, TX", "Miami, FL", "Seattle, WA", "Remote", "Any"],
+  };
+  type NLCategory = keyof typeof NL_OPTIONS;
+
+  const [nlSelections, setNlSelections] = useState<Record<NLCategory, string[]>>({
+    experience: ["2-3 years"],
+    background: ["consulting", "banking"],
+    industries: ["financial services", "technology"],
+    buyer_personas: ["C-suite", "Department heads"],
+    sales_focus: ["Enterprise ($100K+ ACV)", "Mid-market ($25-100K)"],
+    skills: ["Salesforce", "Outreach", "LinkedIn Sales Nav"],
+    traits: ["coachable", "competitive"],
+    location: ["New York, NY"],
+  });
+  const [nlEditMode, setNlEditMode] = useState(false);
+
+  const NL_PRESETS: Record<string, Record<NLCategory, string[]>> = {
+    balanced: { experience: ["2-3 years"], background: ["consulting", "banking"], industries: ["financial services", "technology"], buyer_personas: ["C-suite", "Department heads"], sales_focus: ["Enterprise ($100K+ ACV)", "Mid-market ($25-100K)"], skills: ["Salesforce", "Outreach", "LinkedIn Sales Nav"], traits: ["coachable", "competitive"], location: ["New York, NY"] },
+    hunter: { experience: ["1-2 years", "2-3 years"], background: ["SDR/BDR", "SaaS sales"], industries: ["technology", "SaaS"], buyer_personas: ["Department heads", "Technical evaluators"], sales_focus: ["Outbound/cold calling", "Mid-market ($25-100K)"], skills: ["Outreach", "Apollo", "cold calling", "email sequences"], traits: ["high activity volume", "competitive", "resilient"], location: ["New York, NY"] },
+    closer: { experience: ["3-5 years", "5-7 years"], background: ["enterprise AE", "SaaS sales"], industries: ["financial services", "technology", "legal"], buyer_personas: ["C-suite", "VP/Director", "Procurement"], sales_focus: ["Enterprise ($100K+ ACV)", "Full-cycle"], skills: ["Salesforce", "MEDDIC", "Challenger", "demo skills"], traits: ["quota attainment", "President's Club"], location: ["New York, NY"] },
+    pedigree: { experience: ["2-3 years", "3-5 years"], background: ["consulting", "banking", "Big Tech"], industries: ["financial services", "consulting"], buyer_personas: ["C-suite"], sales_focus: ["Enterprise ($100K+ ACV)"], skills: ["Salesforce"], traits: ["fast promotions", "President's Club"], location: ["New York, NY"] },
+    scrappy: { experience: ["1-2 years", "2-3 years"], background: ["founder", "startup early employee"], industries: ["technology", "SaaS"], buyer_personas: ["C-suite", "Department heads", "Founders/CEOs"], sales_focus: ["SMB (< $25K)", "Mid-market ($25-100K)", "Full-cycle"], skills: ["Salesforce", "cold calling"], traits: ["built from zero", "wore many hats", "low ego", "resilient"], location: ["New York, NY"] },
+    custom: { experience: [], background: [], industries: [], buyer_personas: [], sales_focus: [], skills: [], traits: [], location: [] },
+  };
+
+  function nlSelectionsToText(sel: Record<NLCategory, string[]>): string {
+    const parts: string[] = [];
+    if (sel.experience.length) parts.push(`${sel.experience.join(" or ")} of experience`);
+    if (sel.background.length) parts.push(`background in ${sel.background.join(", ")}`);
+    if (sel.industries.length) parts.push(`selling into ${sel.industries.join(", ")}`);
+    if (sel.buyer_personas.length) parts.push(`engaging ${sel.buyer_personas.join(", ")} buyers`);
+    if (sel.sales_focus.length) parts.push(`focused on ${sel.sales_focus.join(", ")}`);
+    if (sel.skills.length) parts.push(`proficient with ${sel.skills.join(", ")}`);
+    if (sel.traits.length) parts.push(`demonstrating ${sel.traits.join(", ")}`);
+    if (sel.location.length) parts.push(`based in ${sel.location.join(" or ")}`);
+    return parts.join(". ") + (parts.length ? "." : "");
+  }
+
+  function toggleNlOption(cat: NLCategory, option: string) {
+    setNlSelections(prev => {
+      const cur = prev[cat];
+      const next = cur.includes(option) ? cur.filter(o => o !== option) : [...cur, option];
+      const updated = { ...prev, [cat]: next };
+      setIdealCandidate(nlSelectionsToText(updated));
+      setSelectedPreset("custom");
+      return updated;
+    });
+  }
+
   const IDEAL_PROFILES: Record<string, typeof idealProfile> = {
     balanced: { years_experience: "2-3", industries: "financial-services, technology", departments_sold_to: "finance, legal, operations", buyer_personas: "c-suite-decision-maker, department-head", sales_focus: "enterprise, mid-market", sdr_grade: "A", ae_grade: "B", location: "New York, NY", skills: "Salesforce, Outreach, LinkedIn Sales Navigator", background: "consulting, banking, or law" },
     hunter: { years_experience: "1-3", industries: "technology, SaaS", departments_sold_to: "sales, marketing, operations", buyer_personas: "department-head, technical-evaluator", sales_focus: "mid-market, enterprise", sdr_grade: "S", ae_grade: "F", location: "New York, NY", skills: "Outreach, Apollo, Salesforce, cold calling", background: "SDR/BDR at high-growth startup, 100+ calls/day" },
@@ -123,6 +181,10 @@ export default function UploadPage() {
       setCriteria([...PRESETS[key].criteria]);
       setIdealCandidate(PRESETS[key].idealCandidate);
       setIdealProfile({ ...IDEAL_PROFILES[key] });
+      if (NL_PRESETS[key]) {
+        setNlSelections({ ...NL_PRESETS[key] });
+        setNlEditMode(false);
+      }
     }
   }
 
@@ -659,41 +721,16 @@ export default function UploadPage() {
           ))}
         </div>
 
-        {/* Ideal candidate profile (HyDE) — structured + natural language */}
-        <div key={selectedPreset} className="mb-5 stagger-in">
-          <p className="text-xs font-medium text-neutral-500 mb-3">Ideal Candidate Profile</p>
-
-          {/* Structured fields — same format as CSV data */}
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-2 mb-3">
-            {([
-              ["years_experience", "Experience"],
-              ["industries", "Industries"],
-              ["departments_sold_to", "Depts Sold To"],
-              ["buyer_personas", "Buyer Personas"],
-              ["sales_focus", "Sales Focus"],
-              ["sdr_grade", "SDR Grade"],
-              ["ae_grade", "AE Grade"],
-              ["location", "Location"],
-              ["skills", "Tools/Skills"],
-              ["background", "Background"],
-            ] as [keyof typeof idealProfile, string][]).map(([key, label]) => (
-              <div key={key}>
-                <label className="text-[9px] uppercase tracking-wider text-neutral-400">{label}</label>
-                <input value={idealProfile[key]} onChange={e => { setIdealProfile(prev => ({ ...prev, [key]: e.target.value })); setSelectedPreset("custom"); }}
-                  className="w-full border border-neutral-100 rounded px-2 py-1 text-[11px] mt-0.5 focus:outline-none focus:border-neutral-300" />
-              </div>
-            ))}
-          </div>
-
-          {/* Natural language — auto-generated from structured, editable */}
-          <textarea value={idealCandidate} onChange={e => { setIdealCandidate(e.target.value); }}
-            rows={2} placeholder="Natural language description (auto-filled from fields above)..."
-            className="w-full border border-neutral-200 rounded-lg px-3 py-2 text-[11px] text-neutral-600 resize-none focus:outline-none focus:border-neutral-400 leading-relaxed" />
-          <p className="text-[9px] text-neutral-400 mt-1">Structured fields + natural language are both used for embedding pre-filtering</p>
+        {/* Ideal candidate profile — editable textarea */}
+        <div className="mb-5">
+          <p className="text-xs font-medium text-neutral-500 mb-2">Ideal Candidate Profile</p>
+          <textarea value={idealCandidate} onChange={e => { setIdealCandidate(e.target.value); setSelectedPreset("custom"); }}
+            rows={4} placeholder="Describe your ideal candidate in plain language..."
+            className="w-full border border-neutral-200 rounded-lg px-3 py-2.5 text-sm text-neutral-700 resize-y focus:outline-none focus:border-neutral-400 leading-relaxed" />
         </div>
 
-        {/* Sliders */}
-        <div key={selectedPreset} className="grid md:grid-cols-2 gap-x-6 gap-y-3 stagger-in">
+        {/* Criteria weights */}
+        <div className="grid md:grid-cols-2 gap-x-6 gap-y-3">
           {criteria.map((c, i) => (
             <div key={c.name || i} className="overflow-hidden">
               <div className="flex items-center justify-between mb-1">

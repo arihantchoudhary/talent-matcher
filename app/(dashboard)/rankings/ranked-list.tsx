@@ -40,9 +40,9 @@ export function RankedList({ candidates }: { candidates: Candidate[] }) {
     <div>
       <div className="flex flex-col sm:flex-row gap-3 mb-5">
         <div className="relative flex-1">
-          <svg className="absolute left-3 top-1/2 -translate-y-1/2 text-zinc-400" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="11" cy="11" r="8" /><path d="m21 21-4.3-4.3" /></svg>
+          <svg className="absolute left-3 top-1/2 -translate-y-1/2 text-neutral-400" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="11" cy="11" r="8" /><path d="m21 21-4.3-4.3" /></svg>
           <input type="text" placeholder="Search candidates..." value={search} onChange={(e) => setSearch(e.target.value)}
-            className="w-full pl-9 pr-4 py-2.5 rounded-xl border border-zinc-200 bg-white text-sm placeholder:text-zinc-400 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-300" />
+            className="w-full pl-9 pr-4 py-2.5 rounded-xl border border-neutral-200 bg-white text-sm placeholder:text-neutral-400 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-300" />
         </div>
         <div className="flex gap-1.5">
           {[
@@ -54,44 +54,44 @@ export function RankedList({ candidates }: { candidates: Candidate[] }) {
           ].map((f) => (
             <button key={f.v} onClick={() => setFilter(f.v)}
               className={`px-3 py-2 text-xs font-medium border-b-2 transition-colors ${filter === f.v ? "border-neutral-900 text-neutral-900" : "border-transparent text-neutral-400 hover:text-neutral-600"}`}>
-              {f.l}<span className={`ml-1 ${filter === f.v ? "text-zinc-300" : "text-zinc-400"}`}>{f.c}</span>
+              {f.l}<span className={`ml-1 ${filter === f.v ? "text-neutral-300" : "text-neutral-400"}`}>{f.c}</span>
             </button>
           ))}
         </div>
       </div>
 
-      <p className="text-xs text-zinc-400 mb-3">{filtered.length} of {candidates.length} candidates</p>
+      <p className="text-xs text-neutral-400 mb-3">{filtered.length} of {candidates.length} candidates</p>
 
       <div className="space-y-2">
         {filtered.map((c) => {
           const colors = scoreColor(c.score);
           const isOpen = expanded === c.id;
           return (
-            <div key={c.id} className="rounded-xl border border-zinc-200 bg-white overflow-hidden hover:shadow-sm transition-shadow">
+            <div key={c.id} className="rounded-xl border border-neutral-200 bg-white overflow-hidden hover:shadow-sm transition-shadow">
               <button onClick={() => setExpanded(isOpen ? null : c.id)} className="w-full text-left px-4 py-3.5 flex items-start gap-3">
                 <div className="shrink-0 relative">
                   {c.linkedin_photo ? (
-                    <img src={c.linkedin_photo} alt={c.name} className="w-10 h-10 rounded-full object-cover border border-zinc-200" />
+                    <img src={c.linkedin_photo} alt={c.name} className="w-10 h-10 rounded-full object-cover border border-neutral-200" />
                   ) : (
-                    <span className="w-10 h-10 rounded-full bg-zinc-100 flex items-center justify-center text-xs font-bold text-zinc-500">{c.name.charAt(0)}</span>
+                    <span className="w-10 h-10 rounded-full bg-neutral-100 flex items-center justify-center text-xs font-bold text-neutral-500">{c.name.charAt(0)}</span>
                   )}
-                  <span className="absolute -bottom-1 -right-1 w-5 h-5 rounded-full bg-white border border-zinc-200 flex items-center justify-center text-[9px] font-bold text-zinc-500">{c.rank}</span>
+                  <span className="absolute -bottom-1 -right-1 w-5 h-5 rounded-full bg-white border border-neutral-200 flex items-center justify-center text-[9px] font-bold text-neutral-500">{c.rank}</span>
                 </div>
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2 mb-0.5">
                     <span className="font-semibold text-sm">{c.name}</span>
                     <span className={`px-2 py-0.5 rounded-full text-xs font-bold border ${colors.bg} ${colors.border} ${colors.text}`}>{c.score} &middot; {scoreLabel(c.score)}</span>
                   </div>
-                  {c.linkedin_headline && <p className="text-xs text-zinc-600 mb-0.5 truncate">{c.linkedin_headline}</p>}
-                  <p className="text-xs text-zinc-400 line-clamp-1">{c.reasoning}</p>
+                  {c.linkedin_headline && <p className="text-xs text-neutral-600 mb-0.5 truncate">{c.linkedin_headline}</p>}
+                  <p className="text-xs text-neutral-400 line-clamp-1">{c.reasoning}</p>
                 </div>
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"
-                  className={`shrink-0 mt-1.5 text-zinc-400 transition-transform ${isOpen ? "rotate-180" : ""}`}><path d="m6 9 6 6 6-6" /></svg>
+                  className={`shrink-0 mt-1.5 text-neutral-400 transition-transform ${isOpen ? "rotate-180" : ""}`}><path d="m6 9 6 6 6-6" /></svg>
               </button>
               {isOpen && (
-                <div className="px-4 pb-4 pt-0 border-t border-zinc-100 fade-in">
+                <div className="px-4 pb-4 pt-0 border-t border-neutral-100 fade-in">
                   <div className="mt-3 mb-4">
-                    <div className="h-2 rounded-full bg-zinc-100 overflow-hidden"><div className={`h-full rounded-full ${colors.bar}`} style={{ width: `${c.score}%` }} /></div>
+                    <div className="h-2 rounded-full bg-neutral-100 overflow-hidden"><div className={`h-full rounded-full ${colors.bar}`} style={{ width: `${c.score}%` }} /></div>
                   </div>
                   {c.linkedin_url && (
                     <a href={c.linkedin_url} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 text-xs text-indigo-600 hover:text-indigo-800 mb-3">
@@ -99,26 +99,26 @@ export function RankedList({ candidates }: { candidates: Candidate[] }) {
                       LinkedIn profile
                     </a>
                   )}
-                  <p className="text-sm text-zinc-700 leading-relaxed mb-4">{c.reasoning}</p>
+                  <p className="text-sm text-neutral-700 leading-relaxed mb-4">{c.reasoning}</p>
                   <div className="grid sm:grid-cols-2 gap-4">
                     {c.highlights.length > 0 && (
                       <div>
-                        <h4 className="text-xs font-semibold text-zinc-400 uppercase tracking-wider mb-2">Strengths</h4>
+                        <h4 className="text-xs font-semibold text-neutral-400 uppercase tracking-wider mb-2">Strengths</h4>
                         {c.highlights.map((h, i) => (
                           <div key={i} className="flex items-start gap-2 mb-1">
                             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#16a34a" strokeWidth="2.5" className="shrink-0 mt-0.5"><path d="M20 6 9 17l-5-5" /></svg>
-                            <span className="text-sm text-zinc-700">{h}</span>
+                            <span className="text-sm text-neutral-700">{h}</span>
                           </div>
                         ))}
                       </div>
                     )}
                     {c.gaps.length > 0 && (
                       <div>
-                        <h4 className="text-xs font-semibold text-zinc-400 uppercase tracking-wider mb-2">Gaps</h4>
+                        <h4 className="text-xs font-semibold text-neutral-400 uppercase tracking-wider mb-2">Gaps</h4>
                         {c.gaps.map((g, i) => (
                           <div key={i} className="flex items-start gap-2 mb-1">
                             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#dc2626" strokeWidth="2.5" className="shrink-0 mt-0.5"><circle cx="12" cy="12" r="10" /><path d="m15 9-6 6M9 9l6 6" /></svg>
-                            <span className="text-sm text-zinc-700">{g}</span>
+                            <span className="text-sm text-neutral-700">{g}</span>
                           </div>
                         ))}
                       </div>

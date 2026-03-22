@@ -25,21 +25,21 @@ export default async function LandingPage() {
       </nav>
 
       {/* Hero */}
-      <section className="pt-28 pb-20 px-6">
-        <div className="max-w-2xl mx-auto">
-          <p className="text-xs uppercase tracking-[0.2em] text-neutral-400 mb-6">AI-powered talent matching</p>
-          <h1 className="text-5xl font-serif font-normal leading-[1.15] mb-6 italic">
+      <section className="pt-32 pb-28 px-6">
+        <div className="max-w-5xl mx-auto">
+          <p className="text-xs uppercase tracking-[0.3em] text-neutral-400 mb-8">AI-powered talent matching</p>
+          <h1 className="text-6xl md:text-8xl font-serif font-normal leading-[1.05] mb-8 italic">
             The right candidate<br />for every role.
           </h1>
-          <p className="text-lg text-neutral-500 leading-relaxed max-w-lg mb-10">
+          <p className="text-xl md:text-2xl text-neutral-400 leading-relaxed max-w-2xl mb-12">
             Upload your candidates. Define the role. Our matching engine scores, ranks, and explains every fit — so you hire with confidence.
           </p>
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-6">
             <Link href={loggedIn ? "/upload" : "/sign-up"}
-              className="text-sm font-medium bg-neutral-900 text-white px-6 py-2.5 rounded-md hover:bg-black transition-colors">
+              className="text-base font-medium bg-neutral-900 text-white px-8 py-3.5 rounded-md hover:bg-black transition-colors">
               {loggedIn ? "Go to dashboard" : "Start matching"}
             </Link>
-            <Link href="#how" className="text-sm text-neutral-500 hover:text-neutral-900 underline underline-offset-4">
+            <Link href="#how" className="text-base text-neutral-500 hover:text-neutral-900 underline underline-offset-4">
               How it works
             </Link>
           </div>
@@ -50,10 +50,10 @@ export default async function LandingPage() {
       <div className="max-w-6xl mx-auto px-6"><div className="border-t border-neutral-200" /></div>
 
       {/* How it works */}
-      <section id="how" className="py-20 px-6">
+      <section id="how" className="py-28 px-6">
         <div className="max-w-4xl mx-auto">
           <p className="text-xs uppercase tracking-[0.2em] text-neutral-400 mb-4">Process</p>
-          <h2 className="text-2xl font-serif italic mb-12">Three steps to your shortlist.</h2>
+          <h2 className="text-4xl md:text-5xl font-serif italic mb-14">Three steps to your shortlist.</h2>
           <div className="grid md:grid-cols-3 gap-12">
             {[
               { n: "01", t: "Upload", d: "Drop any CSV of candidates. We parse every format — ATS exports, LinkedIn, spreadsheets. No templates required." },
@@ -73,10 +73,10 @@ export default async function LandingPage() {
       <div className="max-w-6xl mx-auto px-6"><div className="border-t border-neutral-200" /></div>
 
       {/* Features */}
-      <section className="py-20 px-6">
+      <section className="py-28 px-6">
         <div className="max-w-4xl mx-auto">
           <p className="text-xs uppercase tracking-[0.2em] text-neutral-400 mb-4">Capabilities</p>
-          <h2 className="text-2xl font-serif italic mb-12">Built for recruiting at scale.</h2>
+          <h2 className="text-4xl md:text-5xl font-serif italic mb-14">Built for recruiting at scale.</h2>
           <div className="grid md:grid-cols-2 gap-x-16 gap-y-8">
             {[
               { t: "Any CSV format", d: "No rigid templates. Auto-detects names, LinkedIn URLs, and fields from any export." },
@@ -98,10 +98,10 @@ export default async function LandingPage() {
       <div className="max-w-6xl mx-auto px-6"><div className="border-t border-neutral-200" /></div>
 
       {/* Pricing */}
-      <section className="py-20 px-6">
+      <section className="py-28 px-6">
         <div className="max-w-4xl mx-auto">
           <p className="text-xs uppercase tracking-[0.2em] text-neutral-400 mb-4">Pricing</p>
-          <h2 className="text-2xl font-serif italic mb-12">Simple, transparent pricing.</h2>
+          <h2 className="text-4xl md:text-5xl font-serif italic mb-14">Simple, transparent pricing.</h2>
           <div className="grid md:grid-cols-3 gap-6">
             <PriceCard tier="Free" price="$0" period="forever" features={["50 scores/month", "1 role", "CSV export", "LinkedIn enrichment"]} />
             <PriceCard tier="Pro" price="$49" period="/month" featured features={["500 scores/month", "Unlimited roles", "Stable matching", "Team seats (5)", "Priority scoring"]} />
@@ -113,10 +113,10 @@ export default async function LandingPage() {
       <div className="max-w-6xl mx-auto px-6"><div className="border-t border-neutral-200" /></div>
 
       {/* Comparison */}
-      <section className="py-20 px-6">
+      <section className="py-28 px-6">
         <div className="max-w-4xl mx-auto">
           <p className="text-xs uppercase tracking-[0.2em] text-neutral-400 mb-4">Comparison</p>
-          <h2 className="text-2xl font-serif italic mb-12">How we compare.</h2>
+          <h2 className="text-4xl md:text-5xl font-serif italic mb-14">How we compare.</h2>
           <div className="overflow-x-auto">
             <table className="w-full text-sm min-w-[600px]">
               <thead>
@@ -142,9 +142,9 @@ export default async function LandingPage() {
       </section>
 
       {/* CTA */}
-      <section className="py-20 px-6 bg-neutral-950 text-white">
+      <section className="py-28 px-6 bg-neutral-950 text-white">
         <div className="max-w-2xl mx-auto text-center">
-          <h2 className="text-3xl font-serif italic mb-4">Ready to match?</h2>
+          <h2 className="text-5xl font-serif italic mb-6">Ready to match?</h2>
           <p className="text-neutral-400 mb-8">Free to start. No credit card.</p>
           <Link href={loggedIn ? "/upload" : "/sign-up"}
             className="inline-block text-sm font-medium bg-white text-neutral-900 px-6 py-2.5 rounded-md hover:bg-neutral-100 transition-colors">

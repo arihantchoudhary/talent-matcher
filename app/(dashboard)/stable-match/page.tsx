@@ -193,29 +193,29 @@ export default function StableMatchPage() {
         <div className="flex items-center justify-between mb-6">
           <div>
             <h1 className="text-2xl font-bold">Stable Matching Results</h1>
-            <p className="text-sm text-zinc-500">{totalMatched} matched, {unmatchedNames.length} unmatched across {matchResults.length} roles</p>
+            <p className="text-sm text-neutral-500">{totalMatched} matched, {unmatchedNames.length} unmatched across {matchResults.length} roles</p>
           </div>
           <button onClick={() => { setStep("setup"); setMatchResults([]); }} className="text-sm text-purple-600 hover:text-purple-800">Start over</button>
         </div>
 
         <div className="space-y-4 mb-8">
           {matchResults.map((m, rIdx) => (
-            <div key={rIdx} className="rounded-xl border border-zinc-200 bg-white overflow-hidden">
+            <div key={rIdx} className="rounded-xl border border-neutral-200 bg-white overflow-hidden">
               <button onClick={() => setExpandedRole(expandedRole === rIdx ? null : rIdx)}
-                className="w-full text-left px-5 py-4 flex items-center justify-between hover:bg-zinc-50">
+                className="w-full text-left px-5 py-4 flex items-center justify-between hover:bg-neutral-50">
                 <div>
                   <div className="flex items-center gap-2">
                     <span className="px-2 py-0.5 rounded text-xs font-semibold bg-purple-100 text-purple-700">Role {rIdx + 1}</span>
                     <span className="font-semibold">{m.roleTitle}</span>
                   </div>
-                  <p className="text-sm text-zinc-500 mt-0.5">{m.candidates.length} matched</p>
+                  <p className="text-sm text-neutral-500 mt-0.5">{m.candidates.length} matched</p>
                 </div>
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className={`text-zinc-400 transition-transform ${expandedRole === rIdx ? "rotate-180" : ""}`}><path d="m6 9 6 6 6-6" /></svg>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className={`text-neutral-400 transition-transform ${expandedRole === rIdx ? "rotate-180" : ""}`}><path d="m6 9 6 6 6-6" /></svg>
               </button>
               {expandedRole === rIdx && (
-                <div className="border-t border-zinc-100 px-5 py-3 space-y-3 fade-in">
+                <div className="border-t border-neutral-100 px-5 py-3 space-y-3 fade-in">
                   {m.candidates.length === 0 ? (
-                    <p className="text-sm text-zinc-400 py-4 text-center">No candidates matched</p>
+                    <p className="text-sm text-neutral-400 py-4 text-center">No candidates matched</p>
                   ) : m.candidates.map((c, i) => {
                     const color = c.score >= 70 ? "bg-emerald-50 border-emerald-200 text-emerald-700" : c.score >= 50 ? "bg-indigo-50 border-indigo-200 text-indigo-700" : "bg-amber-50 border-amber-200 text-amber-700";
                     return (
@@ -223,7 +223,7 @@ export default function StableMatchPage() {
                         <span className={`shrink-0 px-2 py-0.5 rounded-full text-xs font-bold border ${color}`}>{c.score}</span>
                         <div>
                           <div className="font-medium text-sm">{c.name}</div>
-                          <p className="text-xs text-zinc-500 mt-0.5">{c.reasoning}</p>
+                          <p className="text-xs text-neutral-500 mt-0.5">{c.reasoning}</p>
                           {c.highlights.length > 0 && (
                             <div className="flex gap-1 mt-1 flex-wrap">
                               {c.highlights.map((h, j) => <span key={j} className="text-[10px] px-1.5 py-0.5 rounded bg-emerald-50 text-emerald-700 border border-emerald-100">{h}</span>)}
@@ -241,13 +241,13 @@ export default function StableMatchPage() {
 
         {unmatchedNames.length > 0 && (
           <div>
-            <h2 className="font-semibold text-sm text-zinc-500 mb-3">Unmatched ({unmatchedNames.length})</h2>
-            <div className="rounded-xl border border-zinc-200 bg-white p-4">
+            <h2 className="font-semibold text-sm text-neutral-500 mb-3">Unmatched ({unmatchedNames.length})</h2>
+            <div className="rounded-xl border border-neutral-200 bg-white p-4">
               <div className="flex flex-wrap gap-2">
                 {unmatchedNames.slice(0, 30).map((name, i) => (
-                  <span key={i} className="text-xs text-zinc-500 bg-zinc-100 px-2 py-1 rounded">{name}</span>
+                  <span key={i} className="text-xs text-neutral-500 bg-neutral-100 px-2 py-1 rounded">{name}</span>
                 ))}
-                {unmatchedNames.length > 30 && <span className="text-xs text-zinc-400">+{unmatchedNames.length - 30} more</span>}
+                {unmatchedNames.length > 30 && <span className="text-xs text-neutral-400">+{unmatchedNames.length - 30} more</span>}
               </div>
             </div>
           </div>
@@ -264,7 +264,7 @@ export default function StableMatchPage() {
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#7c3aed" strokeWidth="2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" /><circle cx="9" cy="7" r="4" /><path d="M22 21v-2a4 4 0 0 0-3-3.87" /><path d="M16 3.13a4 4 0 0 1 0 7.75" /></svg>
         </div>
         <h2 className="text-xl font-bold">Running Gale-Shapley...</h2>
-        <p className="text-sm text-zinc-500 mt-2">Finding optimal stable assignments</p>
+        <p className="text-sm text-neutral-500 mt-2">Finding optimal stable assignments</p>
       </div>
     );
   }
@@ -274,7 +274,7 @@ export default function StableMatchPage() {
     <div className="max-w-4xl mx-auto px-6 py-8">
       <div className="mb-6">
         <h1 className="text-2xl font-bold tracking-tight">Stable Matching</h1>
-        <p className="text-sm text-zinc-500 mt-0.5">Upload a CSV per role, score each, then run Gale-Shapley to optimally assign candidates</p>
+        <p className="text-sm text-neutral-500 mt-0.5">Upload a CSV per role, score each, then run Gale-Shapley to optimally assign candidates</p>
       </div>
 
       {/* Role slots */}
@@ -296,14 +296,14 @@ export default function StableMatchPage() {
       </div>
 
       <div className="flex gap-3">
-        <button onClick={addSlot} className="flex-1 py-3 rounded-xl border-2 border-dashed border-zinc-300 text-sm font-medium text-zinc-500 hover:border-zinc-400 hover:bg-zinc-50 transition-colors">
+        <button onClick={addSlot} className="flex-1 py-3 rounded-xl border-2 border-dashed border-neutral-300 text-sm font-medium text-neutral-500 hover:border-neutral-400 hover:bg-neutral-50 transition-colors">
           + Add another role
         </button>
       </div>
 
       {/* Run stable match */}
       <div className="mt-6 rounded-xl border border-purple-200 bg-purple-50 p-5 text-center">
-        <p className="text-sm text-zinc-600 mb-3">
+        <p className="text-sm text-neutral-600 mb-3">
           {allDone} of {slots.length} roles scored &middot; {readyForMatch ? "Ready to match" : "Score at least 2 roles to run stable matching"}
         </p>
         <button onClick={runStableMatch} disabled={!readyForMatch}
@@ -330,17 +330,17 @@ function RoleSlotCard({ slot, idx, roles, onSelectRole, onFile, onCapacity, onSc
   const pct = slot.candidates.length > 0 && slot.scored.length > 0 ? Math.round((slot.scored.length / slot.candidates.length) * 100) : 0;
 
   return (
-    <div className={`rounded-xl border bg-white p-5 ${slot.done ? "border-emerald-200" : "border-zinc-200"}`}>
+    <div className={`rounded-xl border bg-white p-5 ${slot.done ? "border-emerald-200" : "border-neutral-200"}`}>
       <div className="flex items-center justify-between mb-3">
         <h3 className="font-semibold text-sm">Role {idx + 1}</h3>
         <div className="flex items-center gap-2">
           <div className="flex items-center gap-1.5">
-            <span className="text-xs text-zinc-500">Seats:</span>
+            <span className="text-xs text-neutral-500">Seats:</span>
             <input type="number" min={1} max={50} value={slot.capacity}
               onChange={e => onCapacity(parseInt(e.target.value) || 1)}
-              className="w-14 border border-zinc-200 rounded px-2 py-1 text-xs text-center" />
+              className="w-14 border border-neutral-200 rounded px-2 py-1 text-xs text-center" />
           </div>
-          {canRemove && <button onClick={onRemove} className="text-xs text-zinc-400 hover:text-red-500">Remove</button>}
+          {canRemove && <button onClick={onRemove} className="text-xs text-neutral-400 hover:text-red-500">Remove</button>}
         </div>
       </div>
 
@@ -348,22 +348,22 @@ function RoleSlotCard({ slot, idx, roles, onSelectRole, onFile, onCapacity, onSc
         {/* Role picker */}
         <div>
           <button onClick={() => setShowRolePicker(!showRolePicker)}
-            className="w-full text-left rounded-lg border border-zinc-200 p-2.5 hover:bg-zinc-50 text-sm">
+            className="w-full text-left rounded-lg border border-neutral-200 p-2.5 hover:bg-neutral-50 text-sm">
             {slot.role ? (
               <div className="flex items-center gap-2">
                 <span className="px-1.5 py-0.5 rounded text-[10px] font-semibold bg-indigo-100 text-indigo-700">{slot.role.category}</span>
                 <span className="font-medium">{slot.role.title}</span>
               </div>
             ) : (
-              <span className="text-zinc-400">Select a role...</span>
+              <span className="text-neutral-400">Select a role...</span>
             )}
           </button>
           {showRolePicker && (
-            <div className="mt-1 rounded-lg border border-zinc-200 bg-white shadow-lg max-h-48 overflow-y-auto">
+            <div className="mt-1 rounded-lg border border-neutral-200 bg-white shadow-lg max-h-48 overflow-y-auto">
               {roles.map((r, rIdx) => (
                 <button key={rIdx} onClick={() => { onSelectRole(rIdx); setShowRolePicker(false); }}
-                  className="w-full text-left px-3 py-2 text-sm hover:bg-zinc-50 flex items-center gap-2">
-                  <span className="px-1.5 py-0.5 rounded text-[9px] font-semibold bg-zinc-100 text-zinc-600">{r.category}</span>
+                  className="w-full text-left px-3 py-2 text-sm hover:bg-neutral-50 flex items-center gap-2">
+                  <span className="px-1.5 py-0.5 rounded text-[9px] font-semibold bg-neutral-100 text-neutral-600">{r.category}</span>
                   {r.title}
                 </button>
               ))}
@@ -375,13 +375,13 @@ function RoleSlotCard({ slot, idx, roles, onSelectRole, onFile, onCapacity, onSc
         <div onDragOver={e => { e.preventDefault(); setDragging(true); }} onDragLeave={() => setDragging(false)} onDrop={handleDrop}
           onClick={() => fileRef.current?.click()}
           className={`rounded-lg border border-dashed p-2.5 text-center cursor-pointer text-sm ${
-            dragging ? "border-purple-400 bg-purple-50" : slot.fileName ? "border-emerald-300 bg-emerald-50" : "border-zinc-200 hover:border-zinc-300"
+            dragging ? "border-purple-400 bg-purple-50" : slot.fileName ? "border-emerald-300 bg-emerald-50" : "border-neutral-200 hover:border-neutral-300"
           }`}>
           <input ref={fileRef} type="file" accept=".csv" className="hidden" onChange={e => e.target.files?.[0] && onFile(e.target.files[0])} />
           {slot.fileName ? (
             <span className="text-emerald-700 font-medium">{slot.fileName} ({slot.candidates.length})</span>
           ) : (
-            <span className="text-zinc-400">Drop CSV or click</span>
+            <span className="text-neutral-400">Drop CSV or click</span>
           )}
         </div>
       </div>
@@ -391,10 +391,10 @@ function RoleSlotCard({ slot, idx, roles, onSelectRole, onFile, onCapacity, onSc
         <div className="mt-3">
           {slot.scoring ? (
             <div>
-              <div className="h-1.5 rounded-full bg-zinc-100 overflow-hidden mb-1">
+              <div className="h-1.5 rounded-full bg-neutral-100 overflow-hidden mb-1">
                 <div className="h-full rounded-full bg-indigo-600 transition-all" style={{ width: `${pct}%` }} />
               </div>
-              <p className="text-xs text-zinc-400">{slot.scored.length} / {slot.candidates.length} scored</p>
+              <p className="text-xs text-neutral-400">{slot.scored.length} / {slot.candidates.length} scored</p>
             </div>
           ) : (
             <button onClick={onScore}

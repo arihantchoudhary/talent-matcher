@@ -16,18 +16,18 @@ export function ApiKeyCard() {
   }
 
   return (
-    <div className="rounded-xl border border-zinc-200 bg-white p-6">
+    <div className="rounded-xl border border-neutral-200 bg-white p-6">
       <h2 className="font-semibold mb-1">OpenAI API Key</h2>
-      <p className="text-sm text-zinc-500 mb-3">Saved in this browser. Used for scoring requests. Falls back to our default key if empty.</p>
+      <p className="text-sm text-neutral-500 mb-3">Saved in this browser. Used for scoring requests. Falls back to our default key if empty.</p>
       <div className="flex gap-2 mb-2">
         <input
           type="password"
           value={key}
           onChange={(e) => setKey(e.target.value)}
           placeholder="sk-proj-..."
-          className="flex-1 border border-zinc-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-300"
+          className="flex-1 border border-neutral-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-300"
         />
-        <button onClick={handleSave} className="px-4 py-2 rounded-lg bg-indigo-600 text-white text-sm font-medium hover:bg-indigo-700 transition-colors shrink-0">
+        <button onClick={handleSave} className="px-4 py-2 rounded-lg bg-neutral-900 text-white text-sm font-medium hover:bg-black transition-colors shrink-0">
           {saved ? "Saved" : "Save"}
         </button>
       </div>

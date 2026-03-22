@@ -130,28 +130,28 @@ export default function HistoryPage() {
         <div className="flex items-center justify-between mb-6">
           <div>
             <h1 className="text-2xl font-bold tracking-tight">Match History</h1>
-            <p className="text-sm text-zinc-500 mt-0.5">{sessions.length} session{sessions.length !== 1 ? "s" : ""}</p>
+            <p className="text-sm text-neutral-500 mt-0.5">{sessions.length} session{sessions.length !== 1 ? "s" : ""}</p>
           </div>
           <div className="flex gap-1.5">
             <button onClick={() => setGroupBy("role")}
-              className={`px-3 py-1.5 rounded-lg text-xs font-medium border transition-colors ${groupBy === "role" ? "bg-zinc-900 text-white border-zinc-900" : "bg-white text-zinc-600 border-zinc-200"}`}>
+              className={`px-3 py-1.5 rounded-lg text-xs font-medium border transition-colors ${groupBy === "role" ? "bg-neutral-900 text-white border-neutral-900" : "bg-white text-neutral-600 border-neutral-200"}`}>
               By role
             </button>
             <button onClick={() => setGroupBy("time")}
-              className={`px-3 py-1.5 rounded-lg text-xs font-medium border transition-colors ${groupBy === "time" ? "bg-zinc-900 text-white border-zinc-900" : "bg-white text-zinc-600 border-zinc-200"}`}>
+              className={`px-3 py-1.5 rounded-lg text-xs font-medium border transition-colors ${groupBy === "time" ? "bg-neutral-900 text-white border-neutral-900" : "bg-white text-neutral-600 border-neutral-200"}`}>
               By date
             </button>
           </div>
         </div>
 
         {sessions.length === 0 ? (
-          <div className="rounded-xl border border-zinc-200 bg-white p-12 text-center">
-            <div className="w-12 h-12 rounded-full bg-zinc-100 flex items-center justify-center mx-auto mb-4">
+          <div className="rounded-xl border border-neutral-200 bg-white p-12 text-center">
+            <div className="w-12 h-12 rounded-full bg-neutral-100 flex items-center justify-center mx-auto mb-4">
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#a1a1aa" strokeWidth="2"><path d="M12 8v4l3 3m6-3a9 9 0 1 1-18 0 9 9 0 0 1 18 0z" /></svg>
             </div>
-            <p className="font-medium text-zinc-700 mb-1">No matches yet</p>
-            <p className="text-sm text-zinc-500 mb-4">Upload a CSV and score candidates to see results here</p>
-            <a href="/upload" className="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg bg-indigo-600 text-white text-sm font-medium hover:bg-indigo-700 transition-colors">
+            <p className="font-medium text-neutral-700 mb-1">No matches yet</p>
+            <p className="text-sm text-neutral-500 mb-4">Upload a CSV and score candidates to see results here</p>
+            <a href="/upload" className="inline-flex items-center gap-1.5 px-4 py-2 rounded-lg bg-neutral-900 text-white text-sm font-medium hover:bg-black transition-colors">
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M17 8l-5-5-5 5M12 3v12" /></svg>
               New match
             </a>
@@ -160,25 +160,25 @@ export default function HistoryPage() {
           <div className="space-y-6">
             {[...grouped.entries()].map(([group, groupSessions]) => (
               <div key={group}>
-                <h2 className="text-sm font-semibold text-zinc-500 mb-3 flex items-center gap-2">
+                <h2 className="text-sm font-semibold text-neutral-500 mb-3 flex items-center gap-2">
                   {groupBy === "role" && <span className="px-1.5 py-0.5 rounded text-[10px] font-semibold bg-indigo-100 text-indigo-700">{groupSessions[0]?.role_category}</span>}
                   {group}
-                  <span className="text-zinc-400 font-normal">{groupSessions.length} session{groupSessions.length > 1 ? "s" : ""}</span>
+                  <span className="text-neutral-400 font-normal">{groupSessions.length} session{groupSessions.length > 1 ? "s" : ""}</span>
                 </h2>
                 <div className="space-y-2">
                   {groupSessions.map((s) => (
-                    <div key={s.session_id} className="rounded-xl border border-zinc-200 bg-white hover:shadow-sm transition-shadow">
+                    <div key={s.session_id} className="rounded-xl border border-neutral-200 bg-white hover:shadow-sm transition-shadow">
                       <button onClick={() => handleView(s)} className="w-full text-left p-4 flex items-center gap-4">
                         {/* Score ring */}
                         <div className={`shrink-0 w-12 h-12 rounded-full border-[3px] flex items-center justify-center text-sm font-bold ${
-                          s.avg_score >= 60 ? "border-emerald-400 text-emerald-700" : s.avg_score >= 40 ? "border-indigo-400 text-indigo-700" : "border-zinc-300 text-zinc-600"
+                          s.avg_score >= 60 ? "border-emerald-400 text-emerald-700" : s.avg_score >= 40 ? "border-indigo-400 text-indigo-700" : "border-neutral-300 text-neutral-600"
                         }`}>
                           {s.avg_score}
                         </div>
 
                         <div className="flex-1 min-w-0">
                           <div className="font-semibold text-sm">{s.role}</div>
-                          <div className="text-xs text-zinc-500 mt-0.5">
+                          <div className="text-xs text-neutral-500 mt-0.5">
                             {s.candidate_count} candidates &middot; {s.file_name} &middot; {new Date(s.created_at).toLocaleDateString()} {new Date(s.created_at).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
                             {"user_name" in s && s.user_name ? <> &middot; by {String(s.user_name)}</> : null}
                           </div>
@@ -189,13 +189,13 @@ export default function HistoryPage() {
                           </div>
                         </div>
 
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="shrink-0 text-zinc-400"><path d="m9 18 6-6-6-6" /></svg>
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="shrink-0 text-neutral-400"><path d="m9 18 6-6-6-6" /></svg>
                       </button>
 
                       {/* Delete */}
                       <div className="px-4 pb-3 flex justify-end">
                         <button onClick={(e) => { e.stopPropagation(); handleDelete(s.session_id); }}
-                          className="text-xs text-zinc-400 hover:text-red-500 transition-colors">
+                          className="text-xs text-neutral-400 hover:text-red-500 transition-colors">
                           Delete
                         </button>
                       </div>

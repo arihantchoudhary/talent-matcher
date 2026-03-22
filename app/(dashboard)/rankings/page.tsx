@@ -180,12 +180,12 @@ export default function HistoryPage() {
                           <div className="font-semibold text-sm">{s.role}</div>
                           <div className="text-xs text-zinc-500 mt-0.5">
                             {s.candidate_count} candidates &middot; {s.file_name} &middot; {new Date(s.created_at).toLocaleDateString()} {new Date(s.created_at).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
-                            {(s as Record<string, unknown>).user_name ? <> &middot; by {String((s as Record<string, unknown>).user_name)}</> : null}
+                            {"user_name" in s && s.user_name ? <> &middot; by {String(s.user_name)}</> : null}
                           </div>
                           <div className="flex gap-3 mt-1.5">
                             <span className="text-xs text-emerald-600 font-medium">{s.top_tier} top tier</span>
                             <span className="text-xs text-indigo-600 font-medium">{s.good_fit} good fit</span>
-                            {(s as MatchSession & {duration?: number}).duration ? <span className="text-xs text-neutral-400">{(s as MatchSession & {duration?: number}).duration}s</span> : null}
+                            {s.duration ? <span className="text-xs text-neutral-400">{s.duration}s</span> : null}
                           </div>
                         </div>
 
@@ -246,6 +246,13 @@ function CandidateRow({ candidate: c }: { candidate: ScoredCandidate; tier: { bo
       {open && (
         <div className="px-4 pb-4 border-t border-neutral-100 fade-in">
           <div className="mt-3 h-1 bg-neutral-100 mb-3"><div className="h-full bg-neutral-900" style={{ width: `${c.score}%` }} /></div>
+          {c.linkedin_url && (
+            <a href={c.linkedin_url} target="_blank" rel="noopener noreferrer"
+              className="inline-flex items-center gap-1.5 text-xs text-neutral-500 hover:text-neutral-900 mb-3 border border-neutral-200 rounded px-2 py-1 hover:bg-neutral-50 transition-colors">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+              View LinkedIn
+            </a>
+          )}
           <p className="text-sm text-neutral-700 mb-3 leading-relaxed">{c.reasoning}</p>
           <div className="grid sm:grid-cols-2 gap-3">
             {(c.highlights || []).length > 0 && (

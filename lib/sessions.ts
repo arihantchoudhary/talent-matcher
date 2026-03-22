@@ -2,6 +2,7 @@ export interface ScoredCandidate {
   id: string; rank: number; name: string; score: number;
   reasoning: string; highlights: string[]; gaps: string[];
   photo_url?: string;
+  linkedin_url?: string;
 }
 
 export interface MatchSession {
@@ -16,7 +17,9 @@ export interface MatchSession {
   avg_score: number;
   results: ScoredCandidate[];
   created_at: string;
-  duration?: number; // seconds
+  duration?: number;
+  user_name?: string;
+  user_id?: string;
 }
 
 const API = process.env.NEXT_PUBLIC_API_URL || "https://aicm3pweed.us-east-1.awsapprunner.com";

@@ -27,14 +27,14 @@ export default async function LandingPage() {
       {/* Hero */}
       <section className="pt-24 pb-16 px-6">
         <div className="max-w-5xl mx-auto">
-          <p className="text-xs uppercase tracking-[0.3em] text-neutral-400 mb-8">AI-powered talent matching</p>
-          <h1 className="text-6xl md:text-8xl font-serif font-normal leading-[1.05] mb-8 italic">
+          <p className="text-xs uppercase tracking-[0.3em] text-neutral-400 mb-8" style={{ animation: "fadeIn 0.6s ease-out 0.1s both" }}>AI-powered talent matching</p>
+          <h1 className="text-6xl md:text-8xl font-serif font-normal leading-[1.05] mb-8 italic" style={{ animation: "fadeIn 0.8s ease-out 0.2s both" }}>
             The right candidate<br />for every role.
           </h1>
-          <p className="text-lg text-neutral-400 leading-relaxed max-w-2xl mb-12">
+          <p className="text-lg text-neutral-400 leading-relaxed max-w-2xl mb-12" style={{ animation: "fadeIn 0.6s ease-out 0.5s both" }}>
             Upload your candidates. Define the role. Our matching engine scores, ranks, and explains every fit — so you hire with confidence.
           </p>
-          <div className="flex items-center gap-6">
+          <div className="flex items-center gap-6" style={{ animation: "fadeIn 0.6s ease-out 0.7s both" }}>
             <Link href={loggedIn ? "/upload" : "/sign-up"}
               className="text-base font-medium bg-neutral-900 text-white px-8 py-3.5 rounded-md hover:bg-black transition-colors">
               {loggedIn ? "Go to dashboard" : "Start matching"}
@@ -54,7 +54,7 @@ export default async function LandingPage() {
         <div className="max-w-4xl mx-auto scroll-fade">
           <p className="text-xs uppercase tracking-[0.2em] text-neutral-400 mb-4">Process</p>
           <h2 className="text-2xl md:text-3xl font-serif italic mb-10">Three steps to your shortlist.</h2>
-          <div className="grid md:grid-cols-3 gap-12">
+          <div className="grid md:grid-cols-3 gap-12 scroll-stagger">
             {[
               { n: "01", t: "Upload", d: "Drop any CSV of candidates. We parse every format — ATS exports, LinkedIn, spreadsheets. No templates required." },
               { n: "02", t: "Match", d: "GPT-4o scores each candidate against your role description. You get a score, reasoning, strengths, and gaps for every person." },
@@ -77,7 +77,7 @@ export default async function LandingPage() {
         <div className="max-w-4xl mx-auto scroll-fade">
           <p className="text-xs uppercase tracking-[0.2em] text-neutral-400 mb-4">Capabilities</p>
           <h2 className="text-2xl md:text-3xl font-serif italic mb-10">Built for recruiting at scale.</h2>
-          <div className="grid md:grid-cols-2 gap-x-16 gap-y-8">
+          <div className="grid md:grid-cols-2 gap-x-16 gap-y-8 scroll-stagger">
             {[
               { t: "Any CSV format", d: "No rigid templates. Auto-detects names, LinkedIn URLs, and fields from any export." },
               { t: "LinkedIn enrichment", d: "If your CSV has LinkedIn URLs, we pull full profiles — experience, education, skills, photos." },
@@ -102,7 +102,7 @@ export default async function LandingPage() {
         <div className="max-w-4xl mx-auto scroll-fade">
           <p className="text-xs uppercase tracking-[0.2em] text-neutral-400 mb-4">Pricing</p>
           <h2 className="text-2xl md:text-3xl font-serif italic mb-10">Simple, transparent pricing.</h2>
-          <div className="grid md:grid-cols-3 gap-6">
+          <div className="grid md:grid-cols-3 gap-6 scroll-stagger">
             <PriceCard tier="Free" price="$0" period="forever" features={["50 scores/month", "1 role", "CSV export", "LinkedIn enrichment"]} />
             <PriceCard tier="Pro" price="$49" period="/month" featured features={["500 scores/month", "Unlimited roles", "Stable matching", "Team seats (5)", "Priority scoring"]} />
             <PriceCard tier="Enterprise" price="Custom" period="contact us" features={["Unlimited scores", "ATS integrations", "Custom models", "SSO + SAML", "Dedicated support"]} />

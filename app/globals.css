@@ -39,17 +39,57 @@ input[type="range"]::-moz-range-thumb {
   .scroll-fade {
     animation: scrollReveal linear both;
     animation-timeline: view();
+    animation-range: entry 0% entry 25%;
+  }
+  .scroll-fade-left {
+    animation: scrollFromLeft linear both;
+    animation-timeline: view();
     animation-range: entry 0% entry 30%;
+  }
+  .scroll-fade-right {
+    animation: scrollFromRight linear both;
+    animation-timeline: view();
+    animation-range: entry 0% entry 30%;
+  }
+  .scroll-scale {
+    animation: scrollScale linear both;
+    animation-timeline: view();
+    animation-range: entry 0% entry 30%;
+  }
+  /* Staggered scroll children */
+  .scroll-stagger > *:nth-child(1) { animation-delay: 0ms; }
+  .scroll-stagger > *:nth-child(2) { animation-delay: 80ms; }
+  .scroll-stagger > *:nth-child(3) { animation-delay: 160ms; }
+  .scroll-stagger > *:nth-child(4) { animation-delay: 240ms; }
+  .scroll-stagger > *:nth-child(5) { animation-delay: 320ms; }
+  .scroll-stagger > *:nth-child(6) { animation-delay: 400ms; }
+  .scroll-stagger > * {
+    animation: scrollReveal linear both;
+    animation-timeline: view();
+    animation-range: entry 0% entry 35%;
   }
 }
 @keyframes scrollReveal {
-  from { opacity: 0; transform: translateY(20px); }
+  from { opacity: 0; transform: translateY(24px); }
   to { opacity: 1; transform: translateY(0); }
+}
+@keyframes scrollFromLeft {
+  from { opacity: 0; transform: translateX(-30px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+@keyframes scrollFromRight {
+  from { opacity: 0; transform: translateX(30px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+@keyframes scrollScale {
+  from { opacity: 0; transform: scale(0.95); }
+  to { opacity: 1; transform: scale(1); }
 }
 
 /* Fallback for browsers without animation-timeline */
 @supports not (animation-timeline: view()) {
-  .scroll-fade { opacity: 1; }
+  .scroll-fade, .scroll-fade-left, .scroll-fade-right, .scroll-scale { opacity: 1; }
+  .scroll-stagger > * { opacity: 1; }
 }
 
 /* Animations */

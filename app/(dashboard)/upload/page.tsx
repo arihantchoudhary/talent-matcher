@@ -121,14 +121,7 @@ export default function UploadPage() {
     return () => clearInterval(interval);
   }, [step]);
 
-  // Sync from global context
-  useEffect(() => {
-    if (scoring.isScoring) {
-      setStep("scoring"); setProgress(scoring.progress); setResults(scoring.results); setLogs(scoring.logs); setJobTitle(scoring.jobTitle);
-    } else if (scoring.results.length > 0 && step === "setup") {
-      setStep("results"); setResults(scoring.results); setJobTitle(scoring.jobTitle);
-    }
-  }, [scoring.isScoring, scoring.progress.done, scoring.results.length]);
+  // Context sync disabled — scoring handled locally via SSE
 
   const filteredRoles = useMemo(() => {
     let list = ROLES;
@@ -165,6 +158,7 @@ export default function UploadPage() {
 
     const scoredMap = new Map<string, ScoredCandidate>();
     let doneCount = 0;
+    let doneHandled = false;
     const API = "https://aicm3pweed.us-east-1.awsapprunner.com";
 
     try {
@@ -210,6 +204,7 @@ export default function UploadPage() {
               setResults([...sorted]);
             }
             if (data.type === "done") {
+              doneHandled = true;
               const duration = Math.round((Date.now() - startTime) / 1000);
               const finalResults = [...scoredMap.values()].sort((a, b) => b.score - a.score);
               finalResults.forEach((s, i) => s.rank = i + 1);
@@ -226,17 +221,11 @@ export default function UploadPage() {
         }
       }
     } catch (err) { console.error(err); }
-    if (scoredMap.size > 0 && step !== "results") {
-      const duration = Math.round((Date.now() - startTime) / 1000);
+    // Fallback: if stream ended without "done" event, show whatever we have
+    if (scoredMap.size > 0 && !doneHandled) {
       const finalResults = [...scoredMap.values()].sort((a, b) => b.score - a.score);
       finalResults.forEach((s, i) => s.rank = i + 1);
       setResults(finalResults);
-      saveSession({ userId: user?.id || "anonymous", userName: user?.fullName || user?.primaryEmailAddress?.emailAddress || "Anonymous", device: window.innerWidth < 768 ? "mobile" : "desktop",
-        role: jobTitle, roleCategory: ROLES[selectedIdx]?.category || "Custom", description: jobDesc.substring(0, 300),
-        fileName: fileName || "unknown.csv", candidateCount: parsed.length,
-        topTier: finalResults.filter(r => r.score >= 70).length, goodFit: finalResults.filter(r => r.score >= 50 && r.score < 70).length,
-        avgScore: Math.round(finalResults.reduce((s, r) => s + r.score, 0) / finalResults.length), judge: PRESETS[selectedPreset]?.label || "Custom", results: finalResults, duration, tokens: totalTokens, cost: Math.round(totalCost * 10000) / 10000,
-      });
       setStep("results");
     }
   }

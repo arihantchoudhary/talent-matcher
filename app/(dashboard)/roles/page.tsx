@@ -1,21 +1,8 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { ROLES as DEFAULT_ROLES, CATEGORIES, CITIES, Role } from "@/lib/roles";
-
-const STORAGE_KEY = "talent-matcher-custom-roles";
-
-function loadRoles(): Role[] {
-  if (typeof window === "undefined") return DEFAULT_ROLES;
-  try {
-    const custom = JSON.parse(localStorage.getItem(STORAGE_KEY) || "null");
-    return custom || DEFAULT_ROLES;
-  } catch { return DEFAULT_ROLES; }
-}
-
-function saveRoles(roles: Role[]) {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(roles));
-}
+import { CATEGORIES, CITIES, Role } from "@/lib/roles";
+import { loadRoles, saveRoles } from "@/lib/roles-api";
 
 export default function RolesPage() {
   const [roles, setRoles] = useState<Role[]>([]);
@@ -25,7 +12,7 @@ export default function RolesPage() {
   // Draft state for add/edit
   const [draft, setDraft] = useState<Role>({ title: "", description: "", category: "Sales", locations: [], remote: false, experience: "1-3yr" });
 
-  useEffect(() => { setRoles(loadRoles()); }, []);
+  useEffect(() => { loadRoles().then(setRoles); }, []);
 
   function handleSave() {
     if (!draft.title.trim()) return;
@@ -61,8 +48,11 @@ export default function RolesPage() {
   }
 
   function handleReset() {
-    localStorage.removeItem(STORAGE_KEY);
-    setRoles(DEFAULT_ROLES);
+    // Save defaults back to API to clear custom roles
+    import("@/lib/roles").then(({ ROLES }) => {
+      setRoles(ROLES);
+      saveRoles(ROLES);
+    });
     setEditing(null);
     setAdding(false);
   }

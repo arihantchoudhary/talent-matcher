@@ -1,21 +1,16 @@
 "use client";
 
-import { useState, useRef, useMemo, DragEvent } from "react";
+import { useState, useRef, useMemo, useEffect, DragEvent } from "react";
 import { ROLES as DEFAULT_ROLES, CATEGORIES, CITIES, Role } from "@/lib/roles";
-
-function loadRoles(): Role[] {
-  if (typeof window === "undefined") return DEFAULT_ROLES;
-  try {
-    const custom = JSON.parse(localStorage.getItem("talent-matcher-custom-roles") || "null");
-    return custom || DEFAULT_ROLES;
-  } catch { return DEFAULT_ROLES; }
-}
-
-const ROLES = typeof window !== "undefined" ? loadRoles() : DEFAULT_ROLES;
+import { loadRoles } from "@/lib/roles-api";
 import { parseCSV } from "@/lib/parse-csv";
 import { saveSession, ScoredCandidate } from "@/lib/sessions";
 
 export default function UploadPage() {
+  // Roles from API
+  const [ROLES, setROLES] = useState<Role[]>(DEFAULT_ROLES);
+  useEffect(() => { loadRoles().then(setROLES); }, []);
+
   // Upload state
   const [fileName, setFileName] = useState<string | null>(null);
   const [csvText, setCsvText] = useState<string | null>(null);
@@ -25,8 +20,8 @@ export default function UploadPage() {
 
   // Role state
   const [selectedIdx, setSelectedIdx] = useState(0);
-  const [jobTitle, setJobTitle] = useState(ROLES[0].title);
-  const [jobDesc, setJobDesc] = useState(ROLES[0].description);
+  const [jobTitle, setJobTitle] = useState(DEFAULT_ROLES[0].title);
+  const [jobDesc, setJobDesc] = useState(DEFAULT_ROLES[0].description);
   const [showPicker, setShowPicker] = useState(false);
   const [catFilter, setCatFilter] = useState("All");
   const [cityFilter, setCityFilter] = useState("All");

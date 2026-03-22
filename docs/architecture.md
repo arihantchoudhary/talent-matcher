@@ -145,6 +145,48 @@ flowchart TD
     style GS fill:#171717,color:#fff
 ```
 
+## Matching Algorithm Comparison: Full vs Embedding Pre-filter
+
+```mermaid
+flowchart TD
+    subgraph Full["Full Scoring (default, < 100 candidates)"]
+        F1[93 Candidates] --> F2[ALL go to GPT-4o-mini]
+        F2 --> F3[93 scores with rubric reasoning]
+        F3 --> F4[Rank by score]
+        F4 --> F5["Result: Best match by RUBRIC criteria"]
+    end
+
+    subgraph Embed["Embedding Pre-filter (100+ candidates)"]
+        E1[1000 Candidates] --> E2["text-embedding-3-small<br/>Embed all + job description"]
+        E2 --> E3["Cosine similarity ranking<br/>(measures TEXT similarity, not rubric fit)"]
+        E3 --> E4["Top K selected<br/>(K = 10, 25, 50, 100)"]
+        E4 --> E5[GPT-4o-mini scores K candidates]
+        E5 --> E6["Result: Best match from<br/>embedding-filtered pool"]
+    end
+
+    subgraph Why["Why Results Differ"]
+        W1["Embedding similarity ≠ Rubric fit"]
+        W2["'Legal experience' text → high embedding match<br/>but GPT sees: paralegal, not GTM seller → score 40"]
+        W3["Startup founder with no 'legal' keywords<br/>→ low embedding match → filtered out<br/>but GPT would score 75 (transferable skills)"]
+    end
+
+    style Full fill:#f5f5f5,stroke:#171717
+    style Embed fill:#fafafa,stroke:#737373
+    style Why fill:#fef2f2,stroke:#dc2626
+```
+
+### When to use which:
+
+| Scenario | Algorithm | Why |
+|----------|-----------|-----|
+| < 100 candidates | Full (no filter) | Score everyone, most accurate |
+| 100-500 candidates | Top 50-100 | Good balance of speed + accuracy |
+| 500+ candidates | Top 100 | Necessary for cost, but may miss edge cases |
+| Need absolute accuracy | Full (All) | Pay more, get every candidate scored |
+
+### Key insight:
+Embedding pre-filter is a **speed optimization**, not an accuracy improvement. It can miss candidates that GPT would score highly but whose text doesn't "look similar" to the job description. For < 100 candidates, always use full scoring.
+
 ## Data Flow
 
 ```mermaid

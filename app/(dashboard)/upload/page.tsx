@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useRef, useMemo, useEffect, DragEvent } from "react";
+import { useUser } from "@clerk/nextjs";
 import { ROLES as DEFAULT_ROLES, CATEGORIES, CITIES, Role } from "@/lib/roles";
 import { loadRoles } from "@/lib/roles-api";
 import { getApiKey } from "@/lib/api-key";
@@ -8,6 +9,8 @@ import { parseCSV } from "@/lib/parse-csv";
 import { saveSession, ScoredCandidate } from "@/lib/sessions";
 
 export default function UploadPage() {
+  const { user } = useUser();
+
   // Roles from API
   const [ROLES, setROLES] = useState<Role[]>(DEFAULT_ROLES);
   useEffect(() => { loadRoles().then(setROLES); }, []);
@@ -144,7 +147,7 @@ export default function UploadPage() {
               const finalResults = [...scoredMap.values()].sort((a, b) => b.score - a.score);
               finalResults.forEach((s, i) => s.rank = i + 1);
               setResults(finalResults);
-              saveSession({
+              saveSession({ userId: user?.id || "anonymous", userName: user?.fullName || user?.primaryEmailAddress?.emailAddress || "Anonymous",
                 role: jobTitle,
                 roleCategory: ROLES[selectedIdx]?.category || "Custom",
                 description: jobDesc.substring(0, 300),
@@ -172,7 +175,7 @@ export default function UploadPage() {
       finalResults.forEach((s, i) => s.rank = i + 1);
       setResults(finalResults);
       if (step !== "results") {
-        saveSession({
+        saveSession({ userId: user?.id || "anonymous", userName: user?.fullName || user?.primaryEmailAddress?.emailAddress || "Anonymous",
           role: jobTitle,
           roleCategory: ROLES[selectedIdx]?.category || "Custom",
           description: jobDesc.substring(0, 300),

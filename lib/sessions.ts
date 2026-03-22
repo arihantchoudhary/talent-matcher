@@ -45,6 +45,7 @@ export async function saveSession(session: {
   role: string; roleCategory: string; description: string; fileName: string;
   candidateCount: number; topTier: number; goodFit: number; avgScore: number;
   results: ScoredCandidate[]; duration?: number;
+  userId?: string; userName?: string;
 }): Promise<MatchSession | null> {
   try {
     const resp = await fetch(`${API}/talent-pluto/sessions`, {
@@ -61,6 +62,8 @@ export async function saveSession(session: {
         avg_score: session.avgScore,
         results: session.results,
         duration: session.duration || 0,
+        user_id: session.userId || "anonymous",
+        user_name: session.userName || "Anonymous",
       }),
     });
     if (!resp.ok) {

@@ -180,6 +180,7 @@ export default function HistoryPage() {
                           <div className="font-semibold text-sm">{s.role}</div>
                           <div className="text-xs text-zinc-500 mt-0.5">
                             {s.candidate_count} candidates &middot; {s.file_name} &middot; {new Date(s.created_at).toLocaleDateString()} {new Date(s.created_at).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
+                            {(s as Record<string, unknown>).user_name ? <> &middot; by {String((s as Record<string, unknown>).user_name)}</> : null}
                           </div>
                           <div className="flex gap-3 mt-1.5">
                             <span className="text-xs text-emerald-600 font-medium">{s.top_tier} top tier</span>

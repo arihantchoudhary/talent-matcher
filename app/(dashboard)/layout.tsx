@@ -4,11 +4,11 @@ import { DashboardNav } from "./nav";
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
   return (
-    <div className="min-h-screen flex">
-      {/* Sidebar */}
-      <aside className="w-56 shrink-0 border-r border-zinc-200 bg-white flex flex-col">
+    <div className="h-screen flex overflow-hidden">
+      {/* Sidebar — fixed, never scrolls */}
+      <aside className="w-56 shrink-0 border-r border-zinc-200 bg-white flex flex-col h-screen">
         <div className="p-4 border-b border-zinc-100">
-          <Link href="/rankings" className="flex items-center gap-2">
+          <Link href="/upload" className="flex items-center gap-2">
             <div className="w-7 h-7 rounded-lg bg-indigo-600 flex items-center justify-center text-white font-bold text-xs">T</div>
             <span className="font-bold text-sm">Talent Matcher</span>
           </Link>
@@ -19,8 +19,8 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
         </div>
       </aside>
 
-      {/* Main */}
-      <div className="flex-1 flex flex-col min-h-screen">
+      {/* Main — scrolls independently */}
+      <div className="flex-1 overflow-y-auto">
         {children}
       </div>
     </div>

@@ -1,7 +1,17 @@
 "use client";
 
 import { useState, useRef, useMemo, DragEvent } from "react";
-import { ROLES, CATEGORIES, CITIES } from "@/lib/roles";
+import { ROLES as DEFAULT_ROLES, CATEGORIES, CITIES, Role } from "@/lib/roles";
+
+function loadRoles(): Role[] {
+  if (typeof window === "undefined") return DEFAULT_ROLES;
+  try {
+    const custom = JSON.parse(localStorage.getItem("talent-matcher-custom-roles") || "null");
+    return custom || DEFAULT_ROLES;
+  } catch { return DEFAULT_ROLES; }
+}
+
+const ROLES = typeof window !== "undefined" ? loadRoles() : DEFAULT_ROLES;
 import { parseCSV } from "@/lib/parse-csv";
 import { saveSession, ScoredCandidate } from "@/lib/sessions";
 

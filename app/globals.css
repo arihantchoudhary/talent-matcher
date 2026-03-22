@@ -22,6 +22,27 @@ a:focus-visible, button:focus-visible {
   border-radius: 2px;
 }
 
+/* Hide Clerk branding, dev badge, footer */
+.cl-footer,
+.cl-internal-b3fm6y,
+.cl-internal-17eqig,
+[data-localization-key="footerPageLink__help"],
+[data-localization-key="footerPageLink__privacy"],
+[data-localization-key="footerPageLink__terms"],
+.cl-footerAction,
+.cl-footer .cl-internal-b3fm6y {
+  display: none !important;
+}
+.cl-card {
+  box-shadow: none !important;
+  border: none !important;
+  background: transparent !important;
+}
+.cl-cardBox {
+  box-shadow: none !important;
+  border: none !important;
+}
+
 /* Reduced motion: disable all animations */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {

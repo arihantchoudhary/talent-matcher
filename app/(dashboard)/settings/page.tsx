@@ -1,74 +1,140 @@
+"use client";
+
+import { useState, useEffect } from "react";
+import { useUser } from "@clerk/nextjs";
 import { ApiKeyCard } from "./api-key-card";
+import { getSubscription, Subscription } from "@/lib/subscription";
 
 export default function SettingsPage() {
-  return (
-    <div className="flex-1 overflow-auto">
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 py-6 sm:py-8">
-        <h1 className="text-2xl font-bold tracking-tight mb-1">Settings</h1>
-        <p className="text-sm text-neutral-500 mb-8">Manage your account and subscription</p>
+  const { user } = useUser();
+  const [sub, setSub] = useState<Subscription | null>(null);
+  const [loading, setLoading] = useState(false);
 
-        {/* Current plan */}
-        <div className="rounded-xl border border-neutral-200 bg-white p-6 mb-8">
-          <h2 className="font-semibold mb-1">Current Plan</h2>
-          <p className="text-sm text-neutral-500 mb-4">You are on the <span className="font-medium text-neutral-900">Free</span> plan</p>
-          <div className="text-xs text-neutral-400">50 candidate scores/month &middot; 1 role template &middot; CSV export</div>
+  useEffect(() => {
+    if (user?.id) getSubscription(user.id).then(setSub);
+  }, [user?.id]);
+
+  async function handleUpgrade() {
+    const priceId = process.env.NEXT_PUBLIC_STRIPE_PRO_PRICE_ID;
+    if (!priceId) { alert("Stripe not configured yet — add NEXT_PUBLIC_STRIPE_PRO_PRICE_ID to .env.local"); return; }
+    setLoading(true);
+    try {
+      const resp = await fetch("/api/checkout", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ priceId }),
+      });
+      const { url } = await resp.json();
+      if (url) window.location.href = url;
+    } catch { alert("Checkout failed"); }
+    setLoading(false);
+  }
+
+  const plan = sub?.plan || "free";
+  const used = sub?.postings_used || 0;
+  const limit = sub?.postings_limit || 3;
+  const pct = limit > 0 ? Math.min(100, Math.round((used / limit) * 100)) : 0;
+
+  return (
+    <div className="flex-1 overflow-auto bg-neutral-50">
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 py-6 sm:py-10">
+        <h1 className="text-3xl font-bold tracking-tight font-serif italic mb-1">Settings</h1>
+        <p className="text-sm text-neutral-400 mb-8">Manage your subscription and API keys</p>
+
+        {/* Current plan + usage */}
+        <div className="border border-neutral-200 bg-white p-6 mb-8">
+          <div className="flex items-center justify-between mb-4">
+            <div>
+              <div className="flex items-center gap-2">
+                <h2 className="font-semibold text-lg">Current Plan</h2>
+                <span className="px-2 py-0.5 bg-neutral-900 text-white text-[10px] font-medium uppercase tracking-wider">{plan}</span>
+              </div>
+              <p className="text-sm text-neutral-500 mt-1">{used} of {limit === Infinity ? "unlimited" : limit} job postings used this month</p>
+            </div>
+            {plan === "free" && (
+              <button onClick={handleUpgrade} disabled={loading}
+                className="px-4 py-2 bg-neutral-900 text-white text-sm font-medium hover:bg-black transition-colors disabled:opacity-50">
+                {loading ? "Loading..." : "Upgrade to Pro"}
+              </button>
+            )}
+          </div>
+          {limit !== Infinity && (
+            <div className="h-2 bg-neutral-100 rounded-full overflow-hidden">
+              <div className={`h-full rounded-full transition-all ${pct >= 80 ? "bg-red-500" : "bg-neutral-900"}`} style={{ width: `${pct}%` }} />
+            </div>
+          )}
         </div>
 
-        {/* Pricing cards */}
-        <h2 className="font-semibold text-lg mb-4">Plans</h2>
+        {/* Pricing cards — per job posting */}
+        <h2 className="text-xs font-bold uppercase tracking-[0.15em] text-neutral-400 mb-4">Plans</h2>
         <div className="grid md:grid-cols-3 gap-4 mb-10">
           {/* Free */}
-          <div className="rounded-xl border border-neutral-200 bg-white p-6">
-            <div className="text-xs font-semibold text-neutral-400 uppercase tracking-wider mb-2">Free</div>
-            <div className="text-3xl font-bold mb-1">$0</div>
-            <div className="text-xs text-neutral-500 mb-4">Forever free</div>
+          <div className={`border bg-white p-6 ${plan === "free" ? "border-neutral-900" : "border-neutral-200"}`}>
+            <div className="text-[10px] font-bold text-neutral-400 uppercase tracking-wider mb-3">Free</div>
+            <div className="text-3xl font-bold tracking-tight mb-1">$0</div>
+            <div className="text-xs text-neutral-500 mb-5">Forever free</div>
             <ul className="space-y-2 text-sm text-neutral-600 mb-6">
-              <li className="flex items-center gap-2"><Check /> 50 scores/month</li>
-              <li className="flex items-center gap-2"><Check /> 1 active role</li>
-              <li className="flex items-center gap-2"><Check /> CSV export</li>
-              <li className="flex items-center gap-2"><Check /> LinkedIn enrichment</li>
+              <li className="flex items-center gap-2"><Ck /> 3 job postings/month</li>
+              <li className="flex items-center gap-2"><Ck /> 93 candidates per posting</li>
+              <li className="flex items-center gap-2"><Ck /> CSV export</li>
+              <li className="flex items-center gap-2"><Ck /> LinkedIn enrichment</li>
+              <li className="flex items-center gap-2"><Ck /> 5 judge presets</li>
             </ul>
-            <div className="py-2 px-4 rounded-lg bg-neutral-100 text-center text-sm font-medium text-neutral-500">Current plan</div>
+            {plan === "free" ? (
+              <div className="py-2 text-center text-sm font-medium text-neutral-400 border border-neutral-200">Current plan</div>
+            ) : (
+              <div className="py-2 text-center text-sm text-neutral-400">—</div>
+            )}
           </div>
 
           {/* Pro */}
-          <div className="rounded-xl border-2 border-neutral-900 bg-white p-6 relative">
-            <div className="absolute -top-3 left-4 px-2 py-0.5 bg-neutral-900 text-white text-xs font-semibold rounded-full">Popular</div>
-            <div className="text-xs font-semibold text-neutral-900 uppercase tracking-wider mb-2">Pro</div>
-            <div className="text-3xl font-bold mb-1">$49<span className="text-base font-normal text-neutral-400">/mo</span></div>
-            <div className="text-xs text-neutral-500 mb-4">Per seat, billed annually</div>
+          <div className={`border-2 bg-white p-6 relative ${plan === "pro" ? "border-neutral-900" : "border-neutral-900"}`}>
+            <div className="absolute -top-3 left-4 px-2 py-0.5 bg-neutral-900 text-white text-[10px] font-bold tracking-wider">POPULAR</div>
+            <div className="text-[10px] font-bold text-neutral-900 uppercase tracking-wider mb-3">Pro</div>
+            <div className="text-3xl font-bold tracking-tight mb-1">$49<span className="text-base font-normal text-neutral-400">/mo</span></div>
+            <div className="text-xs text-neutral-500 mb-5">Per seat, billed monthly</div>
             <ul className="space-y-2 text-sm text-neutral-600 mb-6">
-              <li className="flex items-center gap-2"><Check /> 500 scores/month</li>
-              <li className="flex items-center gap-2"><Check /> Unlimited roles</li>
-              <li className="flex items-center gap-2"><Check /> CSV + JSON export</li>
-              <li className="flex items-center gap-2"><Check /> LinkedIn enrichment</li>
-              <li className="flex items-center gap-2"><Check /> Team collaboration (5 seats)</li>
-              <li className="flex items-center gap-2"><Check /> Priority scoring</li>
+              <li className="flex items-center gap-2"><Ck /> 25 job postings/month</li>
+              <li className="flex items-center gap-2"><Ck /> Unlimited candidates per posting</li>
+              <li className="flex items-center gap-2"><Ck /> CSV + JSON export</li>
+              <li className="flex items-center gap-2"><Ck /> LinkedIn enrichment</li>
+              <li className="flex items-center gap-2"><Ck /> Stable matching (multi-role)</li>
+              <li className="flex items-center gap-2"><Ck /> Embedding similarity analysis</li>
+              <li className="flex items-center gap-2"><Ck /> Priority scoring</li>
             </ul>
-            <button className="w-full py-2 px-4 rounded-lg bg-neutral-900 text-white text-sm font-medium hover:bg-black transition-colors">Upgrade to Pro</button>
+            {plan === "pro" ? (
+              <div className="py-2 text-center text-sm font-medium text-neutral-400 border border-neutral-200">Current plan</div>
+            ) : (
+              <button onClick={handleUpgrade} disabled={loading}
+                className="w-full py-2 bg-neutral-900 text-white text-sm font-medium hover:bg-black transition-colors disabled:opacity-50">
+                {loading ? "Loading..." : "Upgrade to Pro"}
+              </button>
+            )}
           </div>
 
           {/* Enterprise */}
-          <div className="rounded-xl border border-neutral-200 bg-white p-6">
-            <div className="text-xs font-semibold text-neutral-400 uppercase tracking-wider mb-2">Enterprise</div>
-            <div className="text-3xl font-bold mb-1">Custom</div>
-            <div className="text-xs text-neutral-500 mb-4">Contact sales</div>
+          <div className={`border bg-white p-6 ${plan === "enterprise" ? "border-neutral-900" : "border-neutral-200"}`}>
+            <div className="text-[10px] font-bold text-neutral-400 uppercase tracking-wider mb-3">Enterprise</div>
+            <div className="text-3xl font-bold tracking-tight mb-1">Custom</div>
+            <div className="text-xs text-neutral-500 mb-5">Contact for pricing</div>
             <ul className="space-y-2 text-sm text-neutral-600 mb-6">
-              <li className="flex items-center gap-2"><Check /> Unlimited scores</li>
-              <li className="flex items-center gap-2"><Check /> Unlimited roles + cities</li>
-              <li className="flex items-center gap-2"><Check /> ATS integrations</li>
-              <li className="flex items-center gap-2"><Check /> Custom AI models</li>
-              <li className="flex items-center gap-2"><Check /> SSO + SAML</li>
-              <li className="flex items-center gap-2"><Check /> Dedicated support</li>
-              <li className="flex items-center gap-2"><Check /> SLA + DPA</li>
+              <li className="flex items-center gap-2"><Ck /> Unlimited job postings</li>
+              <li className="flex items-center gap-2"><Ck /> Unlimited candidates</li>
+              <li className="flex items-center gap-2"><Ck /> ATS integrations</li>
+              <li className="flex items-center gap-2"><Ck /> Custom AI models</li>
+              <li className="flex items-center gap-2"><Ck /> SSO + SAML</li>
+              <li className="flex items-center gap-2"><Ck /> Dedicated support + SLA</li>
             </ul>
-            <button className="w-full py-2 px-4 rounded-lg border border-neutral-200 text-sm font-medium hover:bg-neutral-50 transition-colors">Contact sales</button>
+            <a href="mailto:ari@talentmatcher.ai"
+              className="block w-full py-2 text-center border border-neutral-200 text-sm font-medium hover:bg-neutral-50 transition-colors">
+              Contact sales
+            </a>
           </div>
         </div>
 
         {/* Competitors */}
-        <h2 className="font-semibold text-lg mb-4">How we compare</h2>
-        <div className="rounded-xl border border-neutral-200 bg-white overflow-hidden mb-8">
+        <h2 className="text-xs font-bold uppercase tracking-[0.15em] text-neutral-400 mb-4">How we compare</h2>
+        <div className="border border-neutral-200 bg-white overflow-hidden mb-8">
           <table className="w-full text-sm">
             <thead>
               <tr className="border-b border-neutral-100 bg-neutral-50">
@@ -82,27 +148,27 @@ export default function SettingsPage() {
             <tbody className="divide-y divide-neutral-100">
               <CompRow f="Pricing" us="From $0/mo" c1="Enterprise only" c2="Enterprise only" c3="Custom (Workday)" />
               <CompRow f="Setup time" us="< 1 minute" c1="Weeks" c2="Weeks" c3="Weeks" />
-              <CompRow f="Any CSV import" us="Yes" c1="No" c2="No" c3="No" />
-              <CompRow f="AI scoring with reasoning" us="Yes (GPT-4o)" c1="Proprietary" c2="Proprietary" c3="Proprietary" />
-              <CompRow f="LinkedIn enrichment" us="Yes" c1="Yes" c2="Yes" c3="Limited" />
-              <CompRow f="Candidate ranking" us="0-100 with reasoning" c1="Match %" c2="Engagement score" c3="Grade A-D" />
-              <CompRow f="Multi-role matching" us="30+ templates" c1="Custom only" c2="Custom only" c3="Custom only" />
-              <CompRow f="Export to CSV/JSON" us="Yes" c1="Limited" c2="Limited" c3="Via Workday" />
-              <CompRow f="Self-serve signup" us="Yes" c1="No" c2="No" c3="No" />
+              <CompRow f="Billing unit" us="Per job posting" c1="Per seat" c2="Per seat" c3="Per seat" />
+              <CompRow f="AI scoring" us="GPT-4o + embeddings" c1="Proprietary" c2="Proprietary" c3="Proprietary" />
+              <CompRow f="LinkedIn enrichment" us="493 profiles" c1="Yes" c2="Yes" c3="Limited" />
+              <CompRow f="Score explanation" us="Per-criterion evidence" c1="Match %" c2="Engagement %" c3="Grade A-D" />
+              <CompRow f="Multi-role matching" us="Gale-Shapley" c1="Manual" c2="Manual" c3="Manual" />
+              <CompRow f="Self-serve" us="Yes" c1="No" c2="No" c3="No" />
             </tbody>
           </table>
         </div>
 
         {/* API key */}
+        <h2 className="text-xs font-bold uppercase tracking-[0.15em] text-neutral-400 mb-4">API Key</h2>
         <ApiKeyCard />
       </div>
     </div>
   );
 }
 
-function Check() {
+function Ck() {
   return (
-    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#16a34a" strokeWidth="2.5" strokeLinecap="round" className="shrink-0">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#171717" strokeWidth="2.5" strokeLinecap="round" className="shrink-0">
       <path d="M20 6 9 17l-5-5" />
     </svg>
   );

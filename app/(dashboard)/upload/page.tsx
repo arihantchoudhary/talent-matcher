@@ -100,7 +100,8 @@ export default function UploadPage() {
   const [totalTokens, setTotalTokens] = useState(0);
   const [totalCost, setTotalCost] = useState(0);
   const [viewMode, setViewMode] = useState<"list" | "card" | "table">("list");
-  const [scoreFilter, setScoreFilter] = useState<number | null>(null); // null = all, 40 = 40-49 range
+  const [scoreFilter, setScoreFilter] = useState<number | null>(null);
+  const [topK, setTopK] = useState(100); // How many to GPT-score (rest pre-filtered by embeddings)
   const [elapsed, setElapsed] = useState(0);
   const [startTime] = useState(() => Date.now());
 
@@ -157,7 +158,7 @@ export default function UploadPage() {
     try {
       const resp = await fetch(`${API}/talent-pluto/score`, {
         method: "POST", headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ candidates: parsed.map(c => ({ id: c.id, name: c.name, fullText: c.fullText, linkedinUrl: c.linkedinUrl || "" })), job_description: jd, api_key: getApiKey() }),
+        body: JSON.stringify({ candidates: parsed.map(c => ({ id: c.id, name: c.name, fullText: c.fullText, linkedinUrl: c.linkedinUrl || "" })), job_description: jd, api_key: getApiKey(), top_k: topK }),
       });
 
       const reader = resp.body?.getReader();
@@ -656,9 +657,31 @@ export default function UploadPage() {
       </div>
 
       {/* Submit */}
+      {rowCount > 0 && (
+        <div className="flex items-center gap-3 mb-3">
+          <span className="text-xs text-neutral-500">GPT-score top</span>
+          <div className="flex items-center gap-1">
+            {[10, 25, 50, 100].map(n => (
+              <button key={n} onClick={() => setTopK(n)}
+                className={`px-2.5 py-1 rounded text-xs font-medium transition-colors ${topK === n ? "bg-neutral-900 text-white" : "border border-neutral-200 text-neutral-500 hover:border-neutral-400"}`}>
+                {n}
+              </button>
+            ))}
+            {rowCount > 100 && (
+              <button onClick={() => setTopK(rowCount)}
+                className={`px-2.5 py-1 rounded text-xs font-medium transition-colors ${topK === rowCount ? "bg-neutral-900 text-white" : "border border-neutral-200 text-neutral-500 hover:border-neutral-400"}`}>
+                All ({rowCount})
+              </button>
+            )}
+          </div>
+          <span className="text-xs text-neutral-400">
+            {rowCount > topK ? `of ${rowCount} (rest filtered by embedding similarity)` : `of ${rowCount}`}
+          </span>
+        </div>
+      )}
       <button onClick={startScoring} disabled={!csvText || rowCount === 0}
         className="w-full py-4 bg-neutral-900 text-white font-semibold text-sm rounded-lg hover:bg-black disabled:opacity-30 disabled:cursor-not-allowed transition-colors">
-        Score {rowCount > 0 ? `${rowCount} candidates` : "candidates"} for {jobTitle}
+        Score {rowCount > 0 ? (rowCount > topK ? `top ${topK} of ${rowCount}` : `${rowCount}`) : ""} candidates for {jobTitle}
       </button>
     </div>
   );

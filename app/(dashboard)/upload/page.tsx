@@ -548,7 +548,7 @@ export default function UploadPage() {
                       </div>
                     </td>
                     <td className="px-4 py-2"><span className={`px-2 py-0.5 text-xs font-bold ${c.score >= 70 ? "bg-neutral-900 text-white" : c.score >= 50 ? "bg-neutral-100" : "text-neutral-400"}`}>{c.score}</span></td>
-                    <td className="px-4 py-2 text-xs text-neutral-500 max-w-xs truncate">{c.reasoning}</td>
+                    <td className="px-4 py-2 text-xs text-neutral-500 max-w-sm">{c.reasoning}</td>
                     <td className="px-4 py-2 text-xs text-neutral-500">{(c.highlights||[]).slice(0,2).join(", ")}</td>
                     <td className="px-4 py-2 text-xs text-neutral-400">{(c.gaps||[]).slice(0,2).join(", ")}</td>
                     <td className="px-4 py-2">{c.linkedin_url && <a href={c.linkedin_url} target="_blank" rel="noopener noreferrer" className="text-xs text-neutral-400 hover:text-neutral-700">Open</a>}</td>

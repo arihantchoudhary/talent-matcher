@@ -32,8 +32,9 @@ export default function UploadPage() {
 
   // Rubric presets (judges)
   type Criterion = { name: string; weight: number; description: string };
-  const PRESETS: Record<string, { label: string; desc: string; criteria: Criterion[] }> = {
+  const PRESETS: Record<string, { label: string; desc: string; criteria: Criterion[]; idealCandidate: string }> = {
     balanced: { label: "The Generalist", desc: "Equal weight across all criteria",
+      idealCandidate: "2-3 years in consulting or banking. Strong communicator who can engage C-suite buyers. Some exposure to legal or procurement. Based in NYC or SF. Ambitious, coachable, team player. Has carried a quota or driven pipeline.",
       criteria: [
         { name: "Relevant Experience", weight: 25, description: "Years and quality of experience in relevant roles" },
         { name: "Industry Fit", weight: 20, description: "Familiarity with the target industry/sector" },
@@ -43,6 +44,7 @@ export default function UploadPage() {
         { name: "Location", weight: 10, description: "Proximity to office, willingness to work in-person" },
       ]},
     hunter: { label: "The Hunter", desc: "Prioritize outbound, prospecting, cold outreach",
+      idealCandidate: "Top-performing SDR/BDR with 1-3 years of high-volume outbound. 100+ calls/day, cold email sequences, LinkedIn prospecting. President's Club or top 10% of team. Uses Salesforce, Outreach, Apollo. Resilient, competitive, loves the hunt.",
       criteria: [
         { name: "Outbound & Prospecting", weight: 30, description: "Cold calling, email sequences, multi-channel outreach" },
         { name: "Pipeline Generation", weight: 25, description: "Track record of building qualified pipeline from scratch" },
@@ -52,6 +54,7 @@ export default function UploadPage() {
         { name: "Location", weight: 5, description: "Proximity to office" },
       ]},
     closer: { label: "The Closer", desc: "Prioritize closing, deal sizes, enterprise selling",
+      idealCandidate: "3-5 years closing B2B SaaS deals $100K+ ACV. Enterprise sales cycles 6+ months. Sold to VP/C-suite. MEDDIC or Challenger methodology. Consistently hit quota. Managed complex multi-stakeholder deals with legal, procurement, IT involved.",
       criteria: [
         { name: "Closing Experience", weight: 30, description: "Track record of closing deals, quota attainment" },
         { name: "Deal Size", weight: 20, description: "Average deal size, enterprise vs SMB experience" },
@@ -61,6 +64,7 @@ export default function UploadPage() {
         { name: "Location", weight: 5, description: "Proximity to office" },
       ]},
     pedigree: { label: "The Pedigree", desc: "Prioritize top companies, elite schools, brand names",
+      idealCandidate: "Goldman Sachs, McKinsey, BCG, or top-tier tech (Stripe, Google, Brex). Ivy League or Stanford/MIT. Fast promotions — analyst to associate in 2 years. JD or MBA from a top-10 program. Articulate, polished, trusted by senior executives.",
       criteria: [
         { name: "Company Quality", weight: 35, description: "Top-tier employers (Goldman, McKinsey, Google, Stripe, etc.)" },
         { name: "Education", weight: 25, description: "Elite universities, relevant degrees" },
@@ -70,6 +74,7 @@ export default function UploadPage() {
         { name: "Location", weight: 5, description: "Proximity to office" },
       ]},
     scrappy: { label: "The Builder", desc: "Prioritize founders, 0-1 builders, scrappiness",
+      idealCandidate: "Founded or co-founded a company. Built a team or product from zero. Wore many hats — sales, ops, product. Comfortable with ambiguity and limited resources. Startup experience at seed/Series A. High ownership mentality, low ego.",
       criteria: [
         { name: "Founding / 0→1 Experience", weight: 30, description: "Built something from scratch — company, team, or product" },
         { name: "Scrappiness", weight: 25, description: "Operated with limited resources, wore many hats" },
@@ -78,16 +83,19 @@ export default function UploadPage() {
         { name: "Cultural Fit", weight: 5, description: "High drive, low ego, team player" },
         { name: "Location", weight: 5, description: "Proximity to office" },
       ]},
-    custom: { label: "Custom", desc: "Define your own criteria and weights", criteria: [] },
+    custom: { label: "Custom", desc: "Define your own criteria and weights", criteria: [],
+      idealCandidate: "" },
   };
 
   const [selectedPreset, setSelectedPreset] = useState("balanced");
   const [criteria, setCriteria] = useState(PRESETS.balanced.criteria);
+  const [idealCandidate, setIdealCandidate] = useState(PRESETS.balanced.idealCandidate);
 
   function selectPreset(key: string) {
     setSelectedPreset(key);
     if (key !== "custom" && PRESETS[key]) {
       setCriteria([...PRESETS[key].criteria]);
+      setIdealCandidate(PRESETS[key].idealCandidate);
     }
   }
 
@@ -158,7 +166,7 @@ export default function UploadPage() {
     try {
       const resp = await fetch(`${API}/talent-pluto/score`, {
         method: "POST", headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ candidates: parsed.map(c => ({ id: c.id, name: c.name, fullText: c.fullText, linkedinUrl: c.linkedinUrl || "" })), job_description: jd, api_key: getApiKey(), top_k: topK }),
+        body: JSON.stringify({ candidates: parsed.map(c => ({ id: c.id, name: c.name, fullText: c.fullText, linkedinUrl: c.linkedinUrl || "" })), job_description: jd, api_key: getApiKey(), top_k: topK, ideal_candidate: idealCandidate }),
       });
 
       const reader = resp.body?.getReader();
@@ -571,7 +579,7 @@ export default function UploadPage() {
           </button>
           {showPicker && (
             <div className="mt-1 border border-neutral-200 rounded bg-white shadow-lg max-h-32 overflow-y-auto">
-              <div className="p-1.5 border-b border-neutral-100 flex gap-1 overflow-x-auto">
+              <div className="p-1.5 border-b border-neutral-100 flex gap-1 flex-wrap">
                 {["All", ...CATEGORIES].map(c => (
                   <button key={c} onClick={() => setCatFilter(c)} className={`shrink-0 px-1.5 py-0.5 rounded text-[9px] ${catFilter === c ? "bg-neutral-900 text-white" : "text-neutral-500"}`}>{c}</button>
                 ))}
@@ -625,6 +633,17 @@ export default function UploadPage() {
               <div className={`text-[9px] mt-1.5 leading-tight ${selectedPreset === key ? "text-neutral-400" : "text-neutral-400"}`}>{preset.desc}</div>
             </button>
           ))}
+        </div>
+
+        {/* Ideal candidate profile (HyDE) */}
+        <div className="mb-5">
+          <div className="flex items-center justify-between mb-2">
+            <p className="text-xs font-medium text-neutral-500">Ideal Candidate Profile</p>
+            <p className="text-[10px] text-neutral-400">Used for embedding-based pre-filtering</p>
+          </div>
+          <textarea key={selectedPreset} value={idealCandidate} onChange={e => { setIdealCandidate(e.target.value); setSelectedPreset("custom"); }}
+            rows={2} placeholder="Describe your ideal candidate — background, skills, experience, personality..."
+            className="w-full border border-neutral-200 rounded-lg px-3 py-2 text-xs text-neutral-700 resize-none focus:outline-none focus:border-neutral-400 leading-relaxed fade-in" />
         </div>
 
         {/* Sliders */}

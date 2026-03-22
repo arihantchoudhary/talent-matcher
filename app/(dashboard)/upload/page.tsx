@@ -160,7 +160,7 @@ export default function UploadPage() {
               const finalResults = [...scoredMap.values()].sort((a, b) => b.score - a.score);
               finalResults.forEach((s, i) => s.rank = i + 1);
               setResults(finalResults);
-              saveSession({ userId: user?.id || "anonymous", userName: user?.fullName || user?.primaryEmailAddress?.emailAddress || "Anonymous",
+              saveSession({ userId: user?.id || "anonymous", userName: user?.fullName || user?.primaryEmailAddress?.emailAddress || "Anonymous", device: window.innerWidth < 768 ? "mobile" : "desktop",
                 role: jobTitle,
                 roleCategory: ROLES[selectedIdx]?.category || "Custom",
                 description: jobDesc.substring(0, 300),
@@ -188,7 +188,7 @@ export default function UploadPage() {
       finalResults.forEach((s, i) => s.rank = i + 1);
       setResults(finalResults);
       if (step !== "results") {
-        saveSession({ userId: user?.id || "anonymous", userName: user?.fullName || user?.primaryEmailAddress?.emailAddress || "Anonymous",
+        saveSession({ userId: user?.id || "anonymous", userName: user?.fullName || user?.primaryEmailAddress?.emailAddress || "Anonymous", device: window.innerWidth < 768 ? "mobile" : "desktop",
           role: jobTitle,
           roleCategory: ROLES[selectedIdx]?.category || "Custom",
           description: jobDesc.substring(0, 300),

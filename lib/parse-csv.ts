@@ -56,20 +56,24 @@ function detectName(headers: string[], values: string[]): string {
     }
   }
 
-  // Try LinkedIn URL slug as last resort
-  for (const [k, v] of Object.entries(row)) {
+  // Try LinkedIn URL slug — only if it looks like a real name (has a hyphen separator = first-last)
+  for (const [, v] of Object.entries(row)) {
     if (v.includes("linkedin.com/in/")) {
       const match = v.match(/linkedin\.com\/in\/([^/?]+)/);
       if (match) {
-        const slug = match[1].replace(/[-_]/g, " ").replace(/\d+/g, "").trim();
-        if (slug.length > 2) {
-          return slug.split(" ").filter(Boolean).map(w => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase()).join(" ");
+        const slug = match[1];
+        // Only use if slug has a hyphen (first-last pattern) and no long random strings
+        if (slug.includes("-") && slug.length < 40 && !/[0-9]{4,}/.test(slug)) {
+          const parts = slug.split("-").filter(p => p.length > 1 && /^[a-z]+$/i.test(p));
+          if (parts.length >= 2) {
+            return parts.map(w => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase()).join(" ");
+          }
         }
       }
     }
   }
 
-  return `Candidate ${Object.values(row)[0]?.substring(0, 8) || "?"}`;
+  return `Candidate ${(row.user_id || row.id || Object.values(row)[0] || "").substring(0, 8)}`;
 }
 
 export function parseCSV(raw: string): ParsedCandidate[] {

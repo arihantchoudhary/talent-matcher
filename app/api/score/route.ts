@@ -98,6 +98,7 @@ export async function POST(req: NextRequest) {
             send({ type: "log", index: idx, name: c.name, step: "score", detail: `Sending ${candidateText.length} chars to GPT-4o-mini${enriched ? " (enriched)" : ""}` });
 
             let raw = "";
+            let usage: { prompt_tokens?: number; completion_tokens?: number } | null = null;
             for (let attempt = 0; attempt < 3; attempt++) {
               try {
                 const resp = await openai.chat.completions.create({
@@ -108,6 +109,7 @@ export async function POST(req: NextRequest) {
                   ],
                 });
                 raw = resp.choices[0]?.message?.content || "";
+                usage = resp.usage ? { prompt_tokens: resp.usage.prompt_tokens, completion_tokens: resp.usage.completion_tokens } : null;
                 break; // success
               } catch (retryErr) {
                 if (attempt < 2) {
@@ -118,15 +120,22 @@ export async function POST(req: NextRequest) {
                 }
               }
             }
+            // GPT-4o-mini pricing: $0.15/1M input, $0.60/1M output
+            const promptTokens = usage?.prompt_tokens || 0;
+            const completionTokens = usage?.completion_tokens || 0;
+            const cost = (promptTokens * 0.15 + completionTokens * 0.60) / 1_000_000;
+
             const m = raw.match(/\{[\s\S]*\}/);
             if (m) {
               const p = JSON.parse(m[0]);
               const score = Math.min(100, Math.max(0, Math.round(p.score || 0)));
               send({ type: "log", index: idx, name: c.name, step: "result", detail: `Score: ${score}/100 — ${(p.highlights || []).length} strengths, ${(p.gaps || []).length} gaps identified` });
-              send({ type: "scored", index: idx, id: c.id, name: c.name, score, reasoning: p.reasoning || "", highlights: p.highlights || [], gaps: p.gaps || [] });
+              send({ type: "scored", index: idx, id: c.id, name: c.name, score, reasoning: p.reasoning || "", highlights: p.highlights || [], gaps: p.gaps || [],
+                tokens: { prompt: promptTokens, completion: completionTokens }, cost });
             } else {
               send({ type: "log", index: idx, name: c.name, step: "result", detail: `GPT returned unparseable response` });
-              send({ type: "scored", index: idx, id: c.id, name: c.name, score: 0, reasoning: raw, highlights: [], gaps: [] });
+              send({ type: "scored", index: idx, id: c.id, name: c.name, score: 0, reasoning: raw, highlights: [], gaps: [],
+                tokens: { prompt: promptTokens, completion: completionTokens }, cost });
             }
           } catch (err) {
             send({ type: "log", index: idx, name: c.name, step: "error", detail: err instanceof Error ? err.message : String(err) });

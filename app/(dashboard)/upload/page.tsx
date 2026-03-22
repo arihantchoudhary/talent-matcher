@@ -554,134 +554,127 @@ export default function UploadPage() {
     );
   }
 
-  // ── SETUP ──
+  // ── SETUP — compact, no-scroll power user flow ──
   return (
-    <div className="max-w-4xl mx-auto px-6 py-8">
-      <div className="mb-8">
-        <h1 className="text-3xl font-bold tracking-tight ">New Match</h1>
-        <p className="text-sm text-neutral-500 mt-1">Upload candidates, select a role, define your scoring criteria, and run AI matching.</p>
-      </div>
+    <div className="max-w-5xl mx-auto px-6 py-6">
+      {/* Header */}
+      <h1 className="text-2xl font-bold tracking-tight mb-6">New Match</h1>
 
-      {/* Stacked sections */}
-      <div className="grid md:grid-cols-2 gap-4 mb-6">
-        {/* CSV upload */}
-        <div className="border border-neutral-200 bg-white rounded-lg p-5">
-          <p className="text-xs uppercase tracking-[0.15em] text-neutral-400 mb-3">Candidates</p>
+      {/* 3-column: Role | CSV | JD — all visible without scrolling */}
+      <div className="grid md:grid-cols-3 gap-3 mb-4">
+        {/* 1. Role picker */}
+        <div className="border border-neutral-200 bg-white rounded-lg p-4">
+          <p className="text-[10px] uppercase tracking-[0.15em] text-neutral-400 mb-2">1. Role</p>
+          <button onClick={() => setShowPicker(!showPicker)} className="w-full text-left rounded border border-neutral-200 p-2 hover:bg-neutral-50 text-sm">
+            <span className="font-medium">{role.title}</span>
+            <span className="text-[10px] text-neutral-400 ml-1">{role.category}</span>
+          </button>
+          {showPicker && (
+            <div className="mt-1 border border-neutral-200 rounded bg-white shadow-lg max-h-32 overflow-y-auto">
+              <div className="p-1.5 border-b border-neutral-100 flex gap-1 overflow-x-auto">
+                {["All", ...CATEGORIES].map(c => (
+                  <button key={c} onClick={() => setCatFilter(c)} className={`shrink-0 px-1.5 py-0.5 rounded text-[9px] ${catFilter === c ? "bg-neutral-900 text-white" : "text-neutral-500"}`}>{c}</button>
+                ))}
+              </div>
+              {filteredRoles.map((r) => {
+                const ri = ROLES.indexOf(r);
+                return <button key={ri} onClick={() => pickRole(ri)} className="w-full text-left px-2 py-1.5 text-xs hover:bg-neutral-50">{r.title}</button>;
+              })}
+            </div>
+          )}
+        </div>
+
+        {/* 2. CSV */}
+        <div className="border border-neutral-200 bg-white rounded-lg p-4">
+          <p className="text-[10px] uppercase tracking-[0.15em] text-neutral-400 mb-2">2. Candidates</p>
           <div onDragOver={e => { e.preventDefault(); setDragging(true); }} onDragLeave={() => setDragging(false)} onDrop={handleDrop}
             onClick={() => fileRef.current?.click()}
-            className={`border border-dashed rounded-lg py-10 text-center cursor-pointer transition-all ${dragging ? "border-neutral-900 bg-neutral-50" : fileName ? "border-neutral-300 bg-neutral-50" : "border-neutral-300 hover:border-neutral-400"}`}>
+            className={`border border-dashed rounded py-6 text-center cursor-pointer transition-all ${dragging ? "border-neutral-900 bg-neutral-50" : fileName ? "border-neutral-300 bg-neutral-50" : "border-neutral-300 hover:border-neutral-400"}`}>
             <input ref={fileRef} type="file" accept=".csv" className="hidden" onChange={e => e.target.files?.[0] && handleFile(e.target.files[0])} />
             {fileName ? (
-              <div><p className="text-sm font-medium">{fileName}</p><p className="text-xs text-neutral-400 mt-0.5">{rowCount} candidates</p></div>
+              <div><p className="text-xs font-medium">{fileName}</p><p className="text-[10px] text-neutral-400">{rowCount} candidates</p></div>
             ) : (
-              <p className="text-sm text-neutral-400">Drop CSV or click to browse</p>
+              <p className="text-xs text-neutral-400">Drop CSV or click</p>
             )}
           </div>
         </div>
 
-        {/* Role + JD combined */}
-        <div className="border border-neutral-200 bg-white rounded-lg p-5">
-          <p className="text-xs uppercase tracking-[0.15em] text-neutral-400 mb-3">Role & Job Description</p>
-          <button onClick={() => setShowPicker(!showPicker)} className="w-full text-left rounded border border-neutral-200 p-2.5 hover:bg-neutral-50 text-sm mb-3">
-            <div className="flex items-center gap-2">
-              <span className="px-1.5 py-0.5 rounded text-[10px] font-semibold bg-neutral-100">{role.category}</span>
-              <span className="font-medium">{role.title}</span>
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="ml-auto text-neutral-400"><path d="m6 9 6 6 6-6" /></svg>
-            </div>
-          </button>
-          {showPicker && (
-            <div className="mb-3 border border-neutral-200 rounded-lg bg-white shadow-lg max-h-40 overflow-y-auto">
-              <div className="p-2 border-b border-neutral-100 flex gap-1 overflow-x-auto">
-                {["All", ...CATEGORIES].map(c => (
-                  <button key={c} onClick={() => setCatFilter(c)} className={`shrink-0 px-2 py-1 rounded text-[10px] ${catFilter === c ? "bg-neutral-900 text-white" : "text-neutral-500"}`}>{c}</button>
-                ))}
-              </div>
-              {filteredRoles.map((r, i) => {
-                const ri = ROLES.indexOf(r);
-                return <button key={ri} onClick={() => pickRole(ri)} className="w-full text-left px-3 py-2 text-sm hover:bg-neutral-50">{r.title}</button>;
-              })}
-            </div>
-          )}
-          <input value={jobTitle} onChange={e => setJobTitle(e.target.value)} className="w-full border border-neutral-200 rounded px-3 py-2 text-sm font-medium mb-2 focus:outline-none focus:border-neutral-400" />
-          <textarea value={jobDesc} onChange={e => setJobDesc(e.target.value)} rows={3} className="w-full border border-neutral-200 rounded px-3 py-2 text-xs resize-none focus:outline-none focus:border-neutral-400" />
+        {/* 3. JD (collapsible) */}
+        <div className="border border-neutral-200 bg-white rounded-lg p-4">
+          <p className="text-[10px] uppercase tracking-[0.15em] text-neutral-400 mb-2">3. Job Description</p>
+          <input value={jobTitle} onChange={e => setJobTitle(e.target.value)} className="w-full border border-neutral-100 rounded px-2 py-1.5 text-xs font-medium mb-1.5 focus:outline-none focus:border-neutral-300" />
+          <textarea value={jobDesc} onChange={e => setJobDesc(e.target.value)} rows={3} className="w-full border border-neutral-100 rounded px-2 py-1.5 text-[10px] resize-none focus:outline-none focus:border-neutral-300 leading-relaxed" />
         </div>
       </div>
 
-      {/* Scoring perspective — full width, bigger */}
-      <div className="mb-6">
+      {/* Judge selection — big, visual, the main event */}
+      <div className="border border-neutral-200 bg-white rounded-lg p-5 mb-4">
+        <div className="flex items-center justify-between mb-4">
+          <p className="text-sm font-semibold">Choose Your Judge</p>
+          <span className={`text-xs tabular-nums ${criteria.reduce((s, c) => s + c.weight, 0) === 100 ? "text-neutral-400" : "text-red-500 font-medium"}`}>
+            {criteria.reduce((s, c) => s + c.weight, 0)}%
+          </span>
+        </div>
 
-          {/* Rubric */}
-          <div className="border border-neutral-200 bg-white rounded-lg p-5">
-            <div className="flex items-center justify-between mb-4">
-              <p className="text-xs uppercase tracking-[0.15em] text-neutral-400">Choose Your Judge</p>
-              <span className={`text-xs ${criteria.reduce((s, c) => s + c.weight, 0) === 100 ? "text-neutral-400" : "text-red-500 font-medium"}`}>
-                {criteria.reduce((s, c) => s + c.weight, 0)}%
-              </span>
-            </div>
+        {/* Judge cards — big */}
+        <div className="grid grid-cols-3 md:grid-cols-6 gap-2 mb-5">
+          {Object.entries(PRESETS).map(([key, preset]) => (
+            <button key={key} onClick={() => selectPreset(key)}
+              className={`rounded-xl p-4 text-center transition-all duration-300 ${selectedPreset === key ? "bg-neutral-900 text-white shadow-lg scale-105 ring-2 ring-neutral-900 ring-offset-2" : "border border-neutral-200 hover:border-neutral-400 hover:shadow-sm"}`}>
+              <div className="text-base font-semibold font-serif italic leading-tight">{preset.label}</div>
+              <div className={`text-[9px] mt-1.5 leading-tight ${selectedPreset === key ? "text-neutral-400" : "text-neutral-400"}`}>{preset.desc}</div>
+            </button>
+          ))}
+        </div>
 
-            {/* Judge cards */}
-            <div className="grid grid-cols-3 md:grid-cols-6 gap-2 mb-6">
-              {Object.entries(PRESETS).map(([key, preset]) => (
-                <button key={key} onClick={() => selectPreset(key)}
-                  className={`rounded-lg p-3 text-center transition-all duration-300 ${selectedPreset === key ? "bg-neutral-900 text-white shadow-lg scale-105 ring-2 ring-neutral-900 ring-offset-2" : "border border-neutral-200 hover:border-neutral-400 hover:shadow-sm scale-100"}`}>
-                  <div className="text-sm font-semibold font-serif italic">{preset.label}</div>
-                  <div className={`text-[9px] mt-1 leading-tight ${selectedPreset === key ? "text-neutral-400" : "text-neutral-400"}`}>{preset.desc}</div>
-                </button>
-              ))}
-            </div>
-
-            {/* Sliders — animate on judge switch */}
-            <div key={selectedPreset} className="space-y-4 mb-4 stagger-in">
-              {criteria.map((c, i) => (
-                <div key={c.name || i} className="overflow-hidden">
-                  <div className="flex items-center justify-between mb-1.5">
-                    <input value={c.name} onChange={e => { setSelectedPreset("custom"); const n = [...criteria]; n[i] = { ...n[i], name: e.target.value }; setCriteria(n); }}
-                      className="text-sm font-medium bg-transparent border-none p-0 focus:outline-none focus:ring-0" placeholder="Criterion" />
-                    <div className="flex items-center gap-2">
-                      <span className="text-sm font-bold tabular-nums">{c.weight}%</span>
-                      <button onClick={() => { setSelectedPreset("custom"); setCriteria(criteria.filter((_, j) => j !== i)); }} className="text-neutral-300 hover:text-red-500">
-                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M18 6 6 18M6 6l12 12" /></svg>
-                      </button>
-                    </div>
-                  </div>
-                  <input type="range" min={0} max={50} value={c.weight}
-                    onChange={e => { setSelectedPreset("custom"); const n = [...criteria]; n[i] = { ...n[i], weight: parseInt(e.target.value) }; setCriteria(n); }}
-                    className="w-full h-2.5 bg-neutral-100 rounded-full appearance-none cursor-pointer"
-                    style={{ background: `linear-gradient(to right, #171717 ${c.weight * 2}%, #f5f5f5 ${c.weight * 2}%)`, transition: "background 0.5s ease" }} />
-                  <p className="text-[10px] text-neutral-400 mt-1">{c.description}</p>
+        {/* Sliders */}
+        <div key={selectedPreset} className="grid md:grid-cols-2 gap-x-6 gap-y-3 stagger-in">
+          {criteria.map((c, i) => (
+            <div key={c.name || i} className="overflow-hidden">
+              <div className="flex items-center justify-between mb-1">
+                <input value={c.name} onChange={e => { setSelectedPreset("custom"); const n = [...criteria]; n[i] = { ...n[i], name: e.target.value }; setCriteria(n); }}
+                  className="text-xs font-medium bg-transparent border-none p-0 focus:outline-none" placeholder="Criterion" />
+                <div className="flex items-center gap-1.5">
+                  <span className="text-xs font-bold tabular-nums">{c.weight}%</span>
+                  <button onClick={() => { setSelectedPreset("custom"); setCriteria(criteria.filter((_, j) => j !== i)); }} className="text-neutral-200 hover:text-red-500">
+                    <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M18 6 6 18M6 6l12 12" /></svg>
+                  </button>
                 </div>
-              ))}
+              </div>
+              <input type="range" min={0} max={50} value={c.weight}
+                onChange={e => { setSelectedPreset("custom"); const n = [...criteria]; n[i] = { ...n[i], weight: parseInt(e.target.value) }; setCriteria(n); }}
+                className="w-full h-2 bg-neutral-100 rounded-full appearance-none cursor-pointer"
+                style={{ background: `linear-gradient(to right, #171717 ${c.weight * 2}%, #f5f5f5 ${c.weight * 2}%)`, transition: "background 0.5s ease" }} />
             </div>
-            <button onClick={() => setCriteria([...criteria, { name: "", weight: 0, description: "" }])} className="text-[10px] text-neutral-400 hover:text-neutral-700">+ Add criterion</button>
-          </div>
+          ))}
+        </div>
+        <button onClick={() => setCriteria([...criteria, { name: "", weight: 0, description: "" }])} className="text-[10px] text-neutral-400 hover:text-neutral-700 mt-3">+ Add criterion</button>
       </div>
 
-      {/* Submit */}
-      {rowCount > 0 && (
-        <div className="flex items-center gap-3 mb-3 fade-in">
-          <span className="text-xs text-neutral-500">GPT-score top</span>
-          <div className="flex items-center gap-1">
+      {/* Score button + top K */}
+      <div className="flex items-center gap-3 mb-2">
+        {rowCount > 0 && (
+          <div className="flex items-center gap-1 fade-in">
+            <span className="text-[10px] text-neutral-400 mr-1">Top</span>
             {[10, 25, 50, 100].map(n => (
               <button key={n} onClick={() => setTopK(n)}
-                className={`px-2.5 py-1.5 rounded-lg text-xs font-medium transition-all duration-300 ${topK === n ? "bg-neutral-900 text-white scale-110 shadow-md" : "border border-neutral-200 text-neutral-500 hover:border-neutral-400 scale-100"}`}>
+                className={`px-2 py-1 rounded text-[10px] font-medium transition-all duration-200 ${topK === n ? "bg-neutral-900 text-white" : "border border-neutral-200 text-neutral-400 hover:border-neutral-400"}`}>
                 {n}
               </button>
             ))}
             {rowCount > 100 && (
               <button onClick={() => setTopK(rowCount)}
-                className={`px-2.5 py-1.5 rounded-lg text-xs font-medium transition-all duration-300 ${topK === rowCount ? "bg-neutral-900 text-white scale-110 shadow-md" : "border border-neutral-200 text-neutral-500 hover:border-neutral-400 scale-100"}`}>
-                All ({rowCount})
+                className={`px-2 py-1 rounded text-[10px] font-medium transition-all duration-200 ${topK === rowCount ? "bg-neutral-900 text-white" : "border border-neutral-200 text-neutral-400"}`}>
+                All
               </button>
             )}
           </div>
-          <span className="text-xs text-neutral-400 transition-all duration-300">
-            {rowCount > topK ? `of ${rowCount} (rest filtered by embedding similarity)` : `of ${rowCount}`}
-          </span>
-        </div>
-      )}
+        )}
+        <div className="flex-1" />
+      </div>
       <button onClick={startScoring} disabled={!csvText || rowCount === 0}
-        className="w-full py-4 bg-neutral-900 text-white font-semibold text-sm rounded-lg hover:bg-black hover:shadow-lg disabled:opacity-30 disabled:cursor-not-allowed transition-all duration-300 active:scale-[0.98]">
-        <span key={topK} className="inline-block" style={{ animation: "fadeIn 0.3s ease-out" }}>
+        className="w-full py-3.5 bg-neutral-900 text-white font-semibold text-sm rounded-lg hover:bg-black disabled:opacity-30 disabled:cursor-not-allowed transition-all duration-200 active:scale-[0.99]">
+        <span key={topK} style={{ animation: "fadeIn 0.2s ease-out" }}>
           Score {rowCount > 0 ? (rowCount > topK ? `top ${topK} of ${rowCount}` : `${rowCount}`) : ""} candidates for {jobTitle}
         </span>
       </button>

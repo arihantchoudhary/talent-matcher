@@ -134,7 +134,7 @@ export default function UploadPage() {
               setLogs(prev => [{ name: data.name, step: data.step, detail: data.detail }, ...prev].slice(0, 100));
             }
             if (data.type === "enriched") {
-              console.log(`[MATCH] LinkedIn DB loaded: ${data.count} profiles available for enrichment`);
+              console.log(`[MATCH] LinkedIn enrichment ready`);
             }
             if (data.type === "scored" || data.type === "error") {
               console.log(`[SCORED] ${data.name}: ${data.score}/100 ${data.type === "error" ? "ERROR: " + data.error : ""}`);
@@ -224,7 +224,7 @@ export default function UploadPage() {
         <div className="grid grid-cols-4 gap-4 mb-8">
           {[
             { label: "1. Parse CSV", desc: "Extract fields from each row", count: progress.total },
-            { label: "2. LinkedIn Enrich", desc: "Match profiles from 493-profile DB", count: logs.filter(l => l.step === "enrich" && l.detail.includes("found")).length },
+            { label: "2. LinkedIn Enrich", desc: "Pull profiles, experience, education", count: logs.filter(l => l.step === "enrich" && l.detail.includes("found")).length },
             { label: "3. GPT-4o Score", desc: "Score 0-100 against role criteria", count: progress.done },
             { label: "4. Rank", desc: "Sort by score, identify fit tiers", count: results.length },
           ].map((s, i) => (
@@ -489,7 +489,7 @@ export default function UploadPage() {
               {criteria.reduce((s, c) => s + c.weight, 0) !== 100 && <span className="text-red-500 ml-1">(should be 100%)</span>}
             </span>
           </div>
-          <p className="text-xs text-zinc-500 mb-4">Define what matters for this role. The AI will weight its scoring based on these criteria.</p>
+          <p className="text-xs text-zinc-500 mb-4">Each candidate gets scored on these criteria. The weight is how many points (out of 100) that criterion is worth. E.g., 25% = up to 25 points.</p>
           <div className="space-y-3">
             {criteria.map((c, i) => (
               <div key={i} className="flex items-start gap-3">

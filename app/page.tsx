@@ -8,128 +8,133 @@ export default async function LandingPage() {
   return (
     <div className="min-h-screen bg-white">
       {/* Nav */}
-      <nav className="border-b bg-white/80 backdrop-blur-lg sticky top-0 z-50">
-        <div className="max-w-5xl mx-auto px-6 h-16 flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <div className="w-8 h-8 rounded-lg bg-indigo-600 flex items-center justify-center text-white font-bold text-sm">T</div>
-            <span className="font-bold">Talent Matcher</span>
+      <nav className="border-b border-neutral-200 bg-white sticky top-0 z-50">
+        <div className="max-w-6xl mx-auto px-6 h-14 flex items-center justify-between">
+          <span className="text-sm font-semibold tracking-tight">Talent Matcher</span>
+          <div className="flex items-center gap-4">
+            {loggedIn ? (
+              <Link href="/upload" className="text-sm font-medium hover:underline underline-offset-4">Dashboard</Link>
+            ) : (
+              <>
+                <Link href="/sign-in" className="text-sm text-neutral-500 hover:text-neutral-900">Sign in</Link>
+                <Link href="/sign-up" className="text-sm font-medium bg-neutral-900 text-white px-4 py-1.5 rounded-md hover:bg-black transition-colors">Get started</Link>
+              </>
+            )}
           </div>
-          {loggedIn ? (
-            <Link href="/rankings" className="px-4 py-2 rounded-lg bg-indigo-600 text-white text-sm font-medium hover:bg-indigo-700 transition-colors">
-              Dashboard
-            </Link>
-          ) : (
-            <div className="flex gap-2">
-              <Link href="/sign-in" className="px-4 py-2 rounded-lg text-sm font-medium text-zinc-600 hover:text-zinc-900 transition-colors">Sign in</Link>
-              <Link href="/sign-up" className="px-4 py-2 rounded-lg bg-indigo-600 text-white text-sm font-medium hover:bg-indigo-700 transition-colors">Get started</Link>
-            </div>
-          )}
         </div>
       </nav>
 
       {/* Hero */}
-      <section className="pt-24 pb-20 px-6">
-        <div className="max-w-3xl mx-auto text-center">
-          <div className="inline-block px-3 py-1 rounded-full bg-indigo-50 text-indigo-700 text-xs font-semibold mb-6">AI-powered matching</div>
-          <h1 className="text-5xl font-bold tracking-tight mb-6 leading-[1.1]">
-            Match candidates to roles<br /><span className="text-indigo-600">in seconds, not weeks</span>
+      <section className="pt-28 pb-20 px-6">
+        <div className="max-w-2xl mx-auto">
+          <p className="text-xs uppercase tracking-[0.2em] text-neutral-400 mb-6">AI-powered talent matching</p>
+          <h1 className="text-5xl font-serif font-normal leading-[1.15] mb-6 italic">
+            The right candidate<br />for every role.
           </h1>
-          <p className="text-lg text-zinc-500 max-w-xl mx-auto mb-10">
-            Upload your candidate CSV, score them against any job description with GPT-4o, and export your shortlist. Built for recruiting teams.
+          <p className="text-lg text-neutral-500 leading-relaxed max-w-lg mb-10">
+            Upload your candidates. Define the role. Our matching engine scores, ranks, and explains every fit — so you hire with confidence.
           </p>
-          <Link href={loggedIn ? "/rankings" : "/sign-up"}
-            className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-indigo-600 text-white font-semibold hover:bg-indigo-700 transition-colors shadow-sm">
-            {loggedIn ? "Go to dashboard" : "Start matching free"}
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="m9 18 6-6-6-6"/></svg>
-          </Link>
+          <div className="flex items-center gap-4">
+            <Link href={loggedIn ? "/upload" : "/sign-up"}
+              className="text-sm font-medium bg-neutral-900 text-white px-6 py-2.5 rounded-md hover:bg-black transition-colors">
+              {loggedIn ? "Go to dashboard" : "Start matching"}
+            </Link>
+            <Link href="#how" className="text-sm text-neutral-500 hover:text-neutral-900 underline underline-offset-4">
+              How it works
+            </Link>
+          </div>
         </div>
       </section>
 
+      {/* Divider */}
+      <div className="max-w-6xl mx-auto px-6"><div className="border-t border-neutral-200" /></div>
+
       {/* How it works */}
-      <section className="py-20 px-6 bg-zinc-50">
+      <section id="how" className="py-20 px-6">
         <div className="max-w-4xl mx-auto">
-          <h2 className="text-2xl font-bold text-center mb-12">How it works</h2>
-          <div className="grid md:grid-cols-3 gap-8">
+          <p className="text-xs uppercase tracking-[0.2em] text-neutral-400 mb-4">Process</p>
+          <h2 className="text-2xl font-serif italic mb-12">Three steps to your shortlist.</h2>
+          <div className="grid md:grid-cols-3 gap-12">
             {[
-              { n: "1", t: "Upload CSV", d: "Drop any candidate CSV — we auto-detect names, LinkedIn URLs, and all fields." },
-              { n: "2", t: "AI scores candidates", d: "GPT-4o-mini evaluates each candidate 0-100 against your role with specific reasoning." },
-              { n: "3", t: "Export shortlist", d: "Browse ranked results, shortlist your picks, download CSV or JSON for interviews." },
+              { n: "01", t: "Upload", d: "Drop any CSV of candidates. We parse every format — ATS exports, LinkedIn, spreadsheets. No templates required." },
+              { n: "02", t: "Match", d: "GPT-4o scores each candidate against your role description. You get a score, reasoning, strengths, and gaps for every person." },
+              { n: "03", t: "Export", d: "Review the ranked list. Shortlist your picks. Download CSV or JSON for your ATS or interview pipeline." },
             ].map((s) => (
-              <div key={s.n} className="bg-white rounded-2xl border border-zinc-200 p-6 text-center">
-                <div className="w-10 h-10 rounded-full bg-indigo-100 text-indigo-700 font-bold flex items-center justify-center mx-auto mb-4">{s.n}</div>
-                <h3 className="font-semibold mb-2">{s.t}</h3>
-                <p className="text-sm text-zinc-500">{s.d}</p>
+              <div key={s.n}>
+                <span className="text-xs text-neutral-300 font-mono">{s.n}</span>
+                <h3 className="text-lg font-semibold mt-2 mb-2">{s.t}</h3>
+                <p className="text-sm text-neutral-500 leading-relaxed">{s.d}</p>
               </div>
             ))}
           </div>
         </div>
       </section>
 
+      <div className="max-w-6xl mx-auto px-6"><div className="border-t border-neutral-200" /></div>
+
       {/* Features */}
       <section className="py-20 px-6">
-        <div className="max-w-4xl mx-auto grid md:grid-cols-2 gap-6">
-          {[
-            { t: "Any CSV format", d: "No rigid templates. Auto-detects columns from any export — ATS, LinkedIn, spreadsheets." },
-            { t: "LinkedIn enrichment", d: "If your CSV has LinkedIn URLs, we pull profiles, photos, and experience data." },
-            { t: "Detailed reasoning", d: "Every score comes with highlights (strengths) and gaps, not just a number." },
-            { t: "Real-time scoring", d: "Watch results stream in live as GPT-4o-mini processes each candidate." },
-          ].map((f) => (
-            <div key={f.t} className="border border-zinc-200 rounded-xl p-5 bg-white">
-              <h3 className="font-semibold mb-1">{f.t}</h3>
-              <p className="text-sm text-zinc-500">{f.d}</p>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* Pricing */}
-      <section className="py-20 px-6 bg-zinc-50">
         <div className="max-w-4xl mx-auto">
-          <h2 className="text-2xl font-bold text-center mb-2">Simple pricing</h2>
-          <p className="text-sm text-zinc-500 text-center mb-10">Start free. Upgrade when you need more.</p>
-          <div className="grid md:grid-cols-3 gap-4">
-            <PriceCard
-              tier="Free" price="$0" period="forever" current
-              features={["50 AI scores/month", "1 active role", "CSV export", "LinkedIn enrichment"]}
-            />
-            <PriceCard
-              tier="Pro" price="$49" period="/mo per seat" popular
-              features={["500 AI scores/month", "Unlimited roles", "CSV + JSON export", "LinkedIn enrichment", "Team collaboration (5 seats)", "Priority scoring queue"]}
-            />
-            <PriceCard
-              tier="Enterprise" price="Custom" period="contact sales"
-              features={["Unlimited scores", "Unlimited roles + cities", "ATS integrations (Greenhouse, Lever)", "Custom AI models", "SSO + SAML", "Dedicated support + SLA"]}
-            />
+          <p className="text-xs uppercase tracking-[0.2em] text-neutral-400 mb-4">Capabilities</p>
+          <h2 className="text-2xl font-serif italic mb-12">Built for recruiting at scale.</h2>
+          <div className="grid md:grid-cols-2 gap-x-16 gap-y-8">
+            {[
+              { t: "Any CSV format", d: "No rigid templates. Auto-detects names, LinkedIn URLs, and fields from any export." },
+              { t: "LinkedIn enrichment", d: "If your CSV has LinkedIn URLs, we pull full profiles — experience, education, skills, photos." },
+              { t: "Scored reasoning", d: "Every candidate gets a score with specific strengths and gaps. Not just a number." },
+              { t: "Stable matching", d: "Multiple open roles? Gale-Shapley algorithm optimally assigns candidates across all positions." },
+              { t: "Session history", d: "Every match is saved. Review past sessions, compare runs, track candidate pipelines." },
+              { t: "Role templates", d: "20 built-in roles across Sales, GTM, Engineering, Product, Finance. Add your own." },
+            ].map((f) => (
+              <div key={f.t} className="border-l-2 border-neutral-900 pl-4">
+                <h3 className="text-sm font-semibold mb-1">{f.t}</h3>
+                <p className="text-sm text-neutral-500 leading-relaxed">{f.d}</p>
+              </div>
+            ))}
           </div>
         </div>
       </section>
 
-      {/* Competitor comparison */}
+      <div className="max-w-6xl mx-auto px-6"><div className="border-t border-neutral-200" /></div>
+
+      {/* Pricing */}
       <section className="py-20 px-6">
         <div className="max-w-4xl mx-auto">
-          <h2 className="text-2xl font-bold text-center mb-2">How we compare</h2>
-          <p className="text-sm text-zinc-500 text-center mb-10">vs. enterprise talent intelligence platforms</p>
-          <div className="rounded-xl border border-zinc-200 bg-white overflow-x-auto">
+          <p className="text-xs uppercase tracking-[0.2em] text-neutral-400 mb-4">Pricing</p>
+          <h2 className="text-2xl font-serif italic mb-12">Simple, transparent pricing.</h2>
+          <div className="grid md:grid-cols-3 gap-6">
+            <PriceCard tier="Free" price="$0" period="forever" features={["50 scores/month", "1 role", "CSV export", "LinkedIn enrichment"]} />
+            <PriceCard tier="Pro" price="$49" period="/month" featured features={["500 scores/month", "Unlimited roles", "Stable matching", "Team seats (5)", "Priority scoring"]} />
+            <PriceCard tier="Enterprise" price="Custom" period="contact us" features={["Unlimited scores", "ATS integrations", "Custom models", "SSO + SAML", "Dedicated support"]} />
+          </div>
+        </div>
+      </section>
+
+      <div className="max-w-6xl mx-auto px-6"><div className="border-t border-neutral-200" /></div>
+
+      {/* Comparison */}
+      <section className="py-20 px-6">
+        <div className="max-w-4xl mx-auto">
+          <p className="text-xs uppercase tracking-[0.2em] text-neutral-400 mb-4">Comparison</p>
+          <h2 className="text-2xl font-serif italic mb-12">How we compare.</h2>
+          <div className="overflow-x-auto">
             <table className="w-full text-sm min-w-[600px]">
               <thead>
-                <tr className="border-b border-zinc-100 bg-zinc-50">
-                  <th className="text-left px-4 py-3 font-semibold">Feature</th>
-                  <th className="text-center px-4 py-3 font-semibold text-indigo-600">Talent Matcher</th>
-                  <th className="text-center px-4 py-3 font-semibold text-zinc-400">Eightfold AI</th>
-                  <th className="text-center px-4 py-3 font-semibold text-zinc-400">Beamery</th>
-                  <th className="text-center px-4 py-3 font-semibold text-zinc-400">HiredScore</th>
+                <tr className="border-b border-neutral-900">
+                  <th className="text-left py-3 font-semibold">Feature</th>
+                  <th className="text-center py-3 font-semibold">Talent Matcher</th>
+                  <th className="text-center py-3 text-neutral-400">Eightfold AI</th>
+                  <th className="text-center py-3 text-neutral-400">Beamery</th>
+                  <th className="text-center py-3 text-neutral-400">HiredScore</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-zinc-100">
-                <CRow f="Pricing" us="From $0/mo" c1="Enterprise only" c2="Enterprise only" c3="Custom (Workday)" />
-                <CRow f="Setup time" us="< 1 minute" c1="Weeks" c2="Weeks" c3="Weeks" />
+              <tbody className="divide-y divide-neutral-100">
+                <CRow f="Pricing" us="From $0" c1="Enterprise" c2="Enterprise" c3="Custom" />
+                <CRow f="Setup" us="< 1 minute" c1="Weeks" c2="Weeks" c3="Weeks" />
                 <CRow f="Any CSV import" us="Yes" c1="No" c2="No" c3="No" />
-                <CRow f="AI scoring model" us="GPT-4o (transparent)" c1="Proprietary" c2="Proprietary" c3="Proprietary" />
-                <CRow f="Reasoning per candidate" us="Yes — highlights + gaps" c1="Match % only" c2="Engagement score" c3="Letter grade" />
-                <CRow f="LinkedIn enrichment" us="Yes" c1="Yes" c2="Yes" c3="Limited" />
-                <CRow f="Role templates" us="30+ built-in" c1="Custom only" c2="Custom only" c3="Custom only" />
-                <CRow f="Self-serve signup" us="Yes" c1="No" c2="No" c3="No" />
-                <CRow f="Export" us="CSV + JSON" c1="Limited" c2="Limited" c3="Via Workday" />
+                <CRow f="AI reasoning" us="Per candidate" c1="Match %" c2="Score" c3="Grade" />
+                <CRow f="Stable matching" us="Gale-Shapley" c1="No" c2="No" c3="No" />
+                <CRow f="Self-serve" us="Yes" c1="No" c2="No" c3="No" />
               </tbody>
             </table>
           </div>
@@ -137,49 +142,41 @@ export default async function LandingPage() {
       </section>
 
       {/* CTA */}
-      <section className="py-20 px-6 bg-zinc-50">
+      <section className="py-20 px-6 bg-neutral-950 text-white">
         <div className="max-w-2xl mx-auto text-center">
-          <h2 className="text-2xl font-bold mb-3">Ready to match?</h2>
-          <p className="text-sm text-zinc-500 mb-6">Free to start. No credit card required.</p>
-          <Link href={loggedIn ? "/rankings" : "/sign-up"}
-            className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-indigo-600 text-white font-semibold hover:bg-indigo-700 transition-colors">
+          <h2 className="text-3xl font-serif italic mb-4">Ready to match?</h2>
+          <p className="text-neutral-400 mb-8">Free to start. No credit card.</p>
+          <Link href={loggedIn ? "/upload" : "/sign-up"}
+            className="inline-block text-sm font-medium bg-white text-neutral-900 px-6 py-2.5 rounded-md hover:bg-neutral-100 transition-colors">
             {loggedIn ? "Go to dashboard" : "Get started free"}
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="m9 18 6-6-6-6"/></svg>
           </Link>
         </div>
       </section>
 
       {/* Footer */}
-      <footer className="border-t py-8 px-6 text-center text-xs text-zinc-400">
-        Talent Matcher &middot; Powered by GPT-4o-mini
+      <footer className="border-t border-neutral-200 py-8 px-6">
+        <div className="max-w-6xl mx-auto flex items-center justify-between text-xs text-neutral-400">
+          <span>Talent Matcher</span>
+          <span>Powered by GPT-4o</span>
+        </div>
       </footer>
     </div>
   );
 }
 
-function Chk() {
-  return <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#16a34a" strokeWidth="2.5" strokeLinecap="round" className="shrink-0"><path d="M20 6 9 17l-5-5" /></svg>;
-}
-
-function PriceCard({ tier, price, period, features, popular, current }: {
-  tier: string; price: string; period: string; features: string[]; popular?: boolean; current?: boolean;
-}) {
+function PriceCard({ tier, price, period, features, featured }: { tier: string; price: string; period: string; features: string[]; featured?: boolean }) {
   return (
-    <div className={`rounded-xl p-6 bg-white relative ${popular ? "border-2 border-indigo-600 shadow-md" : "border border-zinc-200"}`}>
-      {popular && <div className="absolute -top-3 left-4 px-2.5 py-0.5 bg-indigo-600 text-white text-xs font-semibold rounded-full">Most popular</div>}
-      <div className="text-xs font-semibold text-zinc-400 uppercase tracking-wider mb-2">{tier}</div>
-      <div className="text-3xl font-bold mb-0.5">{price}</div>
-      <div className="text-xs text-zinc-500 mb-5">{period}</div>
-      <ul className="space-y-2.5 text-sm text-zinc-600 mb-6">
-        {features.map((f) => <li key={f} className="flex items-center gap-2"><Chk />{f}</li>)}
+    <div className={`p-6 ${featured ? "border-2 border-neutral-900 bg-neutral-950 text-white" : "border border-neutral-200"}`}>
+      <p className={`text-xs uppercase tracking-[0.15em] mb-3 ${featured ? "text-neutral-400" : "text-neutral-400"}`}>{tier}</p>
+      <p className="text-3xl font-semibold mb-0.5">{price}</p>
+      <p className={`text-xs mb-6 ${featured ? "text-neutral-500" : "text-neutral-400"}`}>{period}</p>
+      <ul className="space-y-2">
+        {features.map((f) => (
+          <li key={f} className={`text-sm flex items-center gap-2 ${featured ? "text-neutral-300" : "text-neutral-600"}`}>
+            <span className="text-[10px]">+</span> {f}
+          </li>
+        ))}
       </ul>
-      {current ? (
-        <div className="py-2.5 rounded-lg bg-zinc-100 text-center text-sm font-medium text-zinc-500">Current plan</div>
-      ) : popular ? (
-        <button className="w-full py-2.5 rounded-lg bg-indigo-600 text-white text-sm font-medium hover:bg-indigo-700 transition-colors">Get started</button>
-      ) : (
-        <button className="w-full py-2.5 rounded-lg border border-zinc-200 text-sm font-medium hover:bg-zinc-50 transition-colors">Contact sales</button>
-      )}
     </div>
   );
 }
@@ -187,11 +184,11 @@ function PriceCard({ tier, price, period, features, popular, current }: {
 function CRow({ f, us, c1, c2, c3 }: { f: string; us: string; c1: string; c2: string; c3: string }) {
   return (
     <tr>
-      <td className="px-4 py-2.5 font-medium">{f}</td>
-      <td className="px-4 py-2.5 text-center text-indigo-600 font-medium">{us}</td>
-      <td className="px-4 py-2.5 text-center text-zinc-400">{c1}</td>
-      <td className="px-4 py-2.5 text-center text-zinc-400">{c2}</td>
-      <td className="px-4 py-2.5 text-center text-zinc-400">{c3}</td>
+      <td className="py-2.5 font-medium">{f}</td>
+      <td className="py-2.5 text-center font-medium">{us}</td>
+      <td className="py-2.5 text-center text-neutral-400">{c1}</td>
+      <td className="py-2.5 text-center text-neutral-400">{c2}</td>
+      <td className="py-2.5 text-center text-neutral-400">{c3}</td>
     </tr>
   );
 }

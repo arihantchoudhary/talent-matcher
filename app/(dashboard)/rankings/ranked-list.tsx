@@ -9,10 +9,10 @@ interface Candidate {
 }
 
 function scoreColor(score: number) {
-  if (score >= 70) return { bg: "bg-emerald-50", border: "border-emerald-200", text: "text-emerald-700", bar: "bg-emerald-500" };
-  if (score >= 50) return { bg: "bg-indigo-50", border: "border-indigo-200", text: "text-indigo-700", bar: "bg-indigo-500" };
-  if (score >= 30) return { bg: "bg-amber-50", border: "border-amber-200", text: "text-amber-700", bar: "bg-amber-500" };
-  return { bg: "bg-red-50", border: "border-red-200", text: "text-red-600", bar: "bg-red-400" };
+  if (score >= 70) return { bg: "bg-neutral-900", border: "border-neutral-900", text: "text-white", bar: "bg-neutral-900" };
+  if (score >= 50) return { bg: "bg-neutral-100", border: "border-neutral-300", text: "text-neutral-700", bar: "bg-neutral-600" };
+  if (score >= 30) return { bg: "bg-neutral-50", border: "border-neutral-200", text: "text-neutral-500", bar: "bg-neutral-400" };
+  return { bg: "bg-white", border: "border-neutral-200", text: "text-neutral-400", bar: "bg-neutral-300" };
 }
 
 function scoreLabel(score: number) {
@@ -53,7 +53,7 @@ export function RankedList({ candidates }: { candidates: Candidate[] }) {
             { v: "low", l: "<30", c: candidates.filter((c) => c.score < 30).length },
           ].map((f) => (
             <button key={f.v} onClick={() => setFilter(f.v)}
-              className={`px-3 py-2 rounded-lg text-xs font-medium border transition-colors ${filter === f.v ? "bg-zinc-900 text-white border-zinc-900" : "bg-white text-zinc-600 border-zinc-200 hover:bg-zinc-50"}`}>
+              className={`px-3 py-2 text-xs font-medium border-b-2 transition-colors ${filter === f.v ? "border-neutral-900 text-neutral-900" : "border-transparent text-neutral-400 hover:text-neutral-600"}`}>
               {f.l}<span className={`ml-1 ${filter === f.v ? "text-zinc-300" : "text-zinc-400"}`}>{f.c}</span>
             </button>
           ))}

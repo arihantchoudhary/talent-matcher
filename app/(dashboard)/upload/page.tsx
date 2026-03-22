@@ -733,27 +733,77 @@ export default function UploadPage() {
                 rows={4} placeholder="Describe your ideal candidate in plain language..."
                 className="w-full px-3 py-2.5 text-sm text-neutral-700 resize-y focus:outline-none leading-relaxed" />
             ) : (
-              <div className="p-3 space-y-2.5">
-                {(Object.entries(NL_OPTIONS) as [NLCategory, string[]][]).map(([cat, options]) => (
-                  <div key={cat} className="flex items-start gap-2 min-w-0">
-                    <span className="text-[9px] text-neutral-400 w-20 shrink-0 text-right uppercase tracking-wider pt-1 leading-tight">
-                      {cat === "buyer_personas" ? "Buyer" : cat === "sales_focus" ? "Focus" : cat.replace(/_/g, " ")}
-                    </span>
-                    <div className="flex flex-wrap gap-1 min-w-0">
-                      {options.map(opt => {
-                        const active = nlSelections[cat].includes(opt);
+              <div className="p-3">
+                {/* Preview sentence — BIG, on top, with selected values bold and clickable */}
+                <div className="mb-4 pb-3 border-b border-neutral-100">
+                  <p className="text-sm text-neutral-700 leading-relaxed">
+                    {(() => {
+                      const parts: { text: string; cat: NLCategory; value: string }[] = [];
+                      const sel = nlSelections;
+                      if (sel.experience.length) parts.push({ text: sel.experience.join(" or "), cat: "experience", value: sel.experience.join(", ") });
+                      if (sel.background.length) parts.push({ text: sel.background.join(", "), cat: "background", value: sel.background.join(", ") });
+                      if (sel.industries.length) parts.push({ text: sel.industries.join(", "), cat: "industries", value: sel.industries.join(", ") });
+                      if (sel.buyer_personas.length) parts.push({ text: sel.buyer_personas.join(", "), cat: "buyer_personas", value: sel.buyer_personas.join(", ") });
+                      if (sel.sales_focus.length) parts.push({ text: sel.sales_focus.join(", "), cat: "sales_focus", value: sel.sales_focus.join(", ") });
+                      if (sel.skills.length) parts.push({ text: sel.skills.join(", "), cat: "skills", value: sel.skills.join(", ") });
+                      if (sel.traits.length) parts.push({ text: sel.traits.join(", "), cat: "traits", value: sel.traits.join(", ") });
+                      if (sel.location.length) parts.push({ text: sel.location.join(" or "), cat: "location", value: sel.location.join(", ") });
+
+                      if (parts.length === 0) return <span className="text-neutral-400 italic">Select options below to build your ideal candidate description.</span>;
+
+                      const labels: Record<NLCategory, [string, string]> = {
+                        experience: ["", " of experience"],
+                        background: ["Background in ", ""],
+                        industries: ["selling into ", ""],
+                        buyer_personas: ["engaging ", " buyers"],
+                        sales_focus: ["focused on ", ""],
+                        skills: ["proficient with ", ""],
+                        traits: ["demonstrating ", ""],
+                        location: ["based in ", ""],
+                      };
+
+                      return parts.map((p, i) => {
+                        const [pre, post] = labels[p.cat];
                         return (
-                          <button key={opt} onClick={() => toggleNlOption(cat, opt)}
-                            className={`px-2 py-0.5 rounded-full text-[10px] transition-all duration-150 shrink-0 ${active ? "bg-neutral-900 text-white" : "bg-neutral-50 text-neutral-500 hover:bg-neutral-100 border border-neutral-200"}`}>
-                            {opt}
-                          </button>
+                          <span key={p.cat}>
+                            {i > 0 && <span className="text-neutral-400">. </span>}
+                            <span className="text-neutral-500">{pre}</span>
+                            <span className="font-semibold text-neutral-900 bg-neutral-100 px-1 py-0.5 rounded cursor-pointer hover:bg-neutral-200 transition-colors"
+                              onClick={() => {
+                                const el = document.getElementById(`nl-row-${p.cat}`);
+                                el?.scrollIntoView({ behavior: "smooth", block: "center" });
+                              }}>
+                              {p.text}
+                            </span>
+                            <span className="text-neutral-500">{post}</span>
+                          </span>
                         );
-                      })}
+                      });
+                    })()}
+                    <span className="text-neutral-400">.</span>
+                  </p>
+                </div>
+
+                {/* Pill selectors */}
+                <div className="space-y-2.5">
+                  {(Object.entries(NL_OPTIONS) as [NLCategory, string[]][]).map(([cat, options]) => (
+                    <div key={cat} id={`nl-row-${cat}`} className="flex items-start gap-2 min-w-0">
+                      <span className="text-[9px] text-neutral-400 w-20 shrink-0 text-right uppercase tracking-wider pt-1 leading-tight">
+                        {cat === "buyer_personas" ? "Buyer" : cat === "sales_focus" ? "Focus" : cat.replace(/_/g, " ")}
+                      </span>
+                      <div className="flex flex-wrap gap-1 min-w-0">
+                        {options.map(opt => {
+                          const active = nlSelections[cat].includes(opt);
+                          return (
+                            <button key={opt} onClick={() => toggleNlOption(cat, opt)}
+                              className={`px-2 py-0.5 rounded-full text-[10px] transition-all duration-150 shrink-0 ${active ? "bg-neutral-900 text-white" : "bg-neutral-50 text-neutral-500 hover:bg-neutral-100 border border-neutral-200"}`}>
+                              {opt}
+                            </button>
+                          );
+                        })}
+                      </div>
                     </div>
-                  </div>
-                ))}
-                <div className="pt-2 border-t border-neutral-100">
-                  <p className="text-[10px] text-neutral-500 leading-relaxed italic">{idealCandidate || "Select options above to build description"}</p>
+                  ))}
                 </div>
               </div>
             )}

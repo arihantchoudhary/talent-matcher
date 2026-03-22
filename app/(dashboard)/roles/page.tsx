@@ -86,13 +86,13 @@ export default function RolesPage() {
 
         {/* Editor */}
         {isEditing && (
-          <div className="rounded-xl border border-indigo-200 bg-indigo-50/30 p-5 mb-6 fade-in">
+          <div className="rounded-xl border border-neutral-300 bg-neutral-50/30 p-5 mb-6 fade-in">
             <h2 className="font-semibold text-sm mb-4">{editing !== null ? "Edit role" : "New role"}</h2>
             <div className="grid md:grid-cols-2 gap-4 mb-4">
               <div>
                 <label className="block text-xs font-medium text-neutral-600 mb-1">Title</label>
                 <input value={draft.title} onChange={e => setDraft({ ...draft, title: e.target.value })}
-                  className="w-full border border-neutral-200 rounded-lg px-3 py-2 text-sm bg-white focus:outline-none focus:border-indigo-300" />
+                  className="w-full border border-neutral-200 rounded-lg px-3 py-2 text-sm bg-white focus:outline-none focus:border-neutral-300" />
               </div>
               <div className="flex gap-3">
                 <div className="flex-1">
@@ -106,14 +106,14 @@ export default function RolesPage() {
                   <label className="block text-xs font-medium text-neutral-600 mb-1">Experience</label>
                   <input value={draft.experience} onChange={e => setDraft({ ...draft, experience: e.target.value })}
                     placeholder="e.g. 2-5yr"
-                    className="w-full border border-neutral-200 rounded-lg px-3 py-2 text-sm bg-white focus:outline-none focus:border-indigo-300" />
+                    className="w-full border border-neutral-200 rounded-lg px-3 py-2 text-sm bg-white focus:outline-none focus:border-neutral-300" />
                 </div>
               </div>
             </div>
             <div className="mb-4">
               <label className="block text-xs font-medium text-neutral-600 mb-1">Description</label>
               <textarea value={draft.description} onChange={e => setDraft({ ...draft, description: e.target.value })}
-                rows={5} className="w-full border border-neutral-200 rounded-lg px-3 py-2 text-sm bg-white resize-none focus:outline-none focus:border-indigo-300" />
+                rows={5} className="w-full border border-neutral-200 rounded-lg px-3 py-2 text-sm bg-white resize-none focus:outline-none focus:border-neutral-300" />
             </div>
             <div className="mb-4">
               <label className="block text-xs font-medium text-neutral-600 mb-2">
@@ -152,7 +152,7 @@ export default function RolesPage() {
               <div className="flex items-start justify-between gap-3">
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2 mb-1">
-                    <span className="px-1.5 py-0.5 rounded text-[10px] font-semibold bg-indigo-100 text-indigo-700">{role.category}</span>
+                    <span className="px-1.5 py-0.5 rounded text-[10px] font-semibold bg-neutral-100 text-neutral-700">{role.category}</span>
                     <span className="font-semibold text-sm">{role.title}</span>
                     <span className="text-xs text-neutral-400">{role.experience}</span>
                     {role.remote && <span className="text-[10px] text-emerald-600 bg-emerald-50 px-1.5 py-0.5 rounded">Remote</span>}

@@ -176,7 +176,7 @@ export default function HistoryPage() {
             {[...grouped.entries()].map(([group, groupSessions]) => (
               <div key={group}>
                 <h2 className="text-sm font-semibold text-neutral-500 mb-3 flex items-center gap-2">
-                  {groupBy === "role" && <span className="px-1.5 py-0.5 rounded text-[10px] font-semibold bg-indigo-100 text-indigo-700">{groupSessions[0]?.role_category}</span>}
+                  {groupBy === "role" && <span className="px-1.5 py-0.5 rounded text-[10px] font-semibold bg-neutral-100 text-neutral-700">{groupSessions[0]?.role_category}</span>}
                   {group}
                   <span className="text-neutral-400 font-normal">{groupSessions.length} session{groupSessions.length > 1 ? "s" : ""}</span>
                 </h2>
@@ -186,7 +186,7 @@ export default function HistoryPage() {
                       <button onClick={() => handleView(s)} className="w-full text-left p-4 flex items-center gap-4">
                         {/* Score ring */}
                         <div className={`shrink-0 w-12 h-12 rounded-full border-[3px] flex items-center justify-center text-sm font-bold ${
-                          s.avg_score >= 60 ? "border-emerald-400 text-emerald-700" : s.avg_score >= 40 ? "border-indigo-400 text-indigo-700" : "border-neutral-300 text-neutral-600"
+                          s.avg_score >= 60 ? "border-emerald-400 text-emerald-700" : s.avg_score >= 40 ? "border-neutral-400 text-neutral-700" : "border-neutral-300 text-neutral-600"
                         }`}>
                           {s.avg_score}
                         </div>
@@ -200,7 +200,7 @@ export default function HistoryPage() {
                           <div className="flex gap-3 mt-1.5 flex-wrap">
                             {s.judge && <span className="text-xs text-neutral-700 font-serif italic">{s.judge}</span>}
                             <span className="text-xs text-emerald-600 font-medium">{s.top_tier} top tier</span>
-                            <span className="text-xs text-indigo-600 font-medium">{s.good_fit} good fit</span>
+                            <span className="text-xs text-neutral-900 font-medium">{s.good_fit} good fit</span>
                             {s.duration ? <span className="text-xs text-neutral-400">{s.duration}s</span> : null}
                             {s.cost ? <span className="text-xs text-neutral-400">${Number(s.cost).toFixed(3)}</span> : null}
                           </div>

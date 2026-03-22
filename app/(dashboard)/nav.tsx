@@ -37,11 +37,11 @@ export function DashboardNav() {
       {isScoring && (
         <div className="shrink-0 md:mt-3 px-3 py-2">
           <div className="flex items-center gap-2">
-            <div className="w-2 h-2 rounded-full bg-indigo-500 animate-pulse" />
+            <div className="w-2 h-2 rounded-full bg-neutral-900 animate-pulse" />
             <span className="text-xs text-neutral-500">{progress.done}/{progress.total}</span>
           </div>
           <div className="h-1 bg-neutral-100 rounded-full mt-1 overflow-hidden">
-            <div className="h-full bg-indigo-500 rounded-full transition-all" style={{ width: `${progress.total > 0 ? (progress.done / progress.total) * 100 : 0}%` }} />
+            <div className="h-full bg-neutral-900 rounded-full transition-all" style={{ width: `${progress.total > 0 ? (progress.done / progress.total) * 100 : 0}%` }} />
           </div>
         </div>
       )}

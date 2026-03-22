@@ -217,7 +217,7 @@ export default function StableMatchPage() {
                   {m.candidates.length === 0 ? (
                     <p className="text-sm text-neutral-400 py-4 text-center">No candidates matched</p>
                   ) : m.candidates.map((c, i) => {
-                    const color = c.score >= 70 ? "bg-emerald-50 border-emerald-200 text-emerald-700" : c.score >= 50 ? "bg-indigo-50 border-indigo-200 text-indigo-700" : "bg-amber-50 border-amber-200 text-amber-700";
+                    const color = c.score >= 70 ? "bg-emerald-50 border-emerald-200 text-emerald-700" : c.score >= 50 ? "bg-neutral-50 border-neutral-300 text-neutral-700" : "bg-amber-50 border-amber-200 text-amber-700";
                     return (
                       <div key={i} className="flex items-start gap-3 py-2">
                         <span className={`shrink-0 px-2 py-0.5 rounded-full text-xs font-bold border ${color}`}>{c.score}</span>
@@ -351,7 +351,7 @@ function RoleSlotCard({ slot, idx, roles, onSelectRole, onFile, onCapacity, onSc
             className="w-full text-left rounded-lg border border-neutral-200 p-2.5 hover:bg-neutral-50 text-sm">
             {slot.role ? (
               <div className="flex items-center gap-2">
-                <span className="px-1.5 py-0.5 rounded text-[10px] font-semibold bg-indigo-100 text-indigo-700">{slot.role.category}</span>
+                <span className="px-1.5 py-0.5 rounded text-[10px] font-semibold bg-neutral-100 text-neutral-700">{slot.role.category}</span>
                 <span className="font-medium">{slot.role.title}</span>
               </div>
             ) : (
@@ -392,13 +392,13 @@ function RoleSlotCard({ slot, idx, roles, onSelectRole, onFile, onCapacity, onSc
           {slot.scoring ? (
             <div>
               <div className="h-1.5 rounded-full bg-neutral-100 overflow-hidden mb-1">
-                <div className="h-full rounded-full bg-indigo-600 transition-all" style={{ width: `${pct}%` }} />
+                <div className="h-full rounded-full bg-neutral-900 transition-all" style={{ width: `${pct}%` }} />
               </div>
               <p className="text-xs text-neutral-400">{slot.scored.length} / {slot.candidates.length} scored</p>
             </div>
           ) : (
             <button onClick={onScore}
-              className="w-full py-2 rounded-lg bg-indigo-600 text-white text-xs font-medium hover:bg-indigo-700 transition-colors">
+              className="w-full py-2 rounded-lg bg-neutral-900 text-white text-xs font-medium hover:bg-black transition-colors">
               Score {slot.candidates.length} candidates for {slot.role.title}
             </button>
           )}

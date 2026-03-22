@@ -10,7 +10,7 @@ export default function SettingsPage() {
         {/* Current plan */}
         <div className="rounded-xl border border-neutral-200 bg-white p-6 mb-8">
           <h2 className="font-semibold mb-1">Current Plan</h2>
-          <p className="text-sm text-neutral-500 mb-4">You are on the <span className="font-medium text-indigo-600">Free</span> plan</p>
+          <p className="text-sm text-neutral-500 mb-4">You are on the <span className="font-medium text-neutral-900">Free</span> plan</p>
           <div className="text-xs text-neutral-400">50 candidate scores/month &middot; 1 role template &middot; CSV export</div>
         </div>
 
@@ -32,9 +32,9 @@ export default function SettingsPage() {
           </div>
 
           {/* Pro */}
-          <div className="rounded-xl border-2 border-indigo-600 bg-white p-6 relative">
-            <div className="absolute -top-3 left-4 px-2 py-0.5 bg-indigo-600 text-white text-xs font-semibold rounded-full">Popular</div>
-            <div className="text-xs font-semibold text-indigo-600 uppercase tracking-wider mb-2">Pro</div>
+          <div className="rounded-xl border-2 border-neutral-900 bg-white p-6 relative">
+            <div className="absolute -top-3 left-4 px-2 py-0.5 bg-neutral-900 text-white text-xs font-semibold rounded-full">Popular</div>
+            <div className="text-xs font-semibold text-neutral-900 uppercase tracking-wider mb-2">Pro</div>
             <div className="text-3xl font-bold mb-1">$49<span className="text-base font-normal text-neutral-400">/mo</span></div>
             <div className="text-xs text-neutral-500 mb-4">Per seat, billed annually</div>
             <ul className="space-y-2 text-sm text-neutral-600 mb-6">
@@ -45,7 +45,7 @@ export default function SettingsPage() {
               <li className="flex items-center gap-2"><Check /> Team collaboration (5 seats)</li>
               <li className="flex items-center gap-2"><Check /> Priority scoring</li>
             </ul>
-            <button className="w-full py-2 px-4 rounded-lg bg-indigo-600 text-white text-sm font-medium hover:bg-indigo-700 transition-colors">Upgrade to Pro</button>
+            <button className="w-full py-2 px-4 rounded-lg bg-neutral-900 text-white text-sm font-medium hover:bg-black transition-colors">Upgrade to Pro</button>
           </div>
 
           {/* Enterprise */}
@@ -73,7 +73,7 @@ export default function SettingsPage() {
             <thead>
               <tr className="border-b border-neutral-100 bg-neutral-50">
                 <th className="text-left px-4 py-3 font-semibold">Feature</th>
-                <th className="text-center px-4 py-3 font-semibold text-indigo-600">Talent Matcher</th>
+                <th className="text-center px-4 py-3 font-semibold text-neutral-900">Talent Matcher</th>
                 <th className="text-center px-4 py-3 font-semibold text-neutral-500">Eightfold AI</th>
                 <th className="text-center px-4 py-3 font-semibold text-neutral-500">Beamery</th>
                 <th className="text-center px-4 py-3 font-semibold text-neutral-500">HiredScore</th>
@@ -112,7 +112,7 @@ function CompRow({ f, us, c1, c2, c3 }: { f: string; us: string; c1: string; c2:
   return (
     <tr>
       <td className="px-4 py-2.5 font-medium">{f}</td>
-      <td className="px-4 py-2.5 text-center text-indigo-600 font-medium">{us}</td>
+      <td className="px-4 py-2.5 text-center text-neutral-900 font-medium">{us}</td>
       <td className="px-4 py-2.5 text-center text-neutral-500">{c1}</td>
       <td className="px-4 py-2.5 text-center text-neutral-500">{c2}</td>
       <td className="px-4 py-2.5 text-center text-neutral-500">{c3}</td>

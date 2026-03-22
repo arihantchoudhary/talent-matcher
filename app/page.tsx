@@ -173,7 +173,7 @@ function PriceCard({ tier, price, period, features, featured }: { tier: string; 
       <ul className="space-y-2">
         {features.map((f) => (
           <li key={f} className={`text-sm flex items-center gap-2 ${featured ? "text-neutral-300" : "text-neutral-600"}`}>
-            <span className="text-[10px]">+</span> {f}
+            <span className="text-xs opacity-40">—</span> {f}
           </li>
         ))}
       </ul>

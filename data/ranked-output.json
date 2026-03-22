@@ -1,0 +1,1527 @@
+[
+  {
+    "rank": 1,
+    "id": "061c45a9-a3d5-450a-a8c5-8996299658b0",
+    "name": "Candidate-c85b2e3c",
+    "score": 73,
+    "reasoning": "The candidate has 3 years of experience in a high-performance consulting environment and has worked with legal clients, which aligns well with the role's requirements. However, their experience is primarily in consulting rather than direct sales, and they lack a strong SaaS background, which is a key component for this position.",
+    "highlights": [
+      "3 years in a high-performance consulting role",
+      "Experience working with legal clients"
+    ],
+    "gaps": [
+      "Limited direct sales experience",
+      "No SaaS sales background",
+      "Not based in the preferred US location"
+    ]
+  },
+  {
+    "rank": 2,
+    "id": "3f72eec2-a1aa-4cf1-9dc8-0ba49d323693",
+    "name": "Dhruv Chokshi",
+    "score": 73,
+    "reasoning": "Dhruv has 2 years of sales experience in a high-performance environment and is based in New York, which aligns with the location requirement. However, he lacks direct experience in the legal sector, which is a crucial component for this role.",
+    "highlights": [
+      "Strong sales performance at Brex",
+      "Experience in outbound-driven GTM",
+      "Technical communication skills"
+    ],
+    "gaps": [
+      "No experience in the legal sector",
+      "Limited years of experience (2 years)",
+      "Lacks familiarity with legal buyers or law firms"
+    ]
+  },
+  {
+    "rank": 3,
+    "id": "4d90d8e1-971a-49f4-9f37-347da5eef191",
+    "name": "Candidate-1ab60376",
+    "score": 73,
+    "reasoning": "Candidate-1ab60376 has 3 years of sales experience in a high-performance environment, which aligns well with the role's requirements. However, their familiarity with the legal sector is limited, as they have primarily worked in tech sales without direct exposure to legal buyers.",
+    "highlights": [
+      "3 years of sales experience in a high-performance environment",
+      "Strong track record of exceeding sales targets"
+    ],
+    "gaps": [
+      "Limited familiarity with the legal sector",
+      "No direct experience selling to legal buyers or law firms",
+      "Not US-based"
+    ]
+  },
+  {
+    "rank": 4,
+    "id": "848310fc-0956-4589-aad1-cf031651116b",
+    "name": "Candidate-b83dac4c",
+    "score": 73,
+    "reasoning": "Candidate-b83dac4c has 3 years of sales experience in a high-performance startup environment, which aligns well with the role's requirements. However, they lack direct experience in the legal sector, which is a critical aspect of the position.",
+    "highlights": [
+      "3 years of sales experience in a startup",
+      "Strong performance metrics in previous roles"
+    ],
+    "gaps": [
+      "No direct experience in the legal sector",
+      "Limited exposure to C-suite stakeholders"
+    ]
+  },
+  {
+    "rank": 5,
+    "id": "c7354444-2956-4b2e-8005-5007aa82cde2",
+    "name": "Candidate-6780337f",
+    "score": 73,
+    "reasoning": "Candidate-6780337f has 3 years of sales experience in a high-performance environment, which aligns well with the role's requirements. However, they lack direct experience in the legal sector, which is a critical component for this position.",
+    "highlights": [
+      "3 years of sales experience in a high-performance environment",
+      "Strong track record of meeting sales targets"
+    ],
+    "gaps": [
+      "No direct experience in the legal sector",
+      "Limited familiarity with legal buyers or law firms"
+    ]
+  },
+  {
+    "rank": 6,
+    "id": "a73e0725-9404-4421-93dd-4151df8e0c81",
+    "name": "Candidate-7ed11c8a",
+    "score": 72,
+    "reasoning": "Candidate has 3 years of sales experience in a high-performance environment, but lacks direct experience in the legal sector. They have a strong track record of selling into enterprise accounts and have demonstrated the ability to engage with C-suite stakeholders, which aligns well with the role's requirements.",
+    "highlights": [
+      "3 years of sales experience in a high-performance environment",
+      "Strong engagement with C-suite stakeholders"
+    ],
+    "gaps": [
+      "No direct experience in the legal sector",
+      "Missing familiarity with legal buyers or law firms"
+    ]
+  },
+  {
+    "rank": 7,
+    "id": "fb8de826-f02c-437f-8b07-4afa1fe3a94f",
+    "name": "Candidate-0358c05b",
+    "score": 72,
+    "reasoning": "Candidate-0358c05b has experience in a high-performance sales environment and has worked with legal buyers, which aligns well with the role's requirements. However, they lack direct experience in the legal sector and their location is not ideal for the position's focus on U.S. expansion.",
+    "highlights": [
+      "Experience in high-performance sales environment",
+      "Familiarity with legal buyers"
+    ],
+    "gaps": [
+      "Lack of direct legal sector experience",
+      "Not ideally located in the U.S."
+    ]
+  },
+  {
+    "rank": 8,
+    "id": "fd5e7bda-0007-4fac-a747-614070c37374",
+    "name": "Candidate-10456847",
+    "score": 72,
+    "reasoning": "Candidate-10456847 has 3 years of sales experience in a high-performance environment but lacks direct experience in the legal sector, which is crucial for this role. They have demonstrated strong sales performance and have worked in a startup environment, which aligns well with the company's needs.",
+    "highlights": [
+      "3 years of sales experience",
+      "Strong performance in a startup environment",
+      "Ability to engage with C-suite stakeholders"
+    ],
+    "gaps": [
+      "No direct experience in the legal sector",
+      "Limited familiarity with legal buyers",
+      "Not US-based (location unspecified)"
+    ]
+  },
+  {
+    "rank": 9,
+    "id": "7358b8d0-6510-4bdd-9b0a-019be195a0db",
+    "name": "TIMOTHY LE NGUYEN",
+    "score": 69,
+    "reasoning": "Timothy has 3 years of sales experience and a strong background in technology and financial services, which are relevant to the legal sector. However, he lacks direct experience in the legal industry and has primarily worked in SMB sales rather than enterprise, which is critical for this role.",
+    "highlights": [
+      "Strong sales experience in technology and financial services",
+      "Top 25% team ranking indicates high performance",
+      "Experience in a Series B environment shows adaptability"
+    ],
+    "gaps": [
+      "No direct experience in the legal sector",
+      "Current role is primarily focused on SMB rather than enterprise sales",
+      "Limited experience with C-suite stakeholders in legal contexts"
+    ]
+  },
+  {
+    "rank": 10,
+    "id": "9ff95118-7a81-4ce4-a3cf-8ada0ca75d2a",
+    "name": "Candidate-07980815",
+    "score": 66,
+    "reasoning": "Candidate-07980815 has 3 years of sales experience and is based in New York, which aligns well with the location requirement. However, there is no mention of familiarity with the legal sector or experience selling to legal buyers, which is a critical gap for this role.",
+    "highlights": [
+      "3 years of sales experience",
+      "Located in New York, NY"
+    ],
+    "gaps": [
+      "Lack of familiarity with the legal sector",
+      "No experience selling to legal buyers or law firms"
+    ]
+  },
+  {
+    "rank": 11,
+    "id": "019b292f-a84c-4b64-b6fb-5ebb43a4cc55",
+    "name": "Candidate-ba423658",
+    "score": 63,
+    "reasoning": "The candidate has 3 years of sales experience and is located in New York, which aligns with the location requirement. However, they lack specific experience in the legal sector and do not demonstrate familiarity with selling to legal buyers or law firms, which is a critical gap for this role.",
+    "highlights": [
+      "3 years of sales experience",
+      "Located in New York, NY"
+    ],
+    "gaps": [
+      "No legal sector experience",
+      "Lack of familiarity with legal buyers"
+    ]
+  },
+  {
+    "rank": 12,
+    "id": "0a35e807-c204-44eb-a2eb-22d84f236861",
+    "name": "Candidate-b3361534",
+    "score": 63,
+    "reasoning": "The candidate has 2 years of sales experience and is located in New York, which aligns with the location requirement. However, they lack familiarity with the legal sector, which is a key criterion for this role.",
+    "highlights": [
+      "Located in New York, NY",
+      "2 years of sales experience"
+    ],
+    "gaps": [
+      "No experience in the legal sector",
+      "Limited experience in high-performance environments"
+    ]
+  },
+  {
+    "rank": 13,
+    "id": "2e1a2681-b2c1-4ab5-ab26-76d6f524a733",
+    "name": "Candidate-613ddcf1",
+    "score": 63,
+    "reasoning": "Candidate-613ddcf1 has a solid sales background with 3 years of experience in a high-performance startup environment, but lacks direct experience in the legal sector. While they have demonstrated success in sales, their familiarity with legal buyers is minimal, which is a key requirement for this role.",
+    "highlights": [
+      "3 years of sales experience in a startup",
+      "Strong performance metrics in previous roles"
+    ],
+    "gaps": [
+      "No direct experience in the legal sector",
+      "Limited exposure to C-suite stakeholders"
+    ]
+  },
+  {
+    "rank": 14,
+    "id": "3f6ef2a2-2035-4b9a-8e84-7552d70441de",
+    "name": "Candidate-1681c5ed",
+    "score": 63,
+    "reasoning": "The candidate has 2 years of relevant sales experience and has worked in a startup environment, which aligns with the role's requirements. However, they lack direct experience in the legal sector and have primarily sold to technology and government industries, which may not translate well to the legal market.",
+    "highlights": [
+      "Strong startup experience with a proven ability to build from scratch",
+      "Demonstrated success in closing deals and meeting targets",
+      "Located in New York, NY, aligning with the in-person preference"
+    ],
+    "gaps": [
+      "No direct experience in the legal sector",
+      "Limited familiarity with legal buyers or law firms",
+      "Sales experience primarily in technology and government, not legal or finance"
+    ]
+  },
+  {
+    "rank": 15,
+    "id": "48299dbd-4bd7-4986-bad9-c321a8ee316f",
+    "name": "Candidate-dfb8c280",
+    "score": 63,
+    "reasoning": "The candidate has 2 years of sales experience and is located in New York, which meets the location requirement. However, they lack familiarity with the legal sector and do not demonstrate the ambition to own outcomes or experience with C-suite stakeholders.",
+    "highlights": [
+      "Located in New York, NY",
+      "2 years of sales experience"
+    ],
+    "gaps": [
+      "No familiarity with the legal sector",
+      "Lacks experience with C-suite stakeholders",
+      "Ambition to own outcomes not demonstrated"
+    ]
+  },
+  {
+    "rank": 16,
+    "id": "4860db94-1eef-49bb-96a0-d221fd5a4c1b",
+    "name": "Candidate-92607bf4",
+    "score": 63,
+    "reasoning": "Candidate-92607bf4 has 2 years of sales experience and is located in New York, which aligns with the location requirement. However, they lack familiarity with the legal sector and do not demonstrate experience in high-performance environments or enterprise sales, which are critical for this role.",
+    "highlights": [
+      "Located in New York, NY",
+      "2 years of sales experience"
+    ],
+    "gaps": [
+      "No familiarity with the legal sector",
+      "Lacks experience in high-performance environments",
+      "No enterprise sales experience"
+    ]
+  },
+  {
+    "rank": 17,
+    "id": "5745a562-d5e9-4739-95db-02ef1cb590b1",
+    "name": "Candidate-f0181df6",
+    "score": 63,
+    "reasoning": "The candidate has 2 years of sales experience and is based in New York, which aligns with the location requirement. However, they lack familiarity with the legal sector, which is a critical gap for this role.",
+    "highlights": [
+      "Located in New York, NY",
+      "2 years of sales experience"
+    ],
+    "gaps": [
+      "No experience in the legal sector",
+      "Limited experience in high-performance environments"
+    ]
+  },
+  {
+    "rank": 18,
+    "id": "57c7b7d3-5be2-4315-9748-467245bcce9f",
+    "name": "Candidate-2d282541",
+    "score": 63,
+    "reasoning": "Candidate-2d282541 has 3 years of sales experience in a high-performance environment but lacks direct familiarity with the legal sector. While they have a strong track record in SaaS sales, their experience does not align perfectly with the specific requirements of the legal market.",
+    "highlights": [
+      "3 years of sales experience in a high-performance environment",
+      "Strong SaaS sales background"
+    ],
+    "gaps": [
+      "No direct experience in the legal sector",
+      "Lacks familiarity with legal buyers or law firms",
+      "Not US-based, which is preferred for the role"
+    ]
+  },
+  {
+    "rank": 19,
+    "id": "5d78c914-a9c0-4afb-9f4c-560519011817",
+    "name": "Candidate-066bee00",
+    "score": 63,
+    "reasoning": "The candidate has three years of sales experience in technology and financial services, which aligns well with the SaaS focus of the role. However, they lack direct experience in the legal sector, which is a critical requirement for this position.",
+    "highlights": [
+      "Top 10% performer in sales",
+      "Experience in enterprise and mid-market sales",
+      "Located in New York, NY, USA"
+    ],
+    "gaps": [
+      "No experience in the legal sector",
+      "Limited familiarity with legal buyers",
+      "Lacks exceptional charisma and scrappiness"
+    ]
+  },
+  {
+    "rank": 20,
+    "id": "64a3e666-d367-4d21-a12b-c64dd53edf4c",
+    "name": "Candidate-72cdd3af",
+    "score": 63,
+    "reasoning": "Candidate-72cdd3af has a solid sales background with 3 years of experience in a high-performance environment, but lacks direct experience in the legal sector. They have demonstrated success in enterprise sales, which is relevant, but their familiarity with legal buyers is minimal. Additionally, they are based in the US, which is a plus for this role.",
+    "highlights": [
+      "3 years of sales experience in a high-performance environment",
+      "Strong enterprise sales background"
+    ],
+    "gaps": [
+      "No direct experience in the legal sector",
+      "Limited familiarity with legal buyers",
+      "Lacks experience in startups or high-growth companies"
+    ]
+  },
+  {
+    "rank": 21,
+    "id": "6bc4b12e-5d8a-4e14-88bf-e6d423520844",
+    "name": "Candidate-38f545f8",
+    "score": 63,
+    "reasoning": "Candidate has 2 years of sales experience and is located in New York, which aligns with the location requirement. However, they lack familiarity with the legal sector, which is a critical gap for this role.",
+    "highlights": [
+      "Located in New York, NY",
+      "2 years of sales experience"
+    ],
+    "gaps": [
+      "No familiarity with the legal sector",
+      "Limited experience in high-performance environments"
+    ]
+  },
+  {
+    "rank": 22,
+    "id": "71c39223-2c35-4c0f-b45b-7405bab042f1",
+    "name": "Candidate-841cf733",
+    "score": 63,
+    "reasoning": "Candidate-841cf733 has 2 years of sales experience and is based in New York, which aligns with the location requirement. However, they lack familiarity with the legal sector, which is a critical gap for this role.",
+    "highlights": [
+      "Located in New York, NY",
+      "2 years of sales experience"
+    ],
+    "gaps": [
+      "No experience in the legal sector",
+      "Limited experience in high-performance environments"
+    ]
+  },
+  {
+    "rank": 23,
+    "id": "86522b3f-558a-4a26-b95f-61d68a4d86c3",
+    "name": "Molly Smith",
+    "score": 63,
+    "reasoning": "Molly has 3 years of sales experience in a high-performance environment and is based in New York, which aligns with the location requirement. However, she lacks direct experience in the legal sector and her educational background does not indicate familiarity with legal buyers or law firms, which is a key gap for this role.",
+    "highlights": [
+      "Strong sales experience in a high-performance SaaS environment",
+      "Leadership role in GTM strategy",
+      "Located in New York, meeting the location requirement"
+    ],
+    "gaps": [
+      "No direct experience in the legal sector",
+      "Lacks familiarity with legal buyers/law firms",
+      "Limited years of experience compared to the ideal candidate profile"
+    ]
+  },
+  {
+    "rank": 24,
+    "id": "922d5027-1c9f-416b-8598-19333f6fd96d",
+    "name": "Candidate-eb6773c5",
+    "score": 63,
+    "reasoning": "The candidate has a solid sales background with experience in a high-performance environment but lacks specific familiarity with the legal sector. They have worked in startups, which is a plus, but their experience does not align closely with the legal market or the required in-person presence.",
+    "highlights": [
+      "Strong sales fundamentals",
+      "Experience in a high-performance environment",
+      "Startup experience"
+    ],
+    "gaps": [
+      "Lack of legal sector familiarity",
+      "Missing in-person availability",
+      "Limited experience with C-suite stakeholders"
+    ]
+  },
+  {
+    "rank": 25,
+    "id": "985251cb-ff72-4532-9f21-91a9f095468b",
+    "name": "Candidate-8f3ca6ca",
+    "score": 63,
+    "reasoning": "Candidate has 2 years of sales experience and is based in New York, which aligns with the location requirement. However, they lack familiarity with the legal sector and do not demonstrate a strong presence with C-suite stakeholders, which are critical for this role.",
+    "highlights": [
+      "Located in New York, NY",
+      "2 years of sales experience"
+    ],
+    "gaps": [
+      "No familiarity with the legal sector",
+      "Lack of experience engaging with C-suite stakeholders"
+    ]
+  },
+  {
+    "rank": 26,
+    "id": "bcde9f5c-b1bc-4bfd-aa60-1f138d3a2fa2",
+    "name": "Candidate-0f00b0c9",
+    "score": 63,
+    "reasoning": "The candidate has strong sales experience and has worked in high-performance environments, but lacks direct experience in the legal sector, which is crucial for this role. While they have demonstrated success in enterprise sales, their background does not align closely with the specific needs of the legal market.",
+    "highlights": [
+      "5 years of sales experience in various industries",
+      "Strong communication and organizational skills",
+      "Proven ability to build outbound sales infrastructure"
+    ],
+    "gaps": [
+      "No experience in the legal sector",
+      "Lacks familiarity with legal buyers or law firms",
+      "Missing ambition to own outcomes in a legal context"
+    ]
+  },
+  {
+    "rank": 27,
+    "id": "c5ffa3c5-02d9-4316-971e-e2791f9630a6",
+    "name": "Candidate-c7a0d287",
+    "score": 63,
+    "reasoning": "The candidate has some relevant sales experience but lacks familiarity with the legal sector, which is a key requirement for this role. They have worked in a high-performance environment but do not have direct experience selling to legal buyers or law firms.",
+    "highlights": [
+      "Strong sales fundamentals",
+      "Experience in a high-performance environment"
+    ],
+    "gaps": [
+      "Lack of legal sector experience",
+      "No familiarity with selling to legal buyers",
+      "Missing enterprise sales experience"
+    ]
+  },
+  {
+    "rank": 28,
+    "id": "d7ddf05f-8763-4f5d-8726-e0ebda13afcf",
+    "name": "Candidate-d54aa8b8",
+    "score": 63,
+    "reasoning": "The candidate has 2 years of sales experience in relevant industries and has closed large enterprise deals, which is a strong point. However, they lack direct experience in the legal sector, which is a key requirement for this role, and their communication skills need improvement for engaging C-suite stakeholders effectively.",
+    "highlights": [
+      "Experience in closing large enterprise deals",
+      "Strong performance ranking in sales",
+      "Located in New York, NY, USA"
+    ],
+    "gaps": [
+      "No familiarity with the legal sector",
+      "Communication delivery lacks consistent confidence",
+      "Limited experience in a high-performance legal environment"
+    ]
+  },
+  {
+    "rank": 29,
+    "id": "e413c698-04a6-403d-92c1-556de347fd0e",
+    "name": "Candidate-d4c2cb94",
+    "score": 63,
+    "reasoning": "The candidate has 2 years of sales experience in technology and has demonstrated success in closing enterprise deals, which is a positive indicator. However, they lack direct experience in the legal sector, which is a crucial requirement for this role, and their sales focus has primarily been on other departments rather than legal buyers.",
+    "highlights": [
+      "Strong experience in building sales processes and automations in startup environments",
+      "Demonstrated success in closing large enterprise deals",
+      "Located in New York, NY, which aligns with the in-person requirement"
+    ],
+    "gaps": [
+      "No experience in the legal sector or selling to legal buyers",
+      "Limited presence and confidence in communication with C-suite stakeholders",
+      "Only 2 years of experience, which is on the lower end of the required range"
+    ]
+  },
+  {
+    "rank": 30,
+    "id": "035267a7-3145-4c39-a1f7-0bfe13b0f844",
+    "name": "Candidate-6ac42beb",
+    "score": 62,
+    "reasoning": "Candidate has a solid sales background with 3 years of experience in a high-performance startup environment, but lacks direct experience in the legal sector. Their familiarity with enterprise sales is a plus, but the absence of legal-specific knowledge is a significant gap for this role.",
+    "highlights": [
+      "3 years of sales experience in a startup environment",
+      "Strong track record of meeting sales targets"
+    ],
+    "gaps": [
+      "No direct experience in the legal sector",
+      "Limited exposure to C-suite stakeholders"
+    ]
+  },
+  {
+    "rank": 31,
+    "id": "1436c83f-97ae-4b87-adac-bcc0bc89f8c7",
+    "name": "Candidate-bffc30de",
+    "score": 62,
+    "reasoning": "The candidate has a solid sales background with experience in high-performance environments but lacks direct familiarity with the legal sector, which is crucial for this role. Additionally, their experience is primarily outside the US, which may hinder their ability to effectively engage with the target market.",
+    "highlights": [
+      "Strong sales fundamentals",
+      "Experience in high-performance environments"
+    ],
+    "gaps": [
+      "Lack of legal sector experience",
+      "Not US-based",
+      "Limited familiarity with enterprise sales"
+    ]
+  },
+  {
+    "rank": 32,
+    "id": "52d1679e-76ed-4aed-a6c2-98cc715102cf",
+    "name": "Candidate-0f93da53",
+    "score": 62,
+    "reasoning": "Candidate-0f93da53 has a solid sales background with 3 years of experience in a high-performance startup environment. However, they lack direct experience in the legal sector, which is a crucial requirement for this role.",
+    "highlights": [
+      "3 years of sales experience in a startup",
+      "Strong performance metrics in previous roles"
+    ],
+    "gaps": [
+      "No experience in the legal sector",
+      "Limited exposure to C-suite stakeholders"
+    ]
+  },
+  {
+    "rank": 33,
+    "id": "9a8f6dbc-e63a-4369-83b6-6bc8e8fbcb19",
+    "name": "Candidate-a43f6d59",
+    "score": 62,
+    "reasoning": "Candidate-a43f6d59 has experience in sales but lacks direct exposure to the legal sector, which is crucial for this role. They have a solid foundation in a high-performance environment but do not meet the location preference as they are based outside the US.",
+    "highlights": [
+      "Strong sales fundamentals",
+      "Experience in a high-performance environment"
+    ],
+    "gaps": [
+      "No legal sector experience",
+      "Not US-based",
+      "Lacks familiarity with legal buyers"
+    ]
+  },
+  {
+    "rank": 34,
+    "id": "cc9227bc-f428-4ed6-9dd4-4476131b1f03",
+    "name": "Candidate-fa494289",
+    "score": 62,
+    "reasoning": "The candidate has some relevant sales experience but lacks direct exposure to the legal sector, which is crucial for this role. They have worked in a high-performance environment, but their experience does not align closely with the specific requirements of selling into legal buyers.",
+    "highlights": [
+      "Strong sales fundamentals",
+      "Experience in high-performance environments"
+    ],
+    "gaps": [
+      "No direct legal sector experience",
+      "Lacks familiarity with legal buyers",
+      "Not US-based"
+    ]
+  },
+  {
+    "rank": 35,
+    "id": "9ec4bcce-f8d7-4460-92c7-22d581a764ed",
+    "name": "Candidate-5f63ce66",
+    "score": 59,
+    "reasoning": "The candidate has one year of sales experience in technology and has sold to various departments, but lacks direct experience in the legal sector, which is crucial for this role. While they demonstrate strong analytical skills and a good understanding of complex sales processes, their limited experience and lack of familiarity with legal buyers are significant gaps.",
+    "highlights": [
+      "Top 10% team ranking",
+      "Strong analytical skills",
+      "Experience in selling complex, technical products"
+    ],
+    "gaps": [
+      "No experience in the legal sector",
+      "Only one year of sales experience",
+      "Limited presence with C-suite stakeholders"
+    ]
+  },
+  {
+    "rank": 36,
+    "id": "11a2a397-28a5-4605-be4f-b5628c4f7f69",
+    "name": "Candidate-756fd99f",
+    "score": 58,
+    "reasoning": "The candidate has 2 years of sales experience in technology and enterprise, but lacks direct experience in the legal sector, which is critical for this role. While they demonstrate strong sales fundamentals and have worked in a startup environment, their experience does not align closely with the specific requirements of building a legal go-to-market strategy.",
+    "highlights": [
+      "Strong sales experience in enterprise technology",
+      "Proven track record of overachieving quota",
+      "Located in New York, NY, USA"
+    ],
+    "gaps": [
+      "No experience in the legal sector",
+      "Limited familiarity with legal buyers or law firms",
+      "Lacks the ambition to own outcomes in a legal context"
+    ]
+  },
+  {
+    "rank": 37,
+    "id": "0dd7e9cd-81df-4427-9e5c-cdc4c9d2c589",
+    "name": "Clarine",
+    "score": 55,
+    "reasoning": "Clarine has 1 year of sales experience in technology and financial services, but lacks direct experience in the legal sector, which is a critical requirement for this role. While she has demonstrated some success in closing deals and has a solid educational background, her limited experience and the absence of legal familiarity hinder her fit for the founding GTM position.",
+    "highlights": [
+      "Strong educational background from Columbia University",
+      "Experience in a startup environment",
+      "Top 10% team ranking indicates strong performance"
+    ],
+    "gaps": [
+      "No experience in the legal sector",
+      "Limited closing experience (only 1 year)",
+      "Lacks familiarity with legal buyer personas"
+    ]
+  },
+  {
+    "rank": 38,
+    "id": "5736aa33-f5ba-4eb7-899e-f32ab888908c",
+    "name": "Candidate-8d081bfb",
+    "score": 55,
+    "reasoning": "The candidate has 4 years of sales experience and is based in New York, which aligns with the location requirement. However, they lack direct experience in the legal sector and have primarily sold to industries outside of legal, which is a significant gap for this role.",
+    "highlights": [
+      "4 years of sales experience",
+      "Strong experience in early-stage environments",
+      "Located in New York, NY"
+    ],
+    "gaps": [
+      "No experience in the legal sector",
+      "Limited familiarity with legal buyers or law firms",
+      "Sales experience primarily in unrelated industries"
+    ]
+  },
+  {
+    "rank": 39,
+    "id": "96cb5f51-db4f-4166-ab34-9ec0835d0ff0",
+    "name": "Jeremiah",
+    "score": 55,
+    "reasoning": "Jeremiah has one year of sales experience in technology and has demonstrated strong performance as an SDR, ranking in the top 25% of his team. However, he lacks experience in the legal sector and has not yet managed full sales cycles or carried a revenue quota, which are critical for the role.",
+    "highlights": [
+      "Strong SDR performance, ranking in the top 25%",
+      "Experience selling SaaS products",
+      "Located in New York, NY, USA"
+    ],
+    "gaps": [
+      "No experience in the legal sector",
+      "Limited experience in enterprise sales and full sales cycles",
+      "Only one year of sales experience"
+    ]
+  },
+  {
+    "rank": 40,
+    "id": "dcea17cb-8232-4bb9-a148-a9fe7e930e49",
+    "name": "Zachary Plotkin",
+    "score": 55,
+    "reasoning": "Zachary has 2 years of sales experience in financial services and technology, but lacks direct experience in the legal sector, which is critical for this role. His background in building outbound pipelines and working in startups aligns with the high-performance environment requirement, but his focus on SMBs may not translate well to enterprise-level sales in the legal domain.",
+    "highlights": [
+      "Experience in building outbound pipelines",
+      "Strong performance in a startup environment",
+      "Top 11% ranking in team performance"
+    ],
+    "gaps": [
+      "No experience in the legal sector",
+      "Limited enterprise sales experience",
+      "Location is not ideal as it's not in NYC/East Coast"
+    ]
+  },
+  {
+    "rank": 41,
+    "id": "a51ed850-e9a8-419a-a8a9-ebacb06e5c07",
+    "name": "Candidate-759d21bd",
+    "score": 54,
+    "reasoning": "The candidate has one year of sales experience in financial services and technology, which is not directly aligned with the legal sector. While they are based in New York and have some experience in enterprise sales, their lack of familiarity with legal buyers and limited experience in high-performance environments presents significant gaps for this role.",
+    "highlights": [
+      "Located in New York, NY, USA",
+      "Demonstrates strong analytical skills",
+      "Top 40% team ranking"
+    ],
+    "gaps": [
+      "Only 1 year of sales experience",
+      "No familiarity with the legal sector",
+      "Limited experience in high-performance environments"
+    ]
+  },
+  {
+    "rank": 42,
+    "id": "05f1e552-83f3-404f-a682-732fef9f2cb5",
+    "name": "Michael Huss",
+    "score": 53,
+    "reasoning": "Michael has 2 years of sales experience, primarily in sectors that are not directly related to the legal field, which is a significant gap for this role. While he demonstrates a solid understanding of sales fundamentals and has experience in a startup environment, he lacks familiarity with the legal sector and has not sold to legal buyers or law firms, which is crucial for this position.",
+    "highlights": [
+      "Strong sales fundamentals with experience in enterprise and mid-market sales",
+      "Demonstrated ability to close deals and manage sales cycles effectively",
+      "Experience in a startup environment shows adaptability and motivation"
+    ],
+    "gaps": [
+      "No experience in the legal sector or selling to legal buyers",
+      "Limited years of experience (only 2 years) compared to the ideal range (1-4 years)",
+      "Lacks specific experience with C-suite stakeholders in the legal domain"
+    ]
+  },
+  {
+    "rank": 43,
+    "id": "02dff45e-8f71-4493-8851-701b4feac488",
+    "name": "Christine",
+    "score": 52,
+    "reasoning": "Christine has solid sales experience in tech SaaS but lacks familiarity with the legal sector, which is crucial for this role. While she has demonstrated a builder mentality and has worked in startups, her experience is primarily in healthcare and not directly applicable to legal sales.",
+    "highlights": [
+      "Strong SDR background with promotion indicating performance",
+      "Experience in a startup environment",
+      "Good understanding of sales metrics and KPIs"
+    ],
+    "gaps": [
+      "No experience in the legal sector or selling to legal buyers",
+      "Limited enterprise sales experience, primarily focused on SMBs",
+      "Performance metrics are not top-tier, indicating potential challenges in a high-performance environment"
+    ]
+  },
+  {
+    "rank": 44,
+    "id": "05ab37f3-bdab-486d-966b-492d7f7c58c5",
+    "name": "Natalie Radu",
+    "score": 52,
+    "reasoning": "Natalie has a year of sales experience in a startup environment and is based in New York, which aligns with the location requirement. However, she lacks familiarity with the legal sector and has limited experience in high-performance environments relevant to the role, which significantly impacts her fit.",
+    "highlights": [
+      "Startup experience",
+      "Strong pipeline generation skills",
+      "Top 33% team ranking"
+    ],
+    "gaps": [
+      "No legal sector experience",
+      "Only 1 year of sales experience",
+      "Focus on SMB/mid-market rather than enterprise"
+    ]
+  },
+  {
+    "rank": 45,
+    "id": "09f879c2-6690-41b9-981c-34a37a2fca8d",
+    "name": "Oscar",
+    "score": 52,
+    "reasoning": "Oscar has a solid foundation in sales with a strong performance as an SDR, but he lacks direct experience in the legal sector and has not yet transitioned to an Account Executive role. While he has experience in enterprise sales and a strong track record of exceeding KPIs, his limited exposure to legal buyers and the absence of experience in closing deals are significant gaps for this role.",
+    "highlights": [
+      "Strong SDR performance with a track record of exceeding quotas",
+      "Experience in enterprise sales and SaaS",
+      "Located in New York, NY, which aligns with the role's location preference"
+    ],
+    "gaps": [
+      "No experience in the legal sector or selling to legal buyers",
+      "Lacks experience in closing deals and managing a full sales cycle",
+      "Only 1 year of sales experience, which is on the lower end of the required range"
+    ]
+  },
+  {
+    "rank": 46,
+    "id": "985c15a3-2ede-4a7f-8a6b-3004f52d0ec9",
+    "name": "Candidate-477fd98e",
+    "score": 52,
+    "reasoning": "The candidate has some relevant sales experience in a startup environment and is located in New York, which is a plus. However, they lack familiarity with the legal sector and have only one year of experience, which is below the minimum requirement for this role.",
+    "highlights": [
+      "Top 10% team ranking",
+      "Experience in SaaS sales",
+      "Located in New York, NY"
+    ],
+    "gaps": [
+      "No experience in the legal sector",
+      "Only 1 year of sales experience, below the required 1-4 years",
+      "Limited exposure to enterprise sales and legal buyers"
+    ]
+  },
+  {
+    "rank": 47,
+    "id": "d2470383-e785-433b-ba2c-6433162075e1",
+    "name": "Candidate-8c0866b2",
+    "score": 52,
+    "reasoning": "While the candidate has relevant sales experience and a strong scrappy mentality from their startup background, they lack direct experience in the legal sector, which is a critical requirement for this role. Their sales experience is primarily in healthcare and technology, which does not align closely enough with the legal focus needed for this position.",
+    "highlights": [
+      "Strong scrappiness demonstrated by building a sales function from scratch",
+      "Experience in B2B selling and managing outbound processes",
+      "Proficient in sales metrics and analytics"
+    ],
+    "gaps": [
+      "No experience in the legal sector or selling to legal buyers",
+      "Limited experience with enterprise sales and C-suite stakeholders in relevant industries",
+      "Location preference may not align with the ideal NYC/East Coast focus"
+    ]
+  },
+  {
+    "rank": 48,
+    "id": "da352c22-ba04-46fa-86a3-5b8780ecfcd1",
+    "name": "Candidate-a7c66e3e",
+    "score": 52,
+    "reasoning": "The candidate has 1 year of sales experience which is on the lower end of the required 1-4 years. While they are based in New York, they lack familiarity with the legal sector, which is a critical gap for this role.",
+    "highlights": [
+      "Located in New York, NY",
+      "Some sales experience"
+    ],
+    "gaps": [
+      "Only 1 year of sales experience",
+      "No familiarity with the legal sector"
+    ]
+  },
+  {
+    "rank": 49,
+    "id": "f4bc593f-d9e2-4e01-b7c6-a62e9a4b4c2d",
+    "name": "James Barbato",
+    "score": 52,
+    "reasoning": "James has solid sales experience and has demonstrated success in closing enterprise deals, but lacks direct experience in the legal sector, which is critical for this role. His background in technology and retail does not align closely with the legal focus required for the position.",
+    "highlights": [
+      "3 years of sales experience with enterprise and mid-market clients",
+      "Proven ability to own full-cycle sales motions",
+      "Strong performance in high-growth environments"
+    ],
+    "gaps": [
+      "No experience in the legal sector",
+      "Limited familiarity with legal buyers or law firms",
+      "Missing ambition to own outcomes in a legal context"
+    ]
+  },
+  {
+    "rank": 50,
+    "id": "9be7ce2e-bd1b-435b-a609-921bd77a25e6",
+    "name": "Candidate-678d648c",
+    "score": 49,
+    "reasoning": "The candidate has 6 years of sales experience, primarily in financial services, but lacks direct experience in the legal sector, which is a critical requirement for this role. While they have experience with C-suite stakeholders and enterprise sales, their competencies in scrappiness, organization, and charisma are relatively low, indicating potential challenges in a high-performance sales environment.",
+    "highlights": [
+      "Strong enterprise sales experience",
+      "Experience working with C-suite decision-makers",
+      "Successful track record with large deals"
+    ],
+    "gaps": [
+      "No experience in the legal sector",
+      "Low scores in key competencies such as scrappiness and organization",
+      "Limited evidence of consistent performance in high-pressure environments"
+    ]
+  },
+  {
+    "rank": 51,
+    "id": "08bfc365-65bc-4da4-8eee-bac15e5a8c74",
+    "name": "Ellie",
+    "score": 48,
+    "reasoning": "Ellie has strong sales fundamentals and experience in technology and financial services, but lacks direct experience in the legal sector and enterprise sales. While she has demonstrated success in a startup environment and possesses strong communication skills, her lack of quota-carrying experience and limited familiarity with legal buyers are significant gaps for this role.",
+    "highlights": [
+      "Strong communication skills",
+      "Top 4% team ranking",
+      "Strong technical acumen"
+    ],
+    "gaps": [
+      "No experience in the legal sector",
+      "Lacks quota-carrying experience",
+      "Limited exposure to enterprise sales cycles"
+    ]
+  },
+  {
+    "rank": 52,
+    "id": "189e698d-0eb6-48cb-b438-3c81981fee5a",
+    "name": "Dean",
+    "score": 48,
+    "reasoning": "Dean has relevant sales experience but lacks direct exposure to the legal sector and does not meet the must-have criteria for this role. While he has demonstrated strong communication and organizational skills, his background in media/ad sales does not align with the legal-focused GTM strategy required for this position.",
+    "highlights": [
+      "Strong communication skills",
+      "Top 10% team ranking",
+      "Experience managing client relationships"
+    ],
+    "gaps": [
+      "No experience in the legal sector",
+      "Lacks direct SDR/BDR or tech sales prospecting experience",
+      "Limited experience in high-performance environments related to legal or enterprise sales"
+    ]
+  },
+  {
+    "rank": 53,
+    "id": "d96f67ca-bc40-4dfd-870c-67381f4aa1d5",
+    "name": "RYAN M. YOUNG",
+    "score": 47,
+    "reasoning": "Ryan has 2 years of sales experience primarily in financial services, which does not align closely with the legal sector. While he demonstrates some sales fundamentals, he lacks direct experience in the legal industry and startup environments, which are critical for this role.",
+    "highlights": [
+      "Location in New York, NY, USA aligns with the role's preference for US-based candidates.",
+      "Experience selling to C-suite decision-makers, which is relevant for engaging with legal stakeholders."
+    ],
+    "gaps": [
+      "No experience in the legal sector, which is a must-have for this role.",
+      "Limited startup experience; background is mostly with large financial firms.",
+      "Lacks the ambition and demonstrated outcomes ownership that the role requires."
+    ]
+  },
+  {
+    "rank": 54,
+    "id": "1f5b076e-602d-490f-977d-a6bc71ec45db",
+    "name": "Tyler",
+    "score": 46,
+    "reasoning": "Tyler has 5 years of sales experience and is based in New York, which aligns with the location requirement. However, he lacks any direct experience in the legal sector and has no verifiable experience in tech sales, which are critical gaps for this role. His sales experience is primarily in non-tech service industries, which does not meet the specific needs of the legal go-to-market strategy.",
+    "highlights": [
+      "Strong sales experience across multiple industries",
+      "High energy and charisma, making him personable with C-suite stakeholders",
+      "Demonstrated ability to navigate complex sales cycles"
+    ],
+    "gaps": [
+      "No experience in the legal sector",
+      "Lacks tech sales experience, particularly in SaaS",
+      "No verifiable closing experience in relevant industries"
+    ]
+  },
+  {
+    "rank": 55,
+    "id": "4f35c6fd-a1fb-442b-9fd4-e4c52fab55c9",
+    "name": "Candidate-383c8f2e",
+    "score": 46,
+    "reasoning": "The candidate has only 1 year of sales experience, which is below the minimum requirement of 1-4 years in a high-performance environment. While they are based in New York, which is ideal, they lack familiarity with the legal sector, which is crucial for this role.",
+    "highlights": [
+      "Located in New York, NY",
+      "Some sales experience"
+    ],
+    "gaps": [
+      "Only 1 year of sales experience",
+      "Lack of familiarity with the legal sector"
+    ]
+  },
+  {
+    "rank": 56,
+    "id": "58544b0c-54ec-459a-afcc-640992856427",
+    "name": "Maria Khambati",
+    "score": 46,
+    "reasoning": "Maria has only 1 year of sales experience and lacks direct familiarity with the legal sector, which is a critical requirement for this role. While she has demonstrated some sales competencies and experience in a startup environment, her focus has been primarily on financial services and other sectors, which does not align closely with the legal market.",
+    "highlights": [
+      "Experience in a startup environment",
+      "Strong coachability and self-awareness"
+    ],
+    "gaps": [
+      "Lack of experience in the legal sector",
+      "Only 1 year of sales experience",
+      "Limited exposure to enterprise sales and C-suite stakeholders"
+    ]
+  },
+  {
+    "rank": 57,
+    "id": "784b0df1-3453-4a85-ad6d-066c2f5cccab",
+    "name": "Russell",
+    "score": 46,
+    "reasoning": "Russell has some relevant sales experience and is based in New York, which aligns with the location requirement. However, he lacks direct experience in the legal sector and has not closed deals, which are critical for the role. His experience is primarily in lead generation rather than full sales cycles, making him a partial fit for this specific position.",
+    "highlights": [
+      "Strong motivation to join a startup",
+      "Experience in generating qualified leads",
+      "Located in New York, NY"
+    ],
+    "gaps": [
+      "No experience in the legal sector",
+      "Lacks experience in closing deals and managing full sales cycles",
+      "Only 1 year of sales experience, primarily in top-of-funnel activities"
+    ]
+  },
+  {
+    "rank": 58,
+    "id": "a678d56a-3afc-4598-a8f8-0c7c1be29ed8",
+    "name": "Candidate-7c6f058f",
+    "score": 46,
+    "reasoning": "The candidate has 5 years of sales experience but lacks direct familiarity with the legal sector, which is a critical requirement for this role. While they have demonstrated success in enterprise sales, their experience is primarily in telecommunications and financial services, which may not translate effectively to the legal market.",
+    "highlights": [
+      "5 years of sales experience",
+      "Top 10% team ranking",
+      "Experience in enterprise sales"
+    ],
+    "gaps": [
+      "No experience in the legal sector",
+      "Limited evidence of building go-to-market strategies",
+      "Lacks familiarity with legal buyer personas"
+    ]
+  },
+  {
+    "rank": 59,
+    "id": "ae296a48-331f-4079-87e5-7b101c8d4b70",
+    "name": "Julian",
+    "score": 46,
+    "reasoning": "Julian has 5 years of sales experience, but it is primarily in sectors that do not align closely with the legal industry. His limited experience in high-performance environments and lack of familiarity with legal buyers are significant gaps for this role. Although he has some entrepreneurial experience, it does not directly translate to the legal sector's requirements.",
+    "highlights": [
+      "5 years of sales experience",
+      "Top 5% team ranking",
+      "Experience in enterprise sales"
+    ],
+    "gaps": [
+      "No experience in the legal sector",
+      "Limited experience in structured B2B tech/SaaS environments",
+      "Only 1 month of AE experience with complex sales cycles"
+    ]
+  },
+  {
+    "rank": 60,
+    "id": "c33bcc0d-d5c5-4c9f-8ac8-4964ade92d5b",
+    "name": "Stephan Donghyun Ko",
+    "score": 46,
+    "reasoning": "Stephan has some relevant sales experience in a startup environment, but his background lacks familiarity with the legal sector, which is crucial for this role. His experience is primarily in healthcare and financial services, and he has only 1 year of sales experience, which is below the required threshold.",
+    "highlights": [
+      "Strong educational background with a degree from Princeton University",
+      "Experience in a startup environment, demonstrating scrappiness and adaptability",
+      "Proven ability to close deals, as evidenced by a recent $54K ARR deal"
+    ],
+    "gaps": [
+      "Lacks experience in the legal sector or selling to legal buyers",
+      "Only 1 year of sales experience, which is below the minimum requirement of 1-4 years",
+      "Limited exposure to enterprise-level sales and C-suite stakeholders"
+    ]
+  },
+  {
+    "rank": 61,
+    "id": "d58186ed-0a2f-4c70-8f89-52855b94ebdc",
+    "name": "Jack",
+    "score": 46,
+    "reasoning": "Jack has relevant sales experience but lacks familiarity with the legal sector and enterprise sales, which are critical for this role. His background in media-advertising does not align well with the legal focus required, and while he has demonstrated some sales skills, his experience is limited to low-value deals and a non-competitive environment.",
+    "highlights": [
+      "Strong SDR candidate with hands-on experience in lead generation",
+      "Demonstrated scrappiness and self-motivation by founding a lead gen agency",
+      "Located in New York, NY, USA"
+    ],
+    "gaps": [
+      "No experience in the legal sector or selling to legal buyers",
+      "Limited closing experience with complex sales cycles",
+      "Lacks enterprise sales experience"
+    ]
+  },
+  {
+    "rank": 62,
+    "id": "e2535b08-21e5-4237-b313-c744ff82bb9c",
+    "name": "Candidate-ca26c3af",
+    "score": 46,
+    "reasoning": "While the candidate has solid sales experience in enterprise SaaS and ranks in the top 25% of their team, they lack direct experience in the legal sector, which is crucial for this role. Their background in retail and marketing does not align with the specific requirements of building a go-to-market strategy for legal services.",
+    "highlights": [
+      "2 years of enterprise BDR experience",
+      "Strong organizational skills",
+      "Top 25% team ranking"
+    ],
+    "gaps": [
+      "No experience in the legal sector",
+      "Limited startup experience in 0-1 building",
+      "Lacks familiarity with legal buyer personas"
+    ]
+  },
+  {
+    "rank": 63,
+    "id": "ecbdddd1-9534-4c4e-b58e-4d2a7f1f320f",
+    "name": "Clare",
+    "score": 46,
+    "reasoning": "Clare has strong sales experience but lacks familiarity with the legal sector and has no experience in closing enterprise deals, which are critical for this role. While she has demonstrated success in tech sales and has a strong SDR background, her lack of direct experience in legal sales and enterprise deal ownership limits her fit for this position.",
+    "highlights": [
+      "Strong motivation for startups",
+      "Top 25% ranking in sales team",
+      "Experience in SaaS sales"
+    ],
+    "gaps": [
+      "No experience in the legal sector",
+      "Lacks enterprise deal closing experience",
+      "Limited exposure to C-suite stakeholders"
+    ]
+  },
+  {
+    "rank": 64,
+    "id": "fa2c0d0b-d975-4e75-a8e9-b7588915596d",
+    "name": "Camden",
+    "score": 46,
+    "reasoning": "Camden has a year of sales experience in technology and financial services, but lacks direct experience in the legal sector, which is crucial for this role. While he demonstrates strong scrappiness and organizational skills, his lack of experience in closing deals and managing sales cycles limits his fit for a founding GTM role focused on legal.",
+    "highlights": [
+      "Strong scrappiness and builder mentality as a founding BDR",
+      "Experience in a startup environment",
+      "Top 10% team ranking as an SDR"
+    ],
+    "gaps": [
+      "No experience in the legal sector",
+      "Limited experience in closing deals and managing sales cycles",
+      "Only 1 year of sales experience, primarily in entry-level roles"
+    ]
+  },
+  {
+    "rank": 65,
+    "id": "1bfec8a8-0421-43a8-8957-1586a9669389",
+    "name": "Candidate-58e80c06",
+    "score": 45,
+    "reasoning": "The candidate has only 1 year of sales experience, which is below the minimum requirement of 1-4 years in a high-performance environment. While they are located in New York, which is ideal, they lack familiarity with the legal sector and do not demonstrate the ambition or presence needed for C-suite engagement.",
+    "highlights": [
+      "Located in New York, NY",
+      "Some sales experience"
+    ],
+    "gaps": [
+      "Only 1 year of sales experience",
+      "No familiarity with the legal sector",
+      "Lacks demonstrated ambition to own outcomes"
+    ]
+  },
+  {
+    "rank": 66,
+    "id": "482fe97a-5a41-468b-807b-79b37b5e35c9",
+    "name": "Eric",
+    "score": 43,
+    "reasoning": "Eric has 2 years of sales experience but lacks familiarity with the legal sector, which is crucial for this role. His experience is primarily in technology and education, and he has no closing experience, which is a significant gap for a position that requires ownership of outcomes and enterprise deal management.",
+    "highlights": [
+      "Strong SDR candidate with relevant tech sales experience",
+      "Clear communication skills and self-awareness",
+      "Experience in a startup environment"
+    ],
+    "gaps": [
+      "No experience in the legal sector",
+      "Lacks closing experience and enterprise sales background",
+      "Limited ambition to own outcomes as indicated by AE performance"
+    ]
+  },
+  {
+    "rank": 67,
+    "id": "5b763189-86d8-407e-856f-2f6fa6fde670",
+    "name": "Andrew",
+    "score": 43,
+    "reasoning": "Andrew has 3 years of sales experience but lacks familiarity with the legal sector, which is crucial for this role. While he demonstrates strong scrappiness and some organizational skills, his overall experience is primarily in technology and real estate, which does not align with the legal focus required for this position.",
+    "highlights": [
+      "Strong motivation for startup environments",
+      "Demonstrates initiative in prospecting and managing sales processes"
+    ],
+    "gaps": [
+      "No experience in the legal sector",
+      "Lacks full-cycle Account Executive experience in a B2B tech environment",
+      "Limited presence with C-suite stakeholders in relevant industries"
+    ]
+  },
+  {
+    "rank": 68,
+    "id": "81ec04c3-7b5c-4e25-8471-2d20b87e2c8a",
+    "name": "Dylan",
+    "score": 43,
+    "reasoning": "Dylan has 8 years of sales experience, but it is primarily in retail and financial services, which do not align closely with the legal sector. While he has demonstrated some entrepreneurial spirit and experience with C-suite decision-makers, his lack of legal sector familiarity and formal tech sales experience presents significant gaps for this role.",
+    "highlights": [
+      "Strong entrepreneurial drive with experience founding a marketing agency",
+      "Experience running a full sales cycle and closing deals",
+      "Located in New York, NY, USA"
+    ],
+    "gaps": [
+      "No experience in the legal sector or selling into legal buyers",
+      "Lacks formal tech sales experience, particularly in SaaS",
+      "Sales experience primarily focused on SMBs, not enterprise-level deals"
+    ]
+  },
+  {
+    "rank": 69,
+    "id": "8cd750ef-ebe4-4806-8ddc-4c421c88112f",
+    "name": "Devika",
+    "score": 43,
+    "reasoning": "Devika has two years of experience in a high-performance environment, specifically in financial services, but lacks direct experience in the legal sector, which is a critical gap for this role. While she has demonstrated strong scrappiness and organizational skills, her lack of closing experience and familiarity with legal buyers significantly limits her fit for a sales role focused on the legal market.",
+    "highlights": [
+      "Strong scrappiness and ability to build sales processes from scratch",
+      "Solid organizational skills with attention to detail",
+      "Located in New York, NY, USA"
+    ],
+    "gaps": [
+      "No experience in the legal sector or selling to legal buyers",
+      "Lacks closing experience and familiarity with managing sales cycles",
+      "Experience primarily in SMB and mid-market, not enterprise sales"
+    ]
+  },
+  {
+    "rank": 70,
+    "id": "9378683b-ee3f-4a9c-9305-1a96214b3aff",
+    "name": "Candidate-44f86dea",
+    "score": 43,
+    "reasoning": "The candidate has limited sales experience (1 year) and has not worked in the legal sector, which is a critical requirement for this role. While they have experience in a startup environment and are based in New York, their focus on SMBs and lack of familiarity with legal buyers significantly hinder their fit for this position.",
+    "highlights": [
+      "Experience in a startup environment",
+      "Located in New York, NY"
+    ],
+    "gaps": [
+      "No experience in the legal sector",
+      "Only 1 year of sales experience",
+      "Focus on SMBs rather than enterprise or legal markets"
+    ]
+  },
+  {
+    "rank": 71,
+    "id": "af2e532c-6b70-4698-bccd-1041a8a74382",
+    "name": "Mike",
+    "score": 43,
+    "reasoning": "Mike has 1 year of sales experience but lacks familiarity with the legal sector, which is crucial for this role. His experience is primarily in financial services and media advertising, and he has not demonstrated the ability to manage complex deals or work in a high-performance legal environment.",
+    "highlights": [
+      "Strong motivation for sales roles in ambiguous environments",
+      "Experience in prospecting and appointment setting",
+      "Located in New York, NY, USA"
+    ],
+    "gaps": [
+      "No experience in the legal sector",
+      "Limited closing experience and no evidence of enterprise sales",
+      "Lacks the ambition and track record of owning outcomes in a high-performance environment"
+    ]
+  },
+  {
+    "rank": 72,
+    "id": "b1625503-ac18-43c8-bea2-ce0b6980c3c7",
+    "name": "Steve",
+    "score": 43,
+    "reasoning": "Steve has two years of sales experience, primarily in financial services, which is somewhat relevant but lacks direct legal sector experience. His performance as an SDR is strong, but his AE capabilities are below average, and he does not meet the minimum experience requirement for closing deals in the legal space. Additionally, while he is based in New York, his overall experience does not align closely with the specific needs of the legal GTM role.",
+    "highlights": [
+      "Strong SDR candidate with high potential",
+      "Experience in SaaS sales",
+      "Located in New York, NY"
+    ],
+    "gaps": [
+      "No legal sector experience",
+      "Limited closing experience (only 4 months as AE)",
+      "Lacks ambition to own outcomes and carry a number"
+    ]
+  },
+  {
+    "rank": 73,
+    "id": "f90a2fe2-5345-4e16-bda8-1227ce591ec2",
+    "name": "Candidate-308afd24",
+    "score": 43,
+    "reasoning": "The candidate has only 1 year of sales experience primarily in the education sector, which does not align well with the legal focus required for this role. While they demonstrate strong sales competencies and a scrappy entrepreneurial spirit, their lack of familiarity with the legal sector and experience selling to C-suite stakeholders in that domain is a significant gap.",
+    "highlights": [
+      "Strong communication skills",
+      "High level of scrappiness and self-motivation",
+      "Demonstrated ability to close deals"
+    ],
+    "gaps": [
+      "Only 1 year of sales experience",
+      "No experience in the legal sector",
+      "Limited experience with enterprise sales or legal buyer personas"
+    ]
+  },
+  {
+    "rank": 74,
+    "id": "73cc55fa-bea5-431b-bfb3-23c93d081a32",
+    "name": "Candidate-448582b5",
+    "score": 42,
+    "reasoning": "The candidate has 2 years of sales experience in technology and retail, but lacks familiarity with the legal sector, which is a critical requirement for this role. While they demonstrate some strong sales fundamentals and have experience in a startup environment, their limited exposure to enterprise sales and the legal market significantly impacts their fit.",
+    "highlights": [
+      "Strong motivation for startup environments",
+      "Top 50% team ranking as an SDR",
+      "Relevant B2B SaaS sales experience"
+    ],
+    "gaps": [
+      "No experience in the legal sector",
+      "Limited enterprise sales experience",
+      "Only 2 years of sales experience, primarily focused on SMBs"
+    ]
+  },
+  {
+    "rank": 75,
+    "id": "c78d8f38-ddba-4ce2-be26-bf3ddfe6be59",
+    "name": "Bobby",
+    "score": 42,
+    "reasoning": "Bobby has only 1 year of sales experience, primarily in technology and financial services, but lacks any direct experience in the legal sector, which is a critical requirement for this role. While he demonstrates strong attention to detail and some familiarity with C-suite decision-makers, his lack of closing experience and limited exposure to enterprise sales significantly hinder his fit for a founding GTM role focused on legal.",
+    "highlights": [
+      "Strong attention to detail and process orientation",
+      "Clear communication skills",
+      "Proactive use of data and metrics to guide decisions"
+    ],
+    "gaps": [
+      "No experience in the legal sector",
+      "Lacks closing experience and full sales cycle management",
+      "Limited overall sales experience (only 1 year)"
+    ]
+  },
+  {
+    "rank": 76,
+    "id": "43bbedc7-9fb6-40ff-a87c-75a19bb31b0c",
+    "name": "Stacy",
+    "score": 41,
+    "reasoning": "Stacy has some relevant sales experience and a strong performance record, but her background in hospitality does not align with the legal sector, which is a critical gap for this role. Additionally, while she has demonstrated success in SMB sales, the role requires experience in enterprise sales and familiarity with legal buyers, which she lacks.",
+    "highlights": [
+      "Top performer in her current role",
+      "Strong educational background from Cornell",
+      "Experience in a startup environment"
+    ],
+    "gaps": [
+      "No experience in the legal sector",
+      "Limited sales experience (only 1 year)",
+      "Focus on SMB rather than enterprise sales"
+    ]
+  },
+  {
+    "rank": 77,
+    "id": "9f672e0e-efe8-4039-b381-59714d5e08c0",
+    "name": "Candidate-f98d0ada",
+    "score": 40,
+    "reasoning": "While the candidate has 7 years of sales experience, they lack specific familiarity with the legal sector, which is crucial for this role. Additionally, their experience may not align with the high-performance environments emphasized in the job description.",
+    "highlights": [
+      "7 years of sales experience",
+      "Located in Washington DC, USA"
+    ],
+    "gaps": [
+      "No familiarity with the legal sector",
+      "Lacks experience in high-performance environments relevant to legal or enterprise sales"
+    ]
+  },
+  {
+    "rank": 78,
+    "id": "092cf144-4283-44ea-8ae5-b62d45d58955",
+    "name": "EVANGELIA SKOUMBAKIS",
+    "score": 39,
+    "reasoning": "While Evangelia has solid sales experience and a strong track record in a competitive environment, her background is primarily in retail and media-advertising, which lacks direct relevance to the legal sector. Additionally, she has no experience selling to legal buyers or law firms, which is a critical requirement for this role.",
+    "highlights": [
+      "Top 1% team ranking",
+      "Strong scrappiness and entrepreneurial mindset",
+      "Experience in high-performance environments"
+    ],
+    "gaps": [
+      "No experience in the legal sector",
+      "Lacks familiarity with legal buyers/law firms",
+      "Sales experience primarily in retail and media, not relevant to legal or enterprise"
+    ]
+  },
+  {
+    "rank": 79,
+    "id": "8778223b-31a8-4bbe-9939-8ee8e7ace933",
+    "name": "Siddharth",
+    "score": 39,
+    "reasoning": "Siddharth has limited sales experience (1 year) and lacks familiarity with the legal sector, which is critical for this role. While he has some experience in tech sales and has worked in a startup environment, his communication skills and ability to engage with C-suite stakeholders are notably weak, which would hinder success in a founding GTM role focused on legal.",
+    "highlights": [
+      "Experience in a startup environment",
+      "Some exposure to enterprise sales"
+    ],
+    "gaps": [
+      "No experience in the legal sector",
+      "Limited sales experience (1 year) with no demonstrated quota achievement",
+      "Weak communication skills and difficulty engaging with senior stakeholders"
+    ]
+  },
+  {
+    "rank": 80,
+    "id": "8d688b32-3eaa-431e-b85b-859daf1fca5f",
+    "name": "Rychard",
+    "score": 39,
+    "reasoning": "Rychard has a strong educational background and some relevant experience in sales, but he lacks direct experience in the legal sector and has no closing experience, which is critical for this role. His sales focus has been primarily mid-market and he has not demonstrated the ability to own outcomes or manage a full sales cycle.",
+    "highlights": [
+      "Strong educational background from a top university",
+      "Experience in deal origination and lead qualification"
+    ],
+    "gaps": [
+      "No experience in the legal sector",
+      "Lacks closing experience and has never carried a quota",
+      "Limited presence with C-suite stakeholders"
+    ]
+  },
+  {
+    "rank": 81,
+    "id": "acf5799d-cf68-4efa-a3e0-24bbb3b4ccce",
+    "name": "Emma",
+    "score": 39,
+    "reasoning": "Emma has limited sales experience (2 years) primarily in retail and technology, which does not align with the legal sector focus of the role. While she demonstrates strong competencies in scrappiness and organization, her lack of direct experience in legal sales and enterprise deal ownership presents significant gaps for this position.",
+    "highlights": [
+      "Strong scrappiness and organizational skills",
+      "Good communication abilities",
+      "Experience in startup environments"
+    ],
+    "gaps": [
+      "No experience in the legal sector",
+      "Lacks enterprise sales experience",
+      "No history of carrying a quota or closing deals"
+    ]
+  },
+  {
+    "rank": 82,
+    "id": "047e5c5d-6b50-4edd-a044-aa6bf5cbd139",
+    "name": "Jared",
+    "score": 36,
+    "reasoning": "Jared has only 1 year of sales experience, primarily in financial services and hospitality, which does not align with the legal sector focus required for this role. Additionally, he lacks experience in closing deals and has no familiarity with legal buyers or law firms, which are critical for success in this position.",
+    "highlights": [
+      "Strong SDR potential with clear intent to join startups",
+      "Located in New York, NY, USA"
+    ],
+    "gaps": [
+      "No experience in the legal sector",
+      "Lacks closing experience and enterprise sales background",
+      "Only 1 year of sales experience, primarily in unrelated industries"
+    ]
+  },
+  {
+    "rank": 83,
+    "id": "0a670832-0741-4c59-81a2-520550435dd4",
+    "name": "Seth",
+    "score": 36,
+    "reasoning": "Seth has limited sales experience (only 6 months as an SDR) and lacks familiarity with the legal sector, which is crucial for this role. While he has a strong educational background and some relevant skills, he does not meet the key criteria for this position, especially in terms of experience and industry knowledge.",
+    "highlights": [
+      "Strong educational background from Princeton",
+      "Experience in a fast-growing tech company",
+      "Proficient with standard SDR tech stack"
+    ],
+    "gaps": [
+      "No experience in the legal sector",
+      "Only 6 months of sales experience, primarily as an SDR",
+      "Lacks closing experience and enterprise sales background"
+    ]
+  },
+  {
+    "rank": 84,
+    "id": "a461f8ac-5806-4682-9b7d-fa2efd87d0b8",
+    "name": "Thao",
+    "score": 36,
+    "reasoning": "Thao has limited sales experience, only one year, and lacks familiarity with the legal sector, which is crucial for this role. While she has a strong academic background and some relevant skills, her experience is primarily in non-sales functions and does not align with the requirements for a founding GTM role in a legal context.",
+    "highlights": [
+      "Strong academic background from NYU and Columbia",
+      "Demonstrates strong attention to detail and organizational skills",
+      "Experience in lead generation concepts"
+    ],
+    "gaps": [
+      "Lacks direct sales experience in the legal sector",
+      "No experience managing a B2B sales cycle or closing deals",
+      "Limited experience with C-suite stakeholders"
+    ]
+  },
+  {
+    "rank": 85,
+    "id": "216c1df4-3a73-45d2-a7b1-5d023b90764f",
+    "name": "Gary",
+    "score": 33,
+    "reasoning": "Gary has a strong educational background and some relevant experience in finance, but he lacks direct sales experience, particularly in the legal sector, which is critical for this role. His communication skills are decent, but he has no experience with closing deals or working directly with legal buyers, which are essential for the founding GTM position.",
+    "highlights": [
+      "Strong educational background from a top university",
+      "Experience in financial services",
+      "In-person work preference aligns with role requirements"
+    ],
+    "gaps": [
+      "No experience in the legal sector",
+      "Zero closing experience and no sales quota history",
+      "Lacks the necessary competencies for a sales role, particularly in enterprise sales"
+    ]
+  },
+  {
+    "rank": 86,
+    "id": "403a24a9-eb1e-45a3-890a-a51369de24f2",
+    "name": "Thomas",
+    "score": 33,
+    "reasoning": "Thomas has limited sales experience with only 1 year in a non-legal sector, which does not align with the requirements for the legal GTM role. His background in education and B2C sales does not demonstrate the necessary familiarity with the legal sector or enterprise sales experience needed for this position.",
+    "highlights": [
+      "Strong academic background from a top university",
+      "Demonstrates some scrappy, self-directed behavior"
+    ],
+    "gaps": [
+      "No experience in the legal sector",
+      "Lacks enterprise sales experience",
+      "Only 1 year of sales experience, primarily in B2C",
+      "No experience managing complex deals or relationships with C-suite stakeholders"
+    ]
+  },
+  {
+    "rank": 87,
+    "id": "a10d42d7-b578-44ce-bb33-59cc4dda16e1",
+    "name": "Benjamin Austin",
+    "score": 33,
+    "reasoning": "Benjamin has no direct sales experience in the legal sector, which is a critical gap for this role. While he has some relevant sales experience in technology and has performed well as an SDR, he lacks the necessary familiarity with legal buyers and enterprise deal closing.",
+    "highlights": [
+      "Strong motivation to join a startup",
+      "Top 1% team ranking as an SDR",
+      "Recent experience in tech sales"
+    ],
+    "gaps": [
+      "No experience in the legal sector",
+      "Zero closing experience as an AE",
+      "Lacks familiarity with enterprise sales cycles"
+    ]
+  },
+  {
+    "rank": 88,
+    "id": "f5fcac3a-d4dc-4417-a0ff-59b3e401dd71",
+    "name": "Jonathan",
+    "score": 33,
+    "reasoning": "Jonathan has limited sales experience (1 year) primarily in retail and lacks familiarity with the legal sector, which is crucial for this role. While he shows potential as a recent graduate and has a competitive sports background, his lack of closing experience and the specific skills required for the legal market significantly hinder his fit.",
+    "highlights": [
+      "Strong academic background from a top-tier liberal arts school",
+      "Competitive sports background demonstrating drive and ambition",
+      "Experience in a startup environment"
+    ],
+    "gaps": [
+      "No experience in the legal sector or selling to legal buyers",
+      "Lacks significant closing experience and enterprise sales background",
+      "Limited presence with C-suite stakeholders"
+    ]
+  },
+  {
+    "rank": 89,
+    "id": "fde39ae3-b57c-49e4-a5e9-a0b1389bc874",
+    "name": "Lachlan Scott",
+    "score": 33,
+    "reasoning": "Lachlan has only one year of sales experience primarily in B2C environments, lacking the necessary B2B and legal sector exposure required for this role. While he demonstrates some sales competencies and a positive mindset, his experience does not align with the expectations for building a go-to-market strategy in the legal sector.",
+    "highlights": [
+      "Strong charisma and ability to build rapport",
+      "Top 33% team ranking in sales performance",
+      "In-person work preference aligns with role requirements"
+    ],
+    "gaps": [
+      "No experience in the legal sector or selling to legal buyers",
+      "Lacks B2B and tech sales experience",
+      "Limited understanding of complex sales cycles and enterprise deal management"
+    ]
+  },
+  {
+    "rank": 90,
+    "id": "f469d9f9-425a-422e-ab01-1046d8fea418",
+    "name": "Reece",
+    "score": 31,
+    "reasoning": "Reece has some sales experience but lacks the necessary legal sector familiarity and enterprise sales background required for this role. His experience is primarily in education and media-advertising, which does not align with the legal focus of the position. Additionally, his competencies indicate significant gaps in key areas such as experience and technical skills.",
+    "highlights": [
+      "Location in New York, NY, USA",
+      "Experience selling to C-suite decision-makers",
+      "Demonstrated strong work ethic with high-volume outbound sales experience"
+    ],
+    "gaps": [
+      "No experience in the legal sector",
+      "Lacks enterprise sales experience",
+      "Limited overall sales experience with only one month in a non-tech environment"
+    ]
+  },
+  {
+    "rank": 91,
+    "id": "0343dd80-8c6a-4235-bf3b-836155111a6e",
+    "name": "Ben",
+    "score": 25,
+    "reasoning": "Ben has no direct sales experience in the legal sector, which is a critical requirement for this role. While he has some experience in a sales capacity, it is limited to top-of-funnel activities and does not include closing deals or working with legal buyers.",
+    "highlights": [
+      "Strong SDR candidate with top team ranking",
+      "Experience in high-volume outbound calling",
+      "Located in New York, NY, USA"
+    ],
+    "gaps": [
+      "No experience in the legal sector",
+      "Lacks enterprise sales experience",
+      "No experience managing a full sales cycle or closing deals"
+    ]
+  },
+  {
+    "rank": 92,
+    "id": "5831ab31-544c-45d8-b5a2-7d474bf3dbc1",
+    "name": "Candidate-2a03a822",
+    "score": 25,
+    "reasoning": "The candidate has no relevant sales experience in the legal sector, which is a critical requirement for this role. While they have some sales experience in healthcare and demonstrate a builder mentality, their lack of direct experience in legal sales and enterprise deal closing significantly limits their fit for this position.",
+    "highlights": [
+      "Top 10% team ranking",
+      "Experience in a startup environment",
+      "Strong presence with C-suite stakeholders"
+    ],
+    "gaps": [
+      "No experience in the legal sector",
+      "Only 3 months of sales experience, primarily as an SDR",
+      "Lacks familiarity with legal buyers or law firms"
+    ]
+  },
+  {
+    "rank": 93,
+    "id": "412b102e-7949-4990-8cd4-1c7d4d5bc84d",
+    "name": "Candidate-24ea85c1",
+    "score": 11,
+    "reasoning": "The candidate has no sales experience, which is a critical requirement for this role. Additionally, the lack of familiarity with the legal sector further diminishes their fit for the position.",
+    "highlights": [],
+    "gaps": [
+      "No sales experience",
+      "No familiarity with the legal sector",
+      "Lacks ambition to own outcomes"
+    ]
+  }
+]

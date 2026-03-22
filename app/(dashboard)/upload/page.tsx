@@ -90,12 +90,39 @@ export default function UploadPage() {
   const [selectedPreset, setSelectedPreset] = useState("balanced");
   const [criteria, setCriteria] = useState(PRESETS.balanced.criteria);
   const [idealCandidate, setIdealCandidate] = useState(PRESETS.balanced.idealCandidate);
+  const [idealProfile, setIdealProfile] = useState({
+    years_experience: "2-3",
+    industries: "financial-services, technology",
+    departments_sold_to: "finance, legal, operations",
+    buyer_personas: "c-suite-decision-maker, department-head",
+    sales_focus: "enterprise, mid-market",
+    sdr_grade: "A",
+    ae_grade: "B",
+    location: "New York, NY",
+    skills: "Salesforce, Outreach, LinkedIn Sales Navigator",
+    background: "consulting, banking, or law",
+  });
+
+  // Build natural language from structured profile for embedding
+  function profileToText(p: typeof idealProfile): string {
+    return `${p.years_experience} years sales experience in ${p.industries}. Sold to ${p.departments_sold_to} departments. Buyer personas: ${p.buyer_personas}. Focus: ${p.sales_focus}. SDR grade ${p.sdr_grade}, AE grade ${p.ae_grade}. Location: ${p.location}. Skills: ${p.skills}. Background: ${p.background}.`;
+  }
+
+  const IDEAL_PROFILES: Record<string, typeof idealProfile> = {
+    balanced: { years_experience: "2-3", industries: "financial-services, technology", departments_sold_to: "finance, legal, operations", buyer_personas: "c-suite-decision-maker, department-head", sales_focus: "enterprise, mid-market", sdr_grade: "A", ae_grade: "B", location: "New York, NY", skills: "Salesforce, Outreach, LinkedIn Sales Navigator", background: "consulting, banking, or law" },
+    hunter: { years_experience: "1-3", industries: "technology, SaaS", departments_sold_to: "sales, marketing, operations", buyer_personas: "department-head, technical-evaluator", sales_focus: "mid-market, enterprise", sdr_grade: "S", ae_grade: "F", location: "New York, NY", skills: "Outreach, Apollo, Salesforce, cold calling", background: "SDR/BDR at high-growth startup, 100+ calls/day" },
+    closer: { years_experience: "3-5", industries: "financial-services, technology, legal", departments_sold_to: "finance, legal, procurement", buyer_personas: "c-suite-decision-maker, vp-director", sales_focus: "enterprise", sdr_grade: "B", ae_grade: "A", location: "New York, NY", skills: "Salesforce, MEDDIC, Challenger methodology", background: "enterprise AE at top SaaS, $500K+ quota" },
+    pedigree: { years_experience: "2-4", industries: "financial-services, consulting", departments_sold_to: "finance, operations", buyer_personas: "c-suite-decision-maker", sales_focus: "enterprise", sdr_grade: "A", ae_grade: "B", location: "New York, NY", skills: "Goldman Sachs, McKinsey, Stanford, Harvard", background: "top-tier firm, Ivy League, fast promotions" },
+    scrappy: { years_experience: "1-3", industries: "technology, startups", departments_sold_to: "operations, sales, engineering", buyer_personas: "c-suite-decision-maker, department-head", sales_focus: "smb, mid-market", sdr_grade: "A", ae_grade: "C", location: "New York, NY", skills: "founding experience, built from zero, multi-hat", background: "founder or early employee at seed/Series A startup" },
+    custom: { years_experience: "", industries: "", departments_sold_to: "", buyer_personas: "", sales_focus: "", sdr_grade: "", ae_grade: "", location: "", skills: "", background: "" },
+  };
 
   function selectPreset(key: string) {
     setSelectedPreset(key);
     if (key !== "custom" && PRESETS[key]) {
       setCriteria([...PRESETS[key].criteria]);
       setIdealCandidate(PRESETS[key].idealCandidate);
+      setIdealProfile({ ...IDEAL_PROFILES[key] });
     }
   }
 
@@ -164,7 +191,7 @@ export default function UploadPage() {
     try {
       const resp = await fetch(`${API}/talent-pluto/score`, {
         method: "POST", headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ candidates: parsed.map(c => ({ id: c.id, name: c.name, fullText: c.fullText, linkedinUrl: c.linkedinUrl || "" })), job_description: jd, api_key: getApiKey(), top_k: topK, ideal_candidate: idealCandidate }),
+        body: JSON.stringify({ candidates: parsed.map(c => ({ id: c.id, name: c.name, fullText: c.fullText, linkedinUrl: c.linkedinUrl || "" })), job_description: jd, api_key: getApiKey(), top_k: topK, ideal_candidate: `${profileToText(idealProfile)}\n\n${idealCandidate}` }),
       });
 
       const reader = resp.body?.getReader();
@@ -632,15 +659,37 @@ export default function UploadPage() {
           ))}
         </div>
 
-        {/* Ideal candidate profile (HyDE) */}
-        <div className="mb-5">
-          <div className="flex items-center justify-between mb-2">
-            <p className="text-xs font-medium text-neutral-500">Ideal Candidate Profile</p>
-            <p className="text-[10px] text-neutral-400">Used for embedding-based pre-filtering</p>
+        {/* Ideal candidate profile (HyDE) — structured + natural language */}
+        <div key={selectedPreset} className="mb-5 stagger-in">
+          <p className="text-xs font-medium text-neutral-500 mb-3">Ideal Candidate Profile</p>
+
+          {/* Structured fields — same format as CSV data */}
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-2 mb-3">
+            {([
+              ["years_experience", "Experience"],
+              ["industries", "Industries"],
+              ["departments_sold_to", "Depts Sold To"],
+              ["buyer_personas", "Buyer Personas"],
+              ["sales_focus", "Sales Focus"],
+              ["sdr_grade", "SDR Grade"],
+              ["ae_grade", "AE Grade"],
+              ["location", "Location"],
+              ["skills", "Tools/Skills"],
+              ["background", "Background"],
+            ] as [keyof typeof idealProfile, string][]).map(([key, label]) => (
+              <div key={key}>
+                <label className="text-[9px] uppercase tracking-wider text-neutral-400">{label}</label>
+                <input value={idealProfile[key]} onChange={e => { setIdealProfile(prev => ({ ...prev, [key]: e.target.value })); setSelectedPreset("custom"); }}
+                  className="w-full border border-neutral-100 rounded px-2 py-1 text-[11px] mt-0.5 focus:outline-none focus:border-neutral-300" />
+              </div>
+            ))}
           </div>
-          <textarea key={selectedPreset} value={idealCandidate} onChange={e => { setIdealCandidate(e.target.value); setSelectedPreset("custom"); }}
-            rows={2} placeholder="Describe your ideal candidate — background, skills, experience, personality..."
-            className="w-full border border-neutral-200 rounded-lg px-3 py-2 text-xs text-neutral-700 resize-none focus:outline-none focus:border-neutral-400 leading-relaxed fade-in" />
+
+          {/* Natural language — auto-generated from structured, editable */}
+          <textarea value={idealCandidate} onChange={e => { setIdealCandidate(e.target.value); }}
+            rows={2} placeholder="Natural language description (auto-filled from fields above)..."
+            className="w-full border border-neutral-200 rounded-lg px-3 py-2 text-[11px] text-neutral-600 resize-none focus:outline-none focus:border-neutral-400 leading-relaxed" />
+          <p className="text-[9px] text-neutral-400 mt-1">Structured fields + natural language are both used for embedding pre-filtering</p>
         </div>
 
         {/* Sliders */}

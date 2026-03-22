@@ -33,7 +33,7 @@ export default function UploadPage() {
   // Rubric presets (judges)
   type Criterion = { name: string; weight: number; description: string };
   const PRESETS: Record<string, { label: string; desc: string; criteria: Criterion[] }> = {
-    balanced: { label: "ud83dudc68u200du2696ufe0f The Generalist", desc: "Equal weight across all criteria",
+    balanced: { label: "The Generalist", desc: "Equal weight across all criteria",
       criteria: [
         { name: "Relevant Experience", weight: 25, description: "Years and quality of experience in relevant roles" },
         { name: "Industry Fit", weight: 20, description: "Familiarity with the target industry/sector" },
@@ -42,7 +42,7 @@ export default function UploadPage() {
         { name: "Cultural Fit", weight: 10, description: "Drive, ambition, coachability, team orientation" },
         { name: "Location", weight: 10, description: "Proximity to office, willingness to work in-person" },
       ]},
-    hunter: { label: "ud83dudce1 The Hunter", desc: "Prioritize outbound, prospecting, cold outreach",
+    hunter: { label: "The Hunter", desc: "Prioritize outbound, prospecting, cold outreach",
       criteria: [
         { name: "Outbound & Prospecting", weight: 30, description: "Cold calling, email sequences, multi-channel outreach" },
         { name: "Pipeline Generation", weight: 25, description: "Track record of building qualified pipeline from scratch" },
@@ -51,7 +51,7 @@ export default function UploadPage() {
         { name: "Drive & Resilience", weight: 10, description: "High activity volume, handles rejection well" },
         { name: "Location", weight: 5, description: "Proximity to office" },
       ]},
-    closer: { label: "ud83eudd1dud83cudffd The Closer", desc: "Prioritize closing, deal sizes, enterprise selling",
+    closer: { label: "The Closer", desc: "Prioritize closing, deal sizes, enterprise selling",
       criteria: [
         { name: "Closing Experience", weight: 30, description: "Track record of closing deals, quota attainment" },
         { name: "Deal Size", weight: 20, description: "Average deal size, enterprise vs SMB experience" },
@@ -60,7 +60,7 @@ export default function UploadPage() {
         { name: "Industry Fit", weight: 10, description: "Familiarity with the target sector" },
         { name: "Location", weight: 5, description: "Proximity to office" },
       ]},
-    pedigree: { label: "ud83cudf93 The Pedigree", desc: "Prioritize top companies, elite schools, brand names",
+    pedigree: { label: "The Pedigree", desc: "Prioritize top companies, elite schools, brand names",
       criteria: [
         { name: "Company Quality", weight: 35, description: "Top-tier employers (Goldman, McKinsey, Google, Stripe, etc.)" },
         { name: "Education", weight: 25, description: "Elite universities, relevant degrees" },
@@ -69,7 +69,7 @@ export default function UploadPage() {
         { name: "Cultural Fit", weight: 5, description: "Drive, ambition, team orientation" },
         { name: "Location", weight: 5, description: "Proximity to office" },
       ]},
-    scrappy: { label: "ud83dude80 The Builder", desc: "Prioritize founders, 0→1 builders, scrappiness",
+    scrappy: { label: "The Builder", desc: "Prioritize founders, 0-1 builders, scrappiness",
       criteria: [
         { name: "Founding / 0→1 Experience", weight: 30, description: "Built something from scratch — company, team, or product" },
         { name: "Scrappiness", weight: 25, description: "Operated with limited resources, wore many hats" },
@@ -78,7 +78,7 @@ export default function UploadPage() {
         { name: "Cultural Fit", weight: 5, description: "High drive, low ego, team player" },
         { name: "Location", weight: 5, description: "Proximity to office" },
       ]},
-    custom: { label: "u270fufe0f Custom", desc: "Define your own criteria and weights", criteria: [] },
+    custom: { label: "Custom", desc: "Define your own criteria and weights", criteria: [] },
   };
 
   const [selectedPreset, setSelectedPreset] = useState("balanced");
@@ -533,17 +533,18 @@ export default function UploadPage() {
               </span>
             </div>
 
-            {/* Preset buttons — named judges */}
-            <div className="flex gap-1.5 mb-5 overflow-x-auto pb-1">
+            {/* Judge cards */}
+            <div className="grid grid-cols-3 md:grid-cols-6 gap-2 mb-6">
               {Object.entries(PRESETS).map(([key, preset]) => (
                 <button key={key} onClick={() => selectPreset(key)}
-                  className={`shrink-0 px-3 py-1.5 rounded-full text-xs font-medium transition-all ${selectedPreset === key ? "bg-neutral-900 text-white" : "border border-neutral-200 text-neutral-500 hover:border-neutral-400"}`}>
-                  {preset.label}
+                  className={`rounded-lg p-3 text-center transition-all ${selectedPreset === key ? "bg-neutral-900 text-white shadow-md" : "border border-neutral-200 hover:border-neutral-400 hover:shadow-sm"}`}>
+                  <div className={`text-sm font-semibold font-serif italic ${selectedPreset === key ? "" : ""}`}>{preset.label}</div>
+                  <div className={`text-[9px] mt-1 leading-tight ${selectedPreset === key ? "text-neutral-400" : "text-neutral-400"}`}>{preset.desc}</div>
                 </button>
               ))}
             </div>
 
-            {/* Description of selected preset */}
+            {/* Selected judge description */}
             <p className="text-[11px] text-neutral-500 mb-4">{PRESETS[selectedPreset]?.desc}</p>
 
             {/* Sliders */}

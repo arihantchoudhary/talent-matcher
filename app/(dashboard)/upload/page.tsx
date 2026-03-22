@@ -711,21 +711,21 @@ export default function UploadPage() {
               rows={4} placeholder="Describe your ideal candidate in plain language..."
               className="w-full border border-neutral-200 rounded-lg px-3 py-2.5 text-sm text-neutral-700 resize-y focus:outline-none focus:border-neutral-400 leading-relaxed" />
           ) : (
-            <div className="border border-neutral-200 rounded-lg p-3 space-y-2">
+            <div className="border border-neutral-200 rounded-lg p-3 space-y-2.5 overflow-hidden">
               {([
-                ["years_experience", "Experience", ["1-2 years", "2-3 years", "3-5 years", "5-8 years", "8+ years"]],
-                ["industries", "Industries", ["technology", "financial-services", "legal", "consulting", "healthcare", "SaaS"]],
-                ["sales_focus", "Sales Focus", ["SMB", "mid-market", "enterprise", "PLG"]],
-                ["buyer_personas", "Buyer Persona", ["c-suite", "VP/director", "department-head", "technical-evaluator", "end-user"]],
-                ["location", "Location", ["New York, NY", "San Francisco, CA", "Remote", "Austin, TX", "Chicago, IL", "Boston, MA"]],
-                ["background", "Background", ["consulting", "banking", "law", "startup founder", "big tech", "SDR/BDR"]],
+                ["years_experience", "Experience", ["1-2 yr", "2-3 yr", "3-5 yr", "5-8 yr", "8+"]],
+                ["industries", "Industries", ["tech", "finserv", "legal", "consulting", "healthcare", "SaaS"]],
+                ["sales_focus", "Focus", ["SMB", "mid-market", "enterprise", "PLG"]],
+                ["buyer_personas", "Buyer", ["C-suite", "VP/Dir", "Dept Head", "Technical", "End-user"]],
+                ["location", "Location", ["NYC", "SF", "Remote", "Austin", "Chicago", "Boston"]],
+                ["background", "Background", ["consulting", "banking", "law", "founder", "big tech", "SDR/BDR"]],
               ] as [keyof typeof idealProfile, string, string[]][]).map(([key, label, options]) => (
-                <div key={key} className="flex items-start gap-2">
-                  <span className="text-[10px] text-neutral-400 w-20 shrink-0 pt-1.5 text-right uppercase tracking-wider">{label}</span>
-                  <div className="flex flex-wrap gap-1 flex-1">
+                <div key={key} className="flex items-center gap-2 min-w-0">
+                  <span className="text-[9px] text-neutral-400 w-16 shrink-0 text-right uppercase tracking-wider leading-tight">{label}</span>
+                  <div className="flex flex-wrap gap-1 min-w-0">
                     {options.map(opt => {
                       const current = idealProfile[key].toLowerCase();
-                      const active = current.includes(opt.toLowerCase()) || current.includes(opt.split(" ")[0].toLowerCase());
+                      const active = current.includes(opt.toLowerCase()) || current.includes(opt.split("/")[0].toLowerCase());
                       return (
                         <button key={opt} onClick={() => {
                           const val = idealProfile[key];
@@ -735,14 +735,11 @@ export default function UploadPage() {
                           setIdealProfile(prev => ({ ...prev, [key]: newVal }));
                           setSelectedPreset("custom");
                         }}
-                          className={`px-2 py-1 rounded text-[11px] transition-colors ${active ? "bg-neutral-900 text-white" : "bg-neutral-100 text-neutral-500 hover:bg-neutral-200"}`}>
+                          className={`px-1.5 py-0.5 rounded text-[10px] transition-colors shrink-0 ${active ? "bg-neutral-900 text-white" : "bg-neutral-50 text-neutral-500 hover:bg-neutral-100 border border-neutral-200"}`}>
                           {opt}
                         </button>
                       );
                     })}
-                    <input value={idealProfile[key]} placeholder="custom..."
-                      onChange={e => { setIdealProfile(prev => ({ ...prev, [key]: e.target.value })); setSelectedPreset("custom"); }}
-                      className="w-24 border-b border-transparent hover:border-neutral-200 focus:border-neutral-400 px-1 py-0.5 text-[11px] text-neutral-400 focus:text-neutral-700 focus:outline-none" />
                   </div>
                 </div>
               ))}
@@ -750,28 +747,20 @@ export default function UploadPage() {
           )}
         </div>
 
-        {/* Criteria weights */}
-        <div className="grid md:grid-cols-2 gap-x-6 gap-y-3">
+        {/* Criteria weights — compact */}
+        <p className="text-xs font-medium text-neutral-500 mb-2">Criteria Weights</p>
+        <div className="grid grid-cols-2 md:grid-cols-3 gap-x-4 gap-y-2">
           {criteria.map((c, i) => (
-            <div key={c.name || i} className="overflow-hidden">
-              <div className="flex items-center justify-between mb-1">
-                <input value={c.name} onChange={e => { setSelectedPreset("custom"); const n = [...criteria]; n[i] = { ...n[i], name: e.target.value }; setCriteria(n); }}
-                  className="text-xs font-medium bg-transparent border-none p-0 focus:outline-none" placeholder="Criterion" />
-                <div className="flex items-center gap-1.5">
-                  <span className="text-xs font-bold tabular-nums">{c.weight}%</span>
-                  <button onClick={() => { setSelectedPreset("custom"); setCriteria(criteria.filter((_, j) => j !== i)); }} className="text-neutral-200 hover:text-red-500">
-                    <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M18 6 6 18M6 6l12 12" /></svg>
-                  </button>
-                </div>
-              </div>
+            <div key={c.name || i} className="flex items-center gap-2">
+              <span className="text-[10px] text-neutral-600 w-20 shrink-0 truncate">{c.name}</span>
               <input type="range" min={0} max={50} value={c.weight}
                 onChange={e => { setSelectedPreset("custom"); const n = [...criteria]; n[i] = { ...n[i], weight: parseInt(e.target.value) }; setCriteria(n); }}
-                className="w-full h-2 bg-neutral-100 rounded-full appearance-none cursor-pointer"
-                style={{ background: `linear-gradient(to right, #171717 ${c.weight * 2}%, #f5f5f5 ${c.weight * 2}%)`, transition: "background 0.5s ease" }} />
+                className="flex-1 h-1 bg-neutral-100 rounded-full appearance-none cursor-pointer min-w-0"
+                style={{ background: `linear-gradient(to right, #171717 ${c.weight * 2}%, #f5f5f5 ${c.weight * 2}%)` }} />
+              <span className="text-[10px] font-bold tabular-nums text-neutral-500 w-7 text-right">{c.weight}%</span>
             </div>
           ))}
         </div>
-        <button onClick={() => setCriteria([...criteria, { name: "", weight: 0, description: "" }])} className="text-[10px] text-neutral-400 hover:text-neutral-700 mt-3">+ Add criterion</button>
       </div>
 
       {/* Score button + top K */}

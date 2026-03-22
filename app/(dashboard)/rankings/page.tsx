@@ -74,7 +74,16 @@ export default function HistoryPage() {
           </div>
           <p className="text-sm text-neutral-500">
             {s.candidate_count} candidates scored &middot; {s.file_name} &middot; {new Date(s.created_at).toLocaleString()}
+            {s.judge && <> &middot; <span className="font-serif italic">{s.judge}</span></>}
+            {s.duration ? <> &middot; {s.duration}s</> : null}
+            {s.cost ? <> &middot; ${Number(s.cost).toFixed(3)}</> : null}
           </p>
+          {results.length > 0 && (() => {
+            const scores = results.map(r => r.score);
+            const mean = Math.round(scores.reduce((a, b) => a + b, 0) / scores.length);
+            const stdDev = Math.round(Math.sqrt(scores.reduce((sum, x) => sum + (x - mean) ** 2, 0) / scores.length));
+            return <p className="text-xs text-neutral-400 mt-0.5">Mean {mean} &middot; Std Dev {stdDev}</p>;
+          })()}
         </div>
 
         {/* Stats + distribution */}

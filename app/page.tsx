@@ -144,7 +144,7 @@ export default async function LandingPage() {
       {/* CTA */}
       <section className="py-16 px-6 bg-neutral-950 text-white">
         <div className="max-w-2xl mx-auto text-center scroll-fade">
-          <h2 className="text-2xl font-serif italic mb-4">Ready to match?</h2>
+          <h2 className="text-2xl md:text-3xl font-serif italic mb-4">Ready to match?</h2>
           <p className="text-neutral-400 mb-8">Free to start. No credit card.</p>
           <Link href={loggedIn ? "/upload" : "/sign-up"}
             className="inline-block text-sm font-medium bg-white text-neutral-900 px-6 py-2.5 rounded-md hover:bg-neutral-100 transition-colors">

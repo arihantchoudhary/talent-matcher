@@ -1,6 +1,7 @@
 export interface ScoredCandidate {
   id: string; rank: number; name: string; score: number;
   reasoning: string; highlights: string[]; gaps: string[];
+  photo_url?: string;
 }
 
 export interface MatchSession {

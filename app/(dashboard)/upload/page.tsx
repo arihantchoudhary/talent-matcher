@@ -132,6 +132,7 @@ export default function UploadPage() {
                 id: data.id, rank: 0, name: data.name,
                 score: data.score || 0, reasoning: data.reasoning || data.error || "",
                 highlights: data.highlights || [], gaps: data.gaps || [],
+                photo_url: data.photo_url || "",
               });
               setProgress({ done: doneCount, total: parsed.length });
               const sorted = [...scoredMap.values()].sort((a, b) => b.score - a.score);
@@ -278,7 +279,11 @@ export default function UploadPage() {
               return (
                 <div key={c.id} className="rounded-xl border border-zinc-200 bg-white overflow-hidden">
                   <button onClick={() => setExpanded(isOpen ? null : c.id)} className="w-full text-left px-4 py-3.5 flex items-start gap-3">
-                    <span className="shrink-0 w-8 h-8 rounded-full bg-zinc-100 flex items-center justify-center text-xs font-bold text-zinc-500">{c.rank}</span>
+                    {c.photo_url ? (
+                      <img src={c.photo_url} alt={c.name} className="shrink-0 w-8 h-8 rounded-full object-cover border border-neutral-200" />
+                    ) : (
+                      <span className="shrink-0 w-8 h-8 rounded-full bg-zinc-100 flex items-center justify-center text-xs font-bold text-zinc-500">{c.rank}</span>
+                    )}
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-2 mb-0.5">
                         <span className="font-semibold text-sm">{c.name}</span>

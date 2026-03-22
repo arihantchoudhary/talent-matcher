@@ -1,12 +1,9 @@
 "use client";
 
 import { useState, useRef, useMemo, DragEvent } from "react";
-import { ROLES, CATEGORIES, CITIES, Role } from "@/lib/roles";
-import { parseCSV, ParsedCandidate } from "@/lib/parse-csv";
-
-interface ScoredCandidate {
-  id: string; rank: number; name: string; score: number; reasoning: string; highlights: string[]; gaps: string[];
-}
+import { ROLES, CATEGORIES, CITIES } from "@/lib/roles";
+import { parseCSV } from "@/lib/parse-csv";
+import { saveSession, ScoredCandidate } from "@/lib/sessions";
 
 export default function UploadPage() {
   // Upload state
@@ -111,7 +108,26 @@ export default function UploadPage() {
               sorted.forEach((s, i) => s.rank = i + 1);
               setResults([...sorted]);
             }
-            if (data.type === "done") setStep("results");
+            if (data.type === "done") {
+              // Save session to history
+              const finalResults = [...scoredMap.values()].sort((a, b) => b.score - a.score);
+              finalResults.forEach((s, i) => s.rank = i + 1);
+              setResults(finalResults);
+              saveSession({
+                id: crypto.randomUUID(),
+                role: jobTitle,
+                roleCategory: ROLES[selectedIdx]?.category || "Custom",
+                description: jobDesc.substring(0, 300),
+                fileName: fileName || "unknown.csv",
+                candidateCount: parsed.length,
+                topTier: finalResults.filter(r => r.score >= 70).length,
+                goodFit: finalResults.filter(r => r.score >= 50 && r.score < 70).length,
+                avgScore: Math.round(finalResults.reduce((s, r) => s + r.score, 0) / finalResults.length),
+                results: finalResults,
+                createdAt: new Date().toISOString(),
+              });
+              setStep("results");
+            }
           } catch {}
         }
       }

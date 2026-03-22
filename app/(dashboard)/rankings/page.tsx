@@ -46,8 +46,15 @@ export default function HistoryPage() {
     grouped.get(key)!.push(s);
   }
 
-  // Aggregate stats
-  const totalCandidates = filtered.reduce((a, s) => a + (s.candidate_count || 0), 0);
+  // Aggregate stats — unique candidates per CSV file, not sum of all runs
+  const uniqueFiles = new Set(filtered.map(s => s.file_name).filter(Boolean));
+  const maxCandidatesPerFile = new Map<string, number>();
+  for (const s of filtered) {
+    const f = s.file_name || "unknown";
+    maxCandidatesPerFile.set(f, Math.max(maxCandidatesPerFile.get(f) || 0, s.candidate_count || 0));
+  }
+  const uniqueCandidates = [...maxCandidatesPerFile.values()].reduce((a, b) => a + b, 0);
+  const totalRuns = filtered.length;
   const totalCost = filtered.reduce((a, s) => a + (Number(s.cost) || 0), 0);
   const avgScore = filtered.length ? Math.round(filtered.reduce((a, s) => a + (s.avg_score || 0), 0) / filtered.length) : 0;
 
@@ -191,7 +198,7 @@ export default function HistoryPage() {
         <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-8">
           <div>
             <h1 className="text-3xl font-bold tracking-tight font-serif italic">Match History</h1>
-            <p className="text-sm text-neutral-400 mt-1">{filtered.length} session{filtered.length !== 1 ? "s" : ""} &middot; {totalCandidates} candidates scored &middot; ${totalCost.toFixed(3)} total</p>
+            <p className="text-sm text-neutral-400 mt-1">{totalRuns} run{totalRuns !== 1 ? "s" : ""} &middot; {uniqueCandidates} unique candidates &middot; {uniqueFiles.size} CSV{uniqueFiles.size !== 1 ? "s" : ""}{totalCost > 0 ? ` \u00B7 $${totalCost.toFixed(3)} total` : ""}</p>
           </div>
           <div className="flex gap-1">
             {(["role", "judge", "time"] as const).map(g => (
@@ -222,10 +229,10 @@ export default function HistoryPage() {
         {/* Aggregate stats bar */}
         {filtered.length > 0 && (
           <div className="grid grid-cols-4 gap-4 mb-8 py-5 border-y border-neutral-200">
-            <StatBlock value={filtered.length} label="Sessions" accent />
-            <StatBlock value={totalCandidates} label="Candidates" />
+            <StatBlock value={totalRuns} label="Runs" accent />
+            <StatBlock value={uniqueCandidates} label="Unique Candidates" />
             <StatBlock value={avgScore} label="Avg Score" />
-            <StatBlock value={`$${totalCost.toFixed(3)}`} label="Total Cost" />
+            <StatBlock value={totalCost > 0 ? `$${totalCost.toFixed(3)}` : "—"} label="Total Cost" />
           </div>
         )}
 

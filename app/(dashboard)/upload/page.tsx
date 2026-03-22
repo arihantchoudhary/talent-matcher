@@ -483,12 +483,12 @@ export default function UploadPage() {
           <p className="text-xs uppercase tracking-[0.15em] text-neutral-400 mb-3">Candidates</p>
           <div onDragOver={e => { e.preventDefault(); setDragging(true); }} onDragLeave={() => setDragging(false)} onDrop={handleDrop}
             onClick={() => fileRef.current?.click()}
-            className={`border-2 border-dashed rounded-lg p-8 text-center cursor-pointer transition-all ${dragging ? "border-neutral-900 bg-neutral-50" : fileName ? "border-emerald-300 bg-emerald-50/50" : "border-neutral-200 hover:border-neutral-300"}`}>
+            className={`border border-dashed rounded-lg py-10 text-center cursor-pointer transition-all ${dragging ? "border-neutral-900 bg-neutral-50" : fileName ? "border-neutral-300 bg-neutral-50" : "border-neutral-300 hover:border-neutral-400"}`}>
             <input ref={fileRef} type="file" accept=".csv" className="hidden" onChange={e => e.target.files?.[0] && handleFile(e.target.files[0])} />
             {fileName ? (
-              <div><p className="font-semibold">{fileName}</p><p className="text-sm text-neutral-500 mt-1">{rowCount} candidates</p></div>
+              <div><p className="text-sm font-medium">{fileName}</p><p className="text-xs text-neutral-400 mt-0.5">{rowCount} candidates</p></div>
             ) : (
-              <div><p className="font-medium">Drop CSV or click to browse</p><p className="text-xs text-neutral-400 mt-1">Any format — we auto-detect columns</p></div>
+              <p className="text-sm text-neutral-400">Drop CSV or click to browse</p>
             )}
           </div>
         </div>

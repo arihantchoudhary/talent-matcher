@@ -114,7 +114,6 @@ export default function UploadPage() {
               finalResults.forEach((s, i) => s.rank = i + 1);
               setResults(finalResults);
               saveSession({
-                id: crypto.randomUUID(),
                 role: jobTitle,
                 roleCategory: ROLES[selectedIdx]?.category || "Custom",
                 description: jobDesc.substring(0, 300),
@@ -124,7 +123,6 @@ export default function UploadPage() {
                 goodFit: finalResults.filter(r => r.score >= 50 && r.score < 70).length,
                 avgScore: Math.round(finalResults.reduce((s, r) => s + r.score, 0) / finalResults.length),
                 results: finalResults,
-                createdAt: new Date().toISOString(),
               });
               setStep("results");
             }

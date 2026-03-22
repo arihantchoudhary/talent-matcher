@@ -4,38 +4,111 @@ export interface ScoredCandidate {
 }
 
 export interface MatchSession {
-  id: string;
+  session_id: string;
   role: string;
-  roleCategory: string;
+  role_category: string;
   description: string;
-  fileName: string;
-  candidateCount: number;
-  topTier: number;
-  goodFit: number;
-  avgScore: number;
+  file_name: string;
+  candidate_count: number;
+  top_tier: number;
+  good_fit: number;
+  avg_score: number;
   results: ScoredCandidate[];
-  createdAt: string;
+  created_at: string;
 }
 
-const STORAGE_KEY = "talent-matcher-sessions";
+const API = process.env.NEXT_PUBLIC_API_URL || "https://aicm3pweed.us-east-1.awsapprunner.com";
 
-export function getSessions(): MatchSession[] {
+export async function getSessions(): Promise<MatchSession[]> {
+  try {
+    const resp = await fetch(`${API}/talent-pluto/sessions`, { cache: "no-store" });
+    if (!resp.ok) return getLocalSessions(); // fallback
+    return await resp.json();
+  } catch {
+    return getLocalSessions();
+  }
+}
+
+export async function getSession(id: string): Promise<MatchSession | null> {
+  try {
+    const resp = await fetch(`${API}/talent-pluto/sessions/${id}`, { cache: "no-store" });
+    if (!resp.ok) return null;
+    return await resp.json();
+  } catch {
+    return null;
+  }
+}
+
+export async function saveSession(session: {
+  role: string; roleCategory: string; description: string; fileName: string;
+  candidateCount: number; topTier: number; goodFit: number; avgScore: number;
+  results: ScoredCandidate[];
+}): Promise<MatchSession | null> {
+  try {
+    const resp = await fetch(`${API}/talent-pluto/sessions`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        role: session.role,
+        role_category: session.roleCategory,
+        description: session.description,
+        file_name: session.fileName,
+        candidate_count: session.candidateCount,
+        top_tier: session.topTier,
+        good_fit: session.goodFit,
+        avg_score: session.avgScore,
+        results: session.results,
+      }),
+    });
+    if (!resp.ok) {
+      // Fallback to localStorage
+      saveLocalSession(session);
+      return null;
+    }
+    return await resp.json();
+  } catch {
+    saveLocalSession(session);
+    return null;
+  }
+}
+
+export async function deleteSession(id: string): Promise<void> {
+  try {
+    await fetch(`${API}/talent-pluto/sessions/${id}`, { method: "DELETE" });
+  } catch {
+    // ignore
+  }
+}
+
+// ── localStorage fallback ──
+
+function getLocalSessions(): MatchSession[] {
   if (typeof window === "undefined") return [];
   try {
-    const raw = localStorage.getItem(STORAGE_KEY);
-    return raw ? JSON.parse(raw) : [];
+    return JSON.parse(localStorage.getItem("talent-matcher-sessions") || "[]");
   } catch { return []; }
 }
 
-export function saveSession(session: MatchSession) {
-  const sessions = getSessions();
-  sessions.unshift(session); // newest first
-  // Keep last 50 sessions
+function saveLocalSession(session: {
+  role: string; roleCategory: string; description: string; fileName: string;
+  candidateCount: number; topTier: number; goodFit: number; avgScore: number;
+  results: ScoredCandidate[];
+}) {
+  if (typeof window === "undefined") return;
+  const sessions = getLocalSessions();
+  sessions.unshift({
+    session_id: crypto.randomUUID(),
+    role: session.role,
+    role_category: session.roleCategory,
+    description: session.description,
+    file_name: session.fileName,
+    candidate_count: session.candidateCount,
+    top_tier: session.topTier,
+    good_fit: session.goodFit,
+    avg_score: session.avgScore,
+    results: session.results,
+    created_at: new Date().toISOString(),
+  });
   if (sessions.length > 50) sessions.length = 50;
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(sessions));
-}
-
-export function deleteSession(id: string) {
-  const sessions = getSessions().filter((s) => s.id !== id);
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(sessions));
+  localStorage.setItem("talent-matcher-sessions", JSON.stringify(sessions));
 }

@@ -1,30 +1,41 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { getSessions, deleteSession, MatchSession } from "@/lib/sessions";
+import { getSessions, getSession, deleteSession, MatchSession } from "@/lib/sessions";
 import { RankedList } from "./ranked-list";
 
 export default function HistoryPage() {
   const [sessions, setSessions] = useState<MatchSession[]>([]);
   const [viewingSession, setViewingSession] = useState<MatchSession | null>(null);
+  const [loading, setLoading] = useState(true);
   const [groupBy, setGroupBy] = useState<"time" | "role">("role");
 
   useEffect(() => {
-    setSessions(getSessions());
+    getSessions().then((s) => { setSessions(s); setLoading(false); });
   }, []);
 
   // Group by role
   const grouped = new Map<string, MatchSession[]>();
   for (const s of sessions) {
-    const key = groupBy === "role" ? s.role : new Date(s.createdAt).toLocaleDateString();
+    const key = groupBy === "role" ? s.role : new Date(s.created_at).toLocaleDateString();
     if (!grouped.has(key)) grouped.set(key, []);
     grouped.get(key)!.push(s);
   }
 
-  function handleDelete(id: string) {
-    deleteSession(id);
-    setSessions(getSessions());
-    if (viewingSession?.id === id) setViewingSession(null);
+  async function handleDelete(id: string) {
+    await deleteSession(id);
+    const updated = await getSessions();
+    setSessions(updated);
+    if (viewingSession?.session_id === id) setViewingSession(null);
+  }
+
+  async function handleView(session: MatchSession) {
+    // List view doesn't include results — fetch full session
+    if (!session.results || session.results.length === 0) {
+      const full = await getSession(session.session_id);
+      if (full) { setViewingSession(full); return; }
+    }
+    setViewingSession(session);
   }
 
   // Viewing a specific session's results
@@ -40,19 +51,19 @@ export default function HistoryPage() {
 
           <div className="mb-6">
             <div className="flex items-center gap-2 mb-1">
-              <span className="px-2 py-0.5 rounded text-xs font-semibold bg-indigo-100 text-indigo-700">{s.roleCategory}</span>
+              <span className="px-2 py-0.5 rounded text-xs font-semibold bg-indigo-100 text-indigo-700">{s.role_category}</span>
               <h1 className="text-2xl font-bold">{s.role}</h1>
             </div>
             <p className="text-sm text-zinc-500">
-              {s.candidateCount} candidates &middot; {s.fileName} &middot; {new Date(s.createdAt).toLocaleString()}
+              {s.candidate_count} candidates &middot; {s.file_name} &middot; {new Date(s.created_at).toLocaleString()}
             </p>
           </div>
 
           <div className="grid grid-cols-4 gap-3 mb-6">
-            <StatCard label="Candidates" value={s.candidateCount} />
-            <StatCard label="Avg Score" value={s.avgScore} />
-            <StatCard label="Top Tier" value={s.topTier} accent="emerald" />
-            <StatCard label="Good Fit" value={s.goodFit} accent="indigo" />
+            <StatCard label="Candidates" value={s.candidate_count} />
+            <StatCard label="Avg Score" value={s.avg_score} />
+            <StatCard label="Top Tier" value={s.top_tier} accent="emerald" />
+            <StatCard label="Good Fit" value={s.good_fit} accent="indigo" />
           </div>
 
           <RankedList candidates={s.results} />
@@ -99,29 +110,29 @@ export default function HistoryPage() {
             {[...grouped.entries()].map(([group, groupSessions]) => (
               <div key={group}>
                 <h2 className="text-sm font-semibold text-zinc-500 mb-3 flex items-center gap-2">
-                  {groupBy === "role" && <span className="px-1.5 py-0.5 rounded text-[10px] font-semibold bg-indigo-100 text-indigo-700">{groupSessions[0]?.roleCategory}</span>}
+                  {groupBy === "role" && <span className="px-1.5 py-0.5 rounded text-[10px] font-semibold bg-indigo-100 text-indigo-700">{groupSessions[0]?.role_category}</span>}
                   {group}
                   <span className="text-zinc-400 font-normal">{groupSessions.length} session{groupSessions.length > 1 ? "s" : ""}</span>
                 </h2>
                 <div className="space-y-2">
                   {groupSessions.map((s) => (
-                    <div key={s.id} className="rounded-xl border border-zinc-200 bg-white hover:shadow-sm transition-shadow">
-                      <button onClick={() => setViewingSession(s)} className="w-full text-left p-4 flex items-center gap-4">
+                    <div key={s.session_id} className="rounded-xl border border-zinc-200 bg-white hover:shadow-sm transition-shadow">
+                      <button onClick={() => handleView(s)} className="w-full text-left p-4 flex items-center gap-4">
                         {/* Score ring */}
                         <div className={`shrink-0 w-12 h-12 rounded-full border-[3px] flex items-center justify-center text-sm font-bold ${
-                          s.avgScore >= 60 ? "border-emerald-400 text-emerald-700" : s.avgScore >= 40 ? "border-indigo-400 text-indigo-700" : "border-zinc-300 text-zinc-600"
+                          s.avg_score >= 60 ? "border-emerald-400 text-emerald-700" : s.avg_score >= 40 ? "border-indigo-400 text-indigo-700" : "border-zinc-300 text-zinc-600"
                         }`}>
-                          {s.avgScore}
+                          {s.avg_score}
                         </div>
 
                         <div className="flex-1 min-w-0">
                           <div className="font-semibold text-sm">{s.role}</div>
                           <div className="text-xs text-zinc-500 mt-0.5">
-                            {s.candidateCount} candidates &middot; {s.fileName} &middot; {new Date(s.createdAt).toLocaleDateString()} {new Date(s.createdAt).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
+                            {s.candidate_count} candidates &middot; {s.file_name} &middot; {new Date(s.created_at).toLocaleDateString()} {new Date(s.created_at).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
                           </div>
                           <div className="flex gap-3 mt-1.5">
-                            <span className="text-xs text-emerald-600 font-medium">{s.topTier} top tier</span>
-                            <span className="text-xs text-indigo-600 font-medium">{s.goodFit} good fit</span>
+                            <span className="text-xs text-emerald-600 font-medium">{s.top_tier} top tier</span>
+                            <span className="text-xs text-indigo-600 font-medium">{s.good_fit} good fit</span>
                           </div>
                         </div>
 
@@ -130,7 +141,7 @@ export default function HistoryPage() {
 
                       {/* Delete */}
                       <div className="px-4 pb-3 flex justify-end">
-                        <button onClick={(e) => { e.stopPropagation(); handleDelete(s.id); }}
+                        <button onClick={(e) => { e.stopPropagation(); handleDelete(s.session_id); }}
                           className="text-xs text-zinc-400 hover:text-red-500 transition-colors">
                           Delete
                         </button>

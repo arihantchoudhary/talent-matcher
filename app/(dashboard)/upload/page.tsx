@@ -31,7 +31,8 @@ export default function UploadPage() {
   const [roleSearch, setRoleSearch] = useState("");
 
   // Rubric presets (judges)
-  const PRESETS: Record<string, { label: string; desc: string; criteria: typeof criteria }> = {
+  type Criterion = { name: string; weight: number; description: string };
+  const PRESETS: Record<string, { label: string; desc: string; criteria: Criterion[] }> = {
     balanced: { label: "Balanced", desc: "Equal weight across all criteria",
       criteria: [
         { name: "Relevant Experience", weight: 25, description: "Years and quality of experience in relevant roles" },

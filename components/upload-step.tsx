@@ -1,178 +1,60 @@
 "use client";
 
-import { useState, useRef, DragEvent } from "react";
+import { useState, useRef, useMemo, DragEvent } from "react";
+import { ROLES, CITIES, CATEGORIES, RoleTemplate } from "@/lib/roles";
 
-const ROLES = [
-  {
-    title: "Founding GTM, Legal",
-    desc: `Build the Legal go-to-market motion for an AI-native procurement platform. High-ownership sales role targeting U.S. enterprise legal buyers (GC/CFO level).
-
-Requirements:
-- 1-4 years in high-performance environment (law, banking, consulting, startups, VC)
-- Familiarity with the Legal sector
-- Ambition to own outcomes, carry a number, build in new markets
-- Strong presence with senior stakeholders (CFO/GC-level buyers)
-- In-person Tuesday-Thursday`,
-    tag: "Sales",
-  },
-  {
-    title: "Enterprise Account Executive",
-    desc: `Close six- and seven-figure SaaS deals with Fortune 500 companies. Full-cycle AE owning pipeline from qualification through close.
-
-Requirements:
-- 3-7 years B2B SaaS closing experience, $500K+ quota
-- Track record of hitting/exceeding quota (top 10-20% of team)
-- Experience selling to VP/C-suite in enterprise orgs
-- Complex, multi-stakeholder deal experience (6+ month cycles)
-- MEDDIC, Challenger, or similar methodology proficiency
-- Comfortable with technical product demos`,
-    tag: "Sales",
-  },
-  {
-    title: "SDR Team Lead",
-    desc: `Player-coach leading a team of 6-8 SDRs while carrying your own outbound quota. Build playbooks, coach reps, and drive pipeline for the sales org.
-
-Requirements:
-- 2-4 years SDR/BDR experience with at least 6 months in a lead or mentor role
-- Proven top-performer track record (top 10% of team, President's Club, etc.)
-- Experience with outbound prospecting across cold call, email, and LinkedIn
-- Ability to coach, motivate, and develop junior reps
-- Familiarity with Salesforce, Outreach/Salesloft, and ZoomInfo/Apollo
-- Data-driven approach to pipeline metrics and conversion rates`,
-    tag: "Sales",
-  },
-  {
-    title: "Mid-Market Account Executive",
-    desc: `Own the full sales cycle for mid-market accounts ($50K-$250K ACV). Prospect, demo, negotiate, and close deals with department heads and VPs.
-
-Requirements:
-- 1-3 years of closing experience in B2B SaaS
-- Track record of meeting or exceeding quota
-- Experience running product demos and managing POCs
-- Ability to navigate multi-stakeholder deals (3-6 month cycles)
-- Strong discovery and qualification skills
-- CRM hygiene and pipeline management discipline`,
-    tag: "Sales",
-  },
-  {
-    title: "Business Development Representative",
-    desc: `Generate qualified pipeline for the sales team through outbound prospecting. Multi-channel outreach to target accounts across enterprise and mid-market.
-
-Requirements:
-- 0-2 years experience in sales, business development, or customer-facing roles
-- High energy, competitive drive, and coachability
-- Excellent written and verbal communication
-- Comfort with high-volume outbound (80+ activities/day)
-- Familiarity with sales tools (Salesforce, Outreach, LinkedIn Sales Navigator)
-- Resilience and ability to handle rejection positively`,
-    tag: "Sales",
-  },
-  {
-    title: "Head of Partnerships",
-    desc: `Build and lead the partnerships function from scratch — channel partners, technology integrations, co-selling motions, and strategic alliances.
-
-Requirements:
-- 5-8 years in partnerships, business development, or strategic alliances at a SaaS company
-- Experience building partner programs from 0→1
-- Track record of driving revenue through indirect/channel sales
-- Strong relationship skills with C-suite and VP-level partner contacts
-- Commercial acumen — can structure and negotiate partner agreements
-- Experience with co-marketing and joint GTM motions`,
-    tag: "Partnerships",
-  },
-  {
-    title: "Customer Success Manager",
-    desc: `Own a book of 30-50 mid-market and enterprise accounts. Drive adoption, expansion, and retention. Be the trusted advisor between the customer and the product team.
-
-Requirements:
-- 2-5 years in customer success, account management, or consulting
-- Experience managing $2M+ ARR book of business
-- Track record of net revenue retention above 110%
-- Strong executive communication skills (VP/C-suite)
-- Ability to identify upsell/cross-sell opportunities
-- Technical enough to understand SaaS product workflows`,
-    tag: "Customer Success",
-  },
-  {
-    title: "Revenue Operations Analyst",
-    desc: `Build and maintain the data infrastructure that powers the GTM team. Own Salesforce, dashboards, forecasting models, territory planning, and comp plans.
-
-Requirements:
-- 1-3 years in RevOps, Sales Ops, or BizOps at a B2B SaaS company
-- Expert-level Salesforce administration
-- SQL proficiency and experience with BI tools (Looker, Tableau, or similar)
-- Understanding of sales processes, pipeline stages, and forecasting
-- Detail-oriented with strong data hygiene standards
-- Experience with tools like Gong, Outreach, Clari, or similar`,
-    tag: "Operations",
-  },
-  {
-    title: "Solutions Engineer / Sales Engineer",
-    desc: `Partner with AEs to run technical demos, POCs, and RFP responses for enterprise prospects. Bridge the gap between product capabilities and customer needs.
-
-Requirements:
-- 2-5 years in solutions engineering, pre-sales, or technical consulting
-- Strong technical foundation (APIs, integrations, SaaS architecture)
-- Experience running live product demos to technical and non-technical audiences
-- Ability to scope and deliver POCs within deal timelines
-- Excellent written communication for RFPs and technical documentation
-- Consultative selling mindset — can uncover technical requirements and map to value`,
-    tag: "Sales",
-  },
-  {
-    title: "VP of Sales",
-    desc: `Build and lead the sales organization from Series B through scale. Own revenue targets, hiring, process, and strategy across SDR, AE, and CS teams.
-
-Requirements:
-- 8-12 years in B2B SaaS sales with 3+ years in sales leadership
-- Experience scaling a team from 5→30+ reps
-- Track record of building repeatable sales processes and playbooks
-- Managed $10M+ ARR quota attainment
-- Experience hiring, coaching, and developing sales managers
-- Strong board-level communication and forecasting skills
-- Operated in high-growth (2-3x YoY) environments`,
-    tag: "Leadership",
-  },
-  {
-    title: "Growth Marketing Manager",
-    desc: `Own demand generation and pipeline marketing. Run paid campaigns, ABM programs, events, and content that drive qualified meetings for the sales team.
-
-Requirements:
-- 3-5 years in B2B demand gen or growth marketing
-- Experience managing $500K+ annual marketing budget
-- Track record of driving measurable pipeline (not just MQLs)
-- Proficiency with marketing automation (HubSpot/Marketo) and ABM tools (6sense/Demandbase)
-- Data-driven approach — comfortable with attribution modeling and funnel analytics
-- Experience with events, webinars, and field marketing`,
-    tag: "Marketing",
-  },
-  {
-    title: "Product-Led Sales Rep",
-    desc: `Convert product-qualified leads (PQLs) into paying customers. Work inbound leads from free trial and freemium users, run short-cycle demos and close deals.
-
-Requirements:
-- 1-3 years in inside sales, PLG sales, or SaaS closing
-- Experience with high-velocity sales (30-60 day cycles, $10K-$80K ACV)
-- Ability to quickly qualify and prioritize based on product usage signals
-- Comfortable running 4-6 demos per day
-- Strong at creating urgency and driving short decision timelines
-- Experience with product analytics tools (Pendo, Amplitude, Mixpanel)`,
-    tag: "Sales",
-  },
-];
+const TAG_COLORS: Record<string, string> = {
+  Sales: "bg-blue-100 text-blue-700",
+  GTM: "bg-indigo-100 text-indigo-700",
+  Partnerships: "bg-violet-100 text-violet-700",
+  "Customer Success": "bg-emerald-100 text-emerald-700",
+  Marketing: "bg-orange-100 text-orange-700",
+  Operations: "bg-amber-100 text-amber-700",
+  Leadership: "bg-rose-100 text-rose-700",
+  Engineering: "bg-cyan-100 text-cyan-700",
+  Product: "bg-pink-100 text-pink-700",
+  Finance: "bg-teal-100 text-teal-700",
+};
 
 export function UploadStep({ onStart }: { onStart: (csv: string, title: string, desc: string, apiKey: string) => void }) {
   const [dragging, setDragging] = useState(false);
   const [fileName, setFileName] = useState<string | null>(null);
   const [csvText, setCsvText] = useState<string | null>(null);
   const [rowCount, setRowCount] = useState(0);
+
+  // Role selection
+  const [selectedRole, setSelectedRole] = useState<RoleTemplate>(ROLES[0]);
   const [jobTitle, setJobTitle] = useState(ROLES[0].title);
-  const [jobDesc, setJobDesc] = useState(ROLES[0].desc);
-  const [selectedRole, setSelectedRole] = useState(0);
-  const [showRoles, setShowRoles] = useState(false);
+  const [jobDesc, setJobDesc] = useState(ROLES[0].description);
+  const [showRolePicker, setShowRolePicker] = useState(false);
+  const [categoryFilter, setCategoryFilter] = useState<string>("All");
+  const [cityFilter, setCityFilter] = useState<string>("All");
+  const [remoteOnly, setRemoteOnly] = useState(false);
+  const [roleSearch, setRoleSearch] = useState("");
+
   const [apiKey, setApiKey] = useState("");
   const [showKey, setShowKey] = useState(false);
   const fileRef = useRef<HTMLInputElement>(null);
+
+  // Filter roles
+  const filteredRoles = useMemo(() => {
+    let list = ROLES;
+    if (categoryFilter !== "All") list = list.filter((r) => r.category === categoryFilter);
+    if (cityFilter !== "All") list = list.filter((r) => r.locations.includes(cityFilter) || r.remote);
+    if (remoteOnly) list = list.filter((r) => r.remote);
+    if (roleSearch) {
+      const q = roleSearch.toLowerCase();
+      list = list.filter((r) => r.title.toLowerCase().includes(q) || r.description.toLowerCase().includes(q));
+    }
+    return list;
+  }, [categoryFilter, cityFilter, remoteOnly, roleSearch]);
+
+  // Cities that appear in filtered roles
+  const activeCities = useMemo(() => {
+    const s = new Set<string>();
+    ROLES.forEach((r) => r.locations.forEach((l) => s.add(l)));
+    return CITIES.filter((c) => s.has(c));
+  }, []);
 
   function handleFile(file: File) {
     setFileName(file.name);
@@ -193,132 +75,200 @@ export function UploadStep({ onStart }: { onStart: (csv: string, title: string, 
     if (file) handleFile(file);
   }
 
-  function selectRole(idx: number) {
-    setSelectedRole(idx);
-    setJobTitle(ROLES[idx].title);
-    setJobDesc(ROLES[idx].desc);
-    setShowRoles(false);
+  function pickRole(role: RoleTemplate) {
+    setSelectedRole(role);
+    setJobTitle(role.title);
+    setJobDesc(role.description);
+    setShowRolePicker(false);
   }
 
-  const tagColors: Record<string, string> = {
-    Sales: "bg-blue-100 text-blue-700",
-    Partnerships: "bg-violet-100 text-violet-700",
-    "Customer Success": "bg-emerald-100 text-emerald-700",
-    Operations: "bg-amber-100 text-amber-700",
-    Leadership: "bg-rose-100 text-rose-700",
-    Marketing: "bg-orange-100 text-orange-700",
-  };
-
   return (
-    <div className="max-w-2xl mx-auto px-4 py-12 fade-in">
+    <div className="max-w-3xl mx-auto px-4 py-10 fade-in">
       <div className="text-center mb-10">
         <h1 className="text-4xl font-bold tracking-tight mb-3">Match candidates to your role</h1>
-        <p className="text-lg text-[var(--text-muted)]">Upload any CSV, pick a role, get AI-powered rankings.</p>
+        <p className="text-lg text-[var(--text-muted)]">Upload a CSV, pick a role, get AI-powered rankings.</p>
       </div>
 
       <div className="space-y-5">
-        {/* CSV upload */}
+        {/* 1. CSV upload */}
         <div>
-          <label className="block text-sm font-semibold mb-2">1. Candidate CSV</label>
+          <label className="block text-sm font-semibold mb-2">1. Upload candidates</label>
           <div
             onDragOver={(e) => { e.preventDefault(); setDragging(true); }}
             onDragLeave={() => setDragging(false)}
             onDrop={handleDrop}
             onClick={() => fileRef.current?.click()}
-            className={`border-2 border-dashed rounded-2xl p-8 text-center cursor-pointer transition-all ${
+            className={`border-2 border-dashed rounded-2xl p-6 text-center cursor-pointer transition-all ${
               dragging ? "drop-active" : fileName ? "border-emerald-300 bg-emerald-50" : "border-[var(--border)] hover:border-[var(--border-light)] hover:bg-[var(--surface-2)]"
             }`}
           >
             <input ref={fileRef} type="file" accept=".csv" className="hidden"
               onChange={(e) => e.target.files?.[0] && handleFile(e.target.files[0])} />
             {fileName ? (
-              <div className="space-y-1">
-                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="var(--green)" strokeWidth="2" className="mx-auto"><path d="M20 6 9 17l-5-5" /></svg>
-                <p className="font-semibold text-[var(--green)]">{fileName}</p>
-                <p className="text-sm text-[var(--text-muted)]">{rowCount} candidates detected</p>
+              <div className="flex items-center justify-center gap-3">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--green)" strokeWidth="2"><path d="M20 6 9 17l-5-5" /></svg>
+                <div className="text-left">
+                  <p className="font-semibold text-[var(--green)]">{fileName}</p>
+                  <p className="text-xs text-[var(--text-muted)]">{rowCount} candidates</p>
+                </div>
               </div>
             ) : (
-              <div className="space-y-2">
-                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" strokeWidth="2" className="mx-auto">
+              <div className="flex items-center justify-center gap-3">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" strokeWidth="2">
                   <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" /><polyline points="17 8 12 3 7 8" /><line x1="12" y1="3" x2="12" y2="15" />
                 </svg>
-                <p className="font-semibold">Drop your CSV here, or click to browse</p>
-                <p className="text-xs text-[var(--text-muted)]">Works with any CSV format</p>
+                <div className="text-left">
+                  <p className="font-semibold text-sm">Drop CSV here or click to browse</p>
+                  <p className="text-xs text-[var(--text-muted)]">Any format — we auto-detect columns</p>
+                </div>
               </div>
             )}
           </div>
         </div>
 
-        {/* Role picker */}
+        {/* 2. Role picker */}
         <div>
-          <label className="block text-sm font-semibold mb-2">2. Pick a role</label>
+          <label className="block text-sm font-semibold mb-2">2. Select a role</label>
 
-          {/* Selected role display */}
+          {/* Current selection */}
           <button
-            onClick={() => setShowRoles(!showRoles)}
-            className="w-full text-left rounded-xl border border-[var(--border)] px-4 py-3 bg-white hover:bg-[var(--surface-2)] transition-colors flex items-center justify-between"
+            onClick={() => setShowRolePicker(!showRolePicker)}
+            className="w-full text-left rounded-xl border border-[var(--border)] px-4 py-3 bg-white hover:bg-[var(--surface-2)] transition-colors"
           >
-            <div className="flex items-center gap-2">
-              <span className={`px-2 py-0.5 rounded-md text-xs font-medium ${tagColors[ROLES[selectedRole].tag] || "bg-gray-100 text-gray-600"}`}>
-                {ROLES[selectedRole].tag}
-              </span>
-              <span className="text-sm font-medium">{ROLES[selectedRole].title}</span>
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2.5">
+                <span className={`px-2 py-0.5 rounded-md text-xs font-semibold ${TAG_COLORS[selectedRole.category] || "bg-gray-100 text-gray-600"}`}>
+                  {selectedRole.category}
+                </span>
+                <span className="font-medium text-sm">{selectedRole.title}</span>
+                <span className="text-xs text-[var(--text-muted)]">{selectedRole.experienceRange}</span>
+              </div>
+              <div className="flex items-center gap-2">
+                {selectedRole.remote && <span className="text-xs text-emerald-600 bg-emerald-50 px-1.5 py-0.5 rounded">Remote OK</span>}
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className={`text-[var(--text-muted)] transition-transform ${showRolePicker ? "rotate-180" : ""}`}>
+                  <path d="m6 9 6 6 6-6" />
+                </svg>
+              </div>
             </div>
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className={`text-[var(--text-muted)] transition-transform ${showRoles ? "rotate-180" : ""}`}>
-              <path d="m6 9 6 6 6-6" />
-            </svg>
+            <div className="flex gap-1 mt-1.5">
+              {selectedRole.locations.slice(0, 5).map((loc) => (
+                <span key={loc} className="text-[10px] text-[var(--text-muted)] bg-[var(--surface-2)] px-1.5 py-0.5 rounded">{loc}</span>
+              ))}
+              {selectedRole.locations.length > 5 && (
+                <span className="text-[10px] text-[var(--text-muted)]">+{selectedRole.locations.length - 5}</span>
+              )}
+            </div>
           </button>
 
-          {/* Role grid */}
-          {showRoles && (
-            <div className="mt-2 grid grid-cols-1 sm:grid-cols-2 gap-2 max-h-80 overflow-y-auto rounded-xl border border-[var(--border)] p-2 bg-white">
-              {ROLES.map((role, idx) => (
-                <button
-                  key={idx}
-                  onClick={() => selectRole(idx)}
-                  className={`text-left rounded-lg p-3 border transition-all ${
-                    selectedRole === idx
-                      ? "border-[var(--accent)] bg-[var(--accent-light)]"
-                      : "border-transparent hover:bg-[var(--surface-2)]"
-                  }`}
-                >
-                  <div className="flex items-center gap-2 mb-1">
-                    <span className={`px-1.5 py-0.5 rounded text-[10px] font-semibold ${tagColors[role.tag] || "bg-gray-100 text-gray-600"}`}>
-                      {role.tag}
-                    </span>
+          {/* Role picker panel */}
+          {showRolePicker && (
+            <div className="mt-2 rounded-xl border border-[var(--border)] bg-white shadow-lg overflow-hidden">
+              {/* Filters */}
+              <div className="p-3 border-b border-[var(--border)] space-y-2 bg-[var(--surface-2)]">
+                <input
+                  type="text"
+                  placeholder="Search roles..."
+                  value={roleSearch}
+                  onChange={(e) => setRoleSearch(e.target.value)}
+                  className="w-full rounded-lg border border-[var(--border)] px-3 py-2 text-sm bg-white focus:outline-none focus:border-[var(--accent)]"
+                />
+                <div className="flex gap-2 overflow-x-auto pb-1">
+                  {/* Category pills */}
+                  {["All", ...CATEGORIES].map((cat) => (
+                    <button
+                      key={cat}
+                      onClick={() => setCategoryFilter(cat)}
+                      className={`shrink-0 px-2.5 py-1 rounded-lg text-xs font-medium border transition-all ${
+                        categoryFilter === cat ? "bg-[var(--accent)] text-white border-[var(--accent)]" : "bg-white border-[var(--border)] text-[var(--text-secondary)]"
+                      }`}
+                    >
+                      {cat}
+                    </button>
+                  ))}
+                </div>
+                <div className="flex gap-2 items-center">
+                  {/* City dropdown */}
+                  <select
+                    value={cityFilter}
+                    onChange={(e) => setCityFilter(e.target.value)}
+                    className="flex-1 rounded-lg border border-[var(--border)] px-3 py-1.5 text-xs bg-white focus:outline-none focus:border-[var(--accent)]"
+                  >
+                    <option value="All">All cities</option>
+                    {activeCities.map((c) => (
+                      <option key={c} value={c}>{c}</option>
+                    ))}
+                  </select>
+                  {/* Remote toggle */}
+                  <button
+                    onClick={() => setRemoteOnly(!remoteOnly)}
+                    className={`shrink-0 px-3 py-1.5 rounded-lg text-xs font-medium border transition-all ${
+                      remoteOnly ? "bg-emerald-500 text-white border-emerald-500" : "bg-white border-[var(--border)] text-[var(--text-secondary)]"
+                    }`}
+                  >
+                    Remote OK
+                  </button>
+                </div>
+              </div>
+
+              {/* Role list */}
+              <div className="max-h-72 overflow-y-auto p-2">
+                {filteredRoles.length === 0 ? (
+                  <p className="text-center text-sm text-[var(--text-muted)] py-6">No roles match your filters</p>
+                ) : (
+                  <div className="space-y-1">
+                    {filteredRoles.map((role, idx) => (
+                      <button
+                        key={idx}
+                        onClick={() => pickRole(role)}
+                        className={`w-full text-left rounded-lg p-3 transition-all ${
+                          selectedRole.title === role.title ? "bg-[var(--accent-light)] border border-[var(--accent)]" : "hover:bg-[var(--surface-2)] border border-transparent"
+                        }`}
+                      >
+                        <div className="flex items-center gap-2 mb-0.5">
+                          <span className={`px-1.5 py-0.5 rounded text-[10px] font-semibold ${TAG_COLORS[role.category] || "bg-gray-100"}`}>
+                            {role.category}
+                          </span>
+                          <span className="text-xs text-[var(--text-muted)]">{role.experienceRange}</span>
+                          {role.remote && <span className="text-[10px] text-emerald-600">Remote</span>}
+                        </div>
+                        <div className="text-sm font-medium">{role.title}</div>
+                        <div className="flex gap-1 mt-1 flex-wrap">
+                          {role.locations.slice(0, 4).map((loc) => (
+                            <span key={loc} className="text-[10px] text-[var(--text-muted)] bg-[var(--surface-2)] px-1.5 py-0.5 rounded">{loc}</span>
+                          ))}
+                          {role.locations.length > 4 && <span className="text-[10px] text-[var(--text-muted)]">+{role.locations.length - 4}</span>}
+                        </div>
+                      </button>
+                    ))}
                   </div>
-                  <div className="text-sm font-medium">{role.title}</div>
-                  <div className="text-xs text-[var(--text-muted)] mt-0.5 line-clamp-2">{role.desc.split("\n")[0]}</div>
-                </button>
-              ))}
+                )}
+              </div>
+              <div className="p-2 border-t border-[var(--border)] bg-[var(--surface-2)] text-center">
+                <p className="text-xs text-[var(--text-muted)]">{filteredRoles.length} of {ROLES.length} roles shown</p>
+              </div>
             </div>
           )}
         </div>
 
-        {/* Editable title */}
+        {/* 3. Editable title + desc */}
         <div>
-          <label className="block text-sm font-semibold mb-2">Role title <span className="font-normal text-[var(--text-muted)]">(editable)</span></label>
+          <label className="block text-sm font-semibold mb-2">3. Customize <span className="font-normal text-[var(--text-muted)]">(or use as-is)</span></label>
           <input type="text" value={jobTitle} onChange={(e) => setJobTitle(e.target.value)}
-            className="w-full rounded-xl border border-[var(--border)] px-4 py-3 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-[var(--accent)]/20 focus:border-[var(--accent)]" />
+            className="w-full rounded-t-xl border border-[var(--border)] px-4 py-2.5 text-sm font-medium bg-white focus:outline-none focus:border-[var(--accent)]" />
+          <textarea value={jobDesc} onChange={(e) => setJobDesc(e.target.value)} rows={5}
+            className="w-full rounded-b-xl border border-t-0 border-[var(--border)] px-4 py-2.5 text-sm bg-white resize-none focus:outline-none focus:border-[var(--accent)]" />
         </div>
 
-        {/* Editable description */}
-        <div>
-          <label className="block text-sm font-semibold mb-2">Role description <span className="font-normal text-[var(--text-muted)]">(editable)</span></label>
-          <textarea value={jobDesc} onChange={(e) => setJobDesc(e.target.value)} rows={6}
-            className="w-full rounded-xl border border-[var(--border)] px-4 py-3 text-sm bg-white resize-none focus:outline-none focus:ring-2 focus:ring-[var(--accent)]/20 focus:border-[var(--accent)]" />
-        </div>
-
-        {/* API key (optional) */}
+        {/* API key */}
         <div>
           <label className="block text-sm font-semibold mb-2">
-            OpenAI API Key <span className="font-normal text-[var(--text-muted)]">(optional — default key included)</span>
+            OpenAI API Key <span className="font-normal text-[var(--text-muted)]">(optional)</span>
           </label>
           <div className="relative">
             <input type={showKey ? "text" : "password"} value={apiKey} onChange={(e) => setApiKey(e.target.value)}
-              placeholder="sk-proj-..."
-              className="w-full rounded-xl border border-[var(--border)] px-4 py-3 pr-16 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-[var(--accent)]/20 focus:border-[var(--accent)]" />
-            <button onClick={() => setShowKey(!showKey)} className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-[var(--text-muted)] hover:text-[var(--text)]">
+              placeholder="Uses built-in key if empty"
+              className="w-full rounded-xl border border-[var(--border)] px-4 py-2.5 pr-16 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-[var(--accent)]/20 focus:border-[var(--accent)]" />
+            <button onClick={() => setShowKey(!showKey)} className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-[var(--text-muted)]">
               {showKey ? "Hide" : "Show"}
             </button>
           </div>
@@ -330,9 +280,9 @@ export function UploadStep({ onStart }: { onStart: (csv: string, title: string, 
           disabled={!csvText}
           className="w-full py-4 rounded-xl bg-[var(--accent)] text-white font-semibold text-base
                      hover:bg-[var(--accent-hover)] disabled:opacity-40 disabled:cursor-not-allowed
-                     transition-all shadow-sm hover:shadow-md mt-2"
+                     transition-all shadow-sm hover:shadow-md"
         >
-          Score {rowCount > 0 ? `${rowCount} candidates` : "candidates"} with AI
+          Score {rowCount > 0 ? `${rowCount} candidates` : "candidates"} for {jobTitle}
         </button>
       </div>
     </div>

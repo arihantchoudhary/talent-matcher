@@ -33,5 +33,22 @@ input[type="range"]::-moz-range-thumb {
   cursor: pointer;
 }
 
-.fade-in { animation: fadeIn 0.2s ease-out; }
+/* Animations */
+.fade-in { animation: fadeIn 0.25s ease-out; }
 @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+
+.slide-in { animation: slideIn 0.4s cubic-bezier(0.22, 1, 0.36, 1); }
+@keyframes slideIn { from { opacity: 0; transform: translateX(-10px); } to { opacity: 1; transform: translateX(0); } }
+
+/* Slider track animation */
+input[type="range"] { transition: background 0.6s cubic-bezier(0.22, 1, 0.36, 1); }
+
+/* Staggered children animation */
+.stagger-in > * { animation: staggerFade 0.4s ease-out both; }
+.stagger-in > *:nth-child(1) { animation-delay: 0ms; }
+.stagger-in > *:nth-child(2) { animation-delay: 60ms; }
+.stagger-in > *:nth-child(3) { animation-delay: 120ms; }
+.stagger-in > *:nth-child(4) { animation-delay: 180ms; }
+.stagger-in > *:nth-child(5) { animation-delay: 240ms; }
+.stagger-in > *:nth-child(6) { animation-delay: 300ms; }
+@keyframes staggerFade { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }

@@ -544,10 +544,10 @@ export default function UploadPage() {
               ))}
             </div>
 
-            {/* Sliders */}
-            <div className="space-y-4 mb-4">
+            {/* Sliders — animate on judge switch */}
+            <div key={selectedPreset} className="space-y-4 mb-4 stagger-in">
               {criteria.map((c, i) => (
-                <div key={c.name || i}>
+                <div key={c.name || i} className="overflow-hidden">
                   <div className="flex items-center justify-between mb-1.5">
                     <input value={c.name} onChange={e => { setSelectedPreset("custom"); const n = [...criteria]; n[i] = { ...n[i], name: e.target.value }; setCriteria(n); }}
                       className="text-sm font-medium bg-transparent border-none p-0 focus:outline-none focus:ring-0" placeholder="Criterion" />

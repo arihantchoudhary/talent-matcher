@@ -1,6 +1,9 @@
 import { NextRequest } from "next/server";
 import OpenAI from "openai";
 
+// Allow up to 5 minutes for scoring all candidates
+export const maxDuration = 300;
+
 const LINKEDIN_API = process.env.LINKEDIN_API_URL || "https://aicm3pweed.us-east-1.awsapprunner.com";
 
 /** Pull all LinkedIn profiles from the database and build a URL->enrichment map */
@@ -54,8 +57,8 @@ export async function POST(req: NextRequest) {
 
       send({ type: "start", total: candidates.length });
 
-      for (let i = 0; i < candidates.length; i += 5) {
-        const batch = candidates.slice(i, Math.min(i + 5, candidates.length));
+      for (let i = 0; i < candidates.length; i += 3) {
+        const batch = candidates.slice(i, Math.min(i + 3, candidates.length));
         const promises = batch.map(async (c: { id: string; name: string; fullText: string; linkedinUrl?: string }, bi: number) => {
           const idx = i + bi;
           try {
@@ -91,17 +94,30 @@ export async function POST(req: NextRequest) {
               }
             }
 
-            // Step 3: Score — send to GPT
+            // Step 3: Score — send to GPT with retry
             send({ type: "log", index: idx, name: c.name, step: "score", detail: `Sending ${candidateText.length} chars to GPT-4o-mini${enriched ? " (enriched)" : ""}` });
 
-            const resp = await openai.chat.completions.create({
-              model: "gpt-4o-mini", temperature: 0.3, max_tokens: 350,
-              messages: [
-                { role: "system", content: `Score candidates 0-100. Use full range: 85-100 exceptional, 70-84 strong, 55-69 decent, 40-54 partial, 25-39 weak, 0-24 poor.\nReturn ONLY JSON: {"score":<n>,"reasoning":"<2-3 sentences>","highlights":["..."],"gaps":["..."]}\n\nROLE:\n${jobDescription.substring(0, 1500)}` },
-                { role: "user", content: candidateText },
-              ],
-            });
-            const raw = resp.choices[0]?.message?.content || "";
+            let raw = "";
+            for (let attempt = 0; attempt < 3; attempt++) {
+              try {
+                const resp = await openai.chat.completions.create({
+                  model: "gpt-4o-mini", temperature: 0.3, max_tokens: 350,
+                  messages: [
+                    { role: "system", content: `Score candidates 0-100. Use full range: 85-100 exceptional, 70-84 strong, 55-69 decent, 40-54 partial, 25-39 weak, 0-24 poor.\nReturn ONLY JSON: {"score":<n>,"reasoning":"<2-3 sentences>","highlights":["..."],"gaps":["..."]}\n\nROLE:\n${jobDescription.substring(0, 1500)}` },
+                    { role: "user", content: candidateText },
+                  ],
+                });
+                raw = resp.choices[0]?.message?.content || "";
+                break; // success
+              } catch (retryErr) {
+                if (attempt < 2) {
+                  send({ type: "log", index: idx, name: c.name, step: "retry", detail: `Attempt ${attempt + 1} failed, retrying...` });
+                  await new Promise(r => setTimeout(r, 1000 * (attempt + 1)));
+                } else {
+                  throw retryErr;
+                }
+              }
+            }
             const m = raw.match(/\{[\s\S]*\}/);
             if (m) {
               const p = JSON.parse(m[0]);

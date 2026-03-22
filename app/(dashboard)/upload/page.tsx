@@ -32,6 +32,7 @@ export default function UploadPage() {
   const [step, setStep] = useState<"setup" | "scoring" | "results">("setup");
   const [progress, setProgress] = useState({ done: 0, total: 0 });
   const [results, setResults] = useState<ScoredCandidate[]>([]);
+  const [logs, setLogs] = useState<{ name: string; step: string; detail: string }[]>([]);
   const [expanded, setExpanded] = useState<string | null>(null);
 
   const filteredRoles = useMemo(() => {
@@ -71,6 +72,7 @@ export default function UploadPage() {
     setStep("scoring");
     setProgress({ done: 0, total: parsed.length });
     setResults([]);
+    setLogs([]);
 
     const scoredMap = new Map<string, ScoredCandidate>();
     let doneCount = 0;
@@ -102,6 +104,9 @@ export default function UploadPage() {
           if (!line.startsWith("data: ")) continue;
           try {
             const data = JSON.parse(line.slice(6));
+            if (data.type === "log") {
+              setLogs(prev => [{ name: data.name, step: data.step, detail: data.detail }, ...prev].slice(0, 100));
+            }
             if (data.type === "scored" || data.type === "error") {
               doneCount++;
               scoredMap.set(data.id, {
@@ -147,27 +152,88 @@ export default function UploadPage() {
   if (step === "scoring") {
     const pct = progress.total > 0 ? Math.round((progress.done / progress.total) * 100) : 0;
     return (
-      <div className="flex-1 overflow-auto">
-        <div className="max-w-2xl mx-auto px-6 py-16 text-center">
-          <div className="w-14 h-14 rounded-2xl bg-indigo-100 flex items-center justify-center mx-auto mb-5 animate-pulse">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#4f46e5" strokeWidth="2"><path d="M12 2a8.5 8.5 0 0 0-8.5 8.5c0 4.5 3.5 8.5 8.5 11.5 5-3 8.5-7 8.5-11.5A8.5 8.5 0 0 0 12 2z" /><circle cx="12" cy="10" r="3" /></svg>
+      <div className="max-w-5xl mx-auto px-6 py-8">
+        <h1 className="text-2xl font-bold tracking-tight mb-1">Matching Algorithm</h1>
+        <p className="text-sm text-neutral-500 mb-6">{progress.done} of {progress.total} candidates scored for <span className="font-medium text-neutral-900">{jobTitle}</span></p>
+
+        {/* Progress */}
+        <div className="h-1 bg-neutral-100 mb-8">
+          <div className="h-full bg-neutral-900 transition-all duration-300" style={{ width: `${pct}%` }} />
+        </div>
+
+        {/* Pipeline diagram */}
+        <div className="grid grid-cols-4 gap-4 mb-8">
+          {[
+            { label: "1. Parse CSV", desc: "Extract fields from each row", count: progress.total },
+            { label: "2. LinkedIn Enrich", desc: "Match profiles from 493-profile DB", count: logs.filter(l => l.step === "enrich" && l.detail.includes("found")).length },
+            { label: "3. GPT-4o Score", desc: "Score 0-100 against role criteria", count: progress.done },
+            { label: "4. Rank", desc: "Sort by score, identify fit tiers", count: results.length },
+          ].map((s, i) => (
+            <div key={i} className="border border-neutral-200 bg-white p-4">
+              <p className="text-xs uppercase tracking-[0.1em] text-neutral-400 mb-1">{s.label}</p>
+              <p className="text-2xl font-semibold">{s.count}</p>
+              <p className="text-xs text-neutral-500 mt-1">{s.desc}</p>
+            </div>
+          ))}
+        </div>
+
+        <div className="grid lg:grid-cols-2 gap-6">
+          {/* Left: Live pipeline log */}
+          <div>
+            <p className="text-xs uppercase tracking-[0.15em] text-neutral-400 mb-3">Pipeline Log</p>
+            <div className="border border-neutral-200 bg-white max-h-96 overflow-y-auto font-mono text-xs">
+              {logs.length === 0 ? (
+                <div className="p-4 text-neutral-400">Waiting for first candidate...</div>
+              ) : logs.slice(0, 40).map((log, i) => {
+                const stepColor = log.step === "parse" ? "text-blue-600" : log.step === "enrich" ? "text-emerald-600" : log.step === "score" ? "text-amber-600" : log.step === "result" ? "text-neutral-900" : "text-red-500";
+                return (
+                  <div key={i} className="px-3 py-1.5 border-b border-neutral-50 flex gap-2">
+                    <span className={`shrink-0 w-14 ${stepColor} font-semibold`}>{log.step}</span>
+                    <span className="text-neutral-400 shrink-0 w-24 truncate">{log.name}</span>
+                    <span className="text-neutral-600">{log.detail}</span>
+                  </div>
+                );
+              })}
+            </div>
           </div>
-          <h2 className="text-xl font-bold mb-1">Scoring candidates...</h2>
-          <p className="text-sm text-zinc-500 mb-6">{progress.done} of {progress.total} &middot; <span className="font-semibold text-indigo-600">{pct}%</span></p>
-          <div className="h-2.5 rounded-full bg-zinc-100 overflow-hidden max-w-md mx-auto mb-8">
-            <div className="h-full rounded-full bg-indigo-600 transition-all duration-300" style={{ width: `${pct}%` }} />
-          </div>
-          {results.length > 0 && (
-            <div className="text-left max-w-md mx-auto space-y-2">
-              <p className="text-xs font-semibold text-zinc-400 uppercase tracking-wider mb-2">Top matches so far</p>
-              {results.slice(0, 5).map(r => (
-                <div key={r.id} className="flex items-center gap-3 px-3 py-2 rounded-lg bg-white border border-zinc-200">
-                  <span className={`px-2 py-0.5 rounded-full text-xs font-bold ${r.score >= 70 ? "bg-emerald-50 text-emerald-700" : r.score >= 50 ? "bg-indigo-50 text-indigo-700" : "bg-zinc-100 text-zinc-600"}`}>{r.score}</span>
-                  <span className="text-sm font-medium truncate">{r.name}</span>
+
+          {/* Right: Top matches */}
+          <div>
+            <p className="text-xs uppercase tracking-[0.15em] text-neutral-400 mb-3">Top Matches (live)</p>
+            <div className="border border-neutral-200 bg-white">
+              {results.length === 0 ? (
+                <div className="p-4 text-neutral-400 text-sm">Scores will appear here...</div>
+              ) : results.slice(0, 10).map((r, i) => (
+                <div key={r.id} className="px-4 py-2.5 border-b border-neutral-50 flex items-center gap-3">
+                  <span className="text-xs text-neutral-400 w-4">{i + 1}</span>
+                  <div className="w-8 h-5 bg-neutral-100 rounded overflow-hidden">
+                    <div className="h-full bg-neutral-900" style={{ width: `${r.score}%` }} />
+                  </div>
+                  <span className="text-xs font-semibold w-6">{r.score}</span>
+                  <span className="text-sm truncate">{r.name}</span>
                 </div>
               ))}
             </div>
-          )}
+
+            {/* Score distribution */}
+            {results.length > 5 && (
+              <div className="mt-4">
+                <p className="text-xs uppercase tracking-[0.15em] text-neutral-400 mb-3">Score Distribution</p>
+                <div className="border border-neutral-200 bg-white p-4 flex items-end gap-1 h-20">
+                  {[0,10,20,30,40,50,60,70,80,90].map(bucket => {
+                    const count = results.filter(r => r.score >= bucket && r.score < bucket + 10).length;
+                    const maxCount = Math.max(...[0,10,20,30,40,50,60,70,80,90].map(b => results.filter(r => r.score >= b && r.score < b + 10).length), 1);
+                    return (
+                      <div key={bucket} className="flex-1 flex flex-col items-center gap-0.5">
+                        <div className="w-full bg-neutral-900" style={{ height: `${(count / maxCount) * 48}px`, minHeight: count > 0 ? 2 : 0 }} />
+                        <span className="text-[8px] text-neutral-400">{bucket}</span>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
+          </div>
         </div>
       </div>
     );

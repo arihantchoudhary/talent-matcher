@@ -11,7 +11,27 @@ body {
   letter-spacing: -0.01em;
 }
 
-h1, h2, h3 { letter-spacing: -0.025em; }
+h1 { letter-spacing: -0.03em; font-family: var(--font-serif); font-style: italic; }
+h2, h3 { letter-spacing: -0.02em; }
+
+/* Range slider */
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 16px; height: 16px;
+  border-radius: 50%;
+  background: #171717;
+  border: 2px solid white;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+  cursor: pointer;
+}
+input[type="range"]::-moz-range-thumb {
+  width: 16px; height: 16px;
+  border-radius: 50%;
+  background: #171717;
+  border: 2px solid white;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+  cursor: pointer;
+}
 
 .fade-in { animation: fadeIn 0.2s ease-out; }
 @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }

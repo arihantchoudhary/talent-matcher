@@ -33,7 +33,7 @@ export default function UploadPage() {
   // Rubric presets (judges)
   type Criterion = { name: string; weight: number; description: string };
   const PRESETS: Record<string, { label: string; desc: string; criteria: Criterion[] }> = {
-    balanced: { label: "Balanced", desc: "Equal weight across all criteria",
+    balanced: { label: "ud83dudc68u200du2696ufe0f The Generalist", desc: "Equal weight across all criteria",
       criteria: [
         { name: "Relevant Experience", weight: 25, description: "Years and quality of experience in relevant roles" },
         { name: "Industry Fit", weight: 20, description: "Familiarity with the target industry/sector" },
@@ -42,7 +42,7 @@ export default function UploadPage() {
         { name: "Cultural Fit", weight: 10, description: "Drive, ambition, coachability, team orientation" },
         { name: "Location", weight: 10, description: "Proximity to office, willingness to work in-person" },
       ]},
-    hunter: { label: "Pipeline Builder", desc: "Prioritize outbound, prospecting, cold outreach",
+    hunter: { label: "ud83dudce1 The Hunter", desc: "Prioritize outbound, prospecting, cold outreach",
       criteria: [
         { name: "Outbound & Prospecting", weight: 30, description: "Cold calling, email sequences, multi-channel outreach" },
         { name: "Pipeline Generation", weight: 25, description: "Track record of building qualified pipeline from scratch" },
@@ -51,7 +51,7 @@ export default function UploadPage() {
         { name: "Drive & Resilience", weight: 10, description: "High activity volume, handles rejection well" },
         { name: "Location", weight: 5, description: "Proximity to office" },
       ]},
-    closer: { label: "Deal Closer", desc: "Prioritize closing, deal sizes, enterprise selling",
+    closer: { label: "ud83eudd1dud83cudffd The Closer", desc: "Prioritize closing, deal sizes, enterprise selling",
       criteria: [
         { name: "Closing Experience", weight: 30, description: "Track record of closing deals, quota attainment" },
         { name: "Deal Size", weight: 20, description: "Average deal size, enterprise vs SMB experience" },
@@ -60,7 +60,7 @@ export default function UploadPage() {
         { name: "Industry Fit", weight: 10, description: "Familiarity with the target sector" },
         { name: "Location", weight: 5, description: "Proximity to office" },
       ]},
-    pedigree: { label: "Pedigree", desc: "Prioritize top companies, elite schools, brand names",
+    pedigree: { label: "ud83cudf93 The Pedigree", desc: "Prioritize top companies, elite schools, brand names",
       criteria: [
         { name: "Company Quality", weight: 35, description: "Top-tier employers (Goldman, McKinsey, Google, Stripe, etc.)" },
         { name: "Education", weight: 25, description: "Elite universities, relevant degrees" },
@@ -69,7 +69,7 @@ export default function UploadPage() {
         { name: "Cultural Fit", weight: 5, description: "Drive, ambition, team orientation" },
         { name: "Location", weight: 5, description: "Proximity to office" },
       ]},
-    scrappy: { label: "Startup DNA", desc: "Prioritize founders, 0→1 builders, scrappiness",
+    scrappy: { label: "ud83dude80 The Builder", desc: "Prioritize founders, 0→1 builders, scrappiness",
       criteria: [
         { name: "Founding / 0→1 Experience", weight: 30, description: "Built something from scratch — company, team, or product" },
         { name: "Scrappiness", weight: 25, description: "Operated with limited resources, wore many hats" },
@@ -78,7 +78,7 @@ export default function UploadPage() {
         { name: "Cultural Fit", weight: 5, description: "High drive, low ego, team player" },
         { name: "Location", weight: 5, description: "Proximity to office" },
       ]},
-    custom: { label: "Custom", desc: "Define your own criteria and weights", criteria: [] },
+    custom: { label: "u270fufe0f Custom", desc: "Define your own criteria and weights", criteria: [] },
   };
 
   const [selectedPreset, setSelectedPreset] = useState("balanced");
@@ -472,13 +472,12 @@ export default function UploadPage() {
   return (
     <div className="max-w-4xl mx-auto px-6 py-8">
       <div className="mb-8">
-        <h1 className="text-3xl font-bold tracking-tight font-serif italic">New Match</h1>
+        <h1 className="text-3xl font-bold tracking-tight ">New Match</h1>
         <p className="text-sm text-neutral-500 mt-1">Upload candidates, select a role, define your scoring criteria, and run AI matching.</p>
       </div>
 
-      {/* Two column layout */}
-      {/* Top row: CSV + Role & JD combined */}
-      <div className="grid lg:grid-cols-2 gap-4 mb-6">
+      {/* Stacked sections */}
+      <div className="grid md:grid-cols-2 gap-4 mb-6">
         {/* CSV upload */}
         <div className="border border-neutral-200 bg-white rounded-lg p-5">
           <p className="text-xs uppercase tracking-[0.15em] text-neutral-400 mb-3">Candidates</p>
@@ -528,7 +527,7 @@ export default function UploadPage() {
           {/* Rubric */}
           <div className="border border-neutral-200 bg-white rounded-lg p-5">
             <div className="flex items-center justify-between mb-4">
-              <p className="text-xs uppercase tracking-[0.15em] text-neutral-400">Scoring Perspective</p>
+              <p className="text-xs uppercase tracking-[0.15em] text-neutral-400">Choose Your Judge</p>
               <span className={`text-xs ${criteria.reduce((s, c) => s + c.weight, 0) === 100 ? "text-neutral-400" : "text-red-500 font-medium"}`}>
                 {criteria.reduce((s, c) => s + c.weight, 0)}%
               </span>
@@ -547,26 +546,25 @@ export default function UploadPage() {
             {/* Description of selected preset */}
             <p className="text-[11px] text-neutral-500 mb-4">{PRESETS[selectedPreset]?.desc}</p>
 
-            {/* Animated bars */}
-            <div className="space-y-3 mb-4">
+            {/* Sliders */}
+            <div className="space-y-4 mb-4">
               {criteria.map((c, i) => (
                 <div key={c.name || i}>
-                  <div className="flex items-center justify-between mb-1">
+                  <div className="flex items-center justify-between mb-1.5">
                     <input value={c.name} onChange={e => { setSelectedPreset("custom"); const n = [...criteria]; n[i] = { ...n[i], name: e.target.value }; setCriteria(n); }}
-                      className="text-xs font-medium bg-transparent border-none p-0 focus:outline-none focus:ring-0 w-auto" placeholder="Criterion" />
-                    <div className="flex items-center gap-1">
-                      <input type="number" min={0} max={100} value={c.weight} onChange={e => { setSelectedPreset("custom"); const n = [...criteria]; n[i] = { ...n[i], weight: parseInt(e.target.value) || 0 }; setCriteria(n); }}
-                        className="w-8 text-xs text-right font-bold bg-transparent border-none p-0 focus:outline-none" />
-                      <span className="text-[10px] text-neutral-400">%</span>
-                      <button onClick={() => { setSelectedPreset("custom"); setCriteria(criteria.filter((_, j) => j !== i)); }} className="text-neutral-200 hover:text-red-500 ml-1">
-                        <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M18 6 6 18M6 6l12 12" /></svg>
+                      className="text-sm font-medium bg-transparent border-none p-0 focus:outline-none focus:ring-0" placeholder="Criterion" />
+                    <div className="flex items-center gap-2">
+                      <span className="text-sm font-bold tabular-nums">{c.weight}%</span>
+                      <button onClick={() => { setSelectedPreset("custom"); setCriteria(criteria.filter((_, j) => j !== i)); }} className="text-neutral-300 hover:text-red-500">
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M18 6 6 18M6 6l12 12" /></svg>
                       </button>
                     </div>
                   </div>
-                  <div className="h-2 bg-neutral-100 rounded-full overflow-hidden">
-                    <div className="h-full bg-neutral-900 rounded-full" style={{ width: `${c.weight}%`, transition: "width 0.5s cubic-bezier(0.4, 0, 0.2, 1)" }} />
-                  </div>
-                  <p className="text-[10px] text-neutral-400 mt-0.5">{c.description}</p>
+                  <input type="range" min={0} max={50} value={c.weight}
+                    onChange={e => { setSelectedPreset("custom"); const n = [...criteria]; n[i] = { ...n[i], weight: parseInt(e.target.value) }; setCriteria(n); }}
+                    className="w-full h-2 bg-neutral-100 rounded-full appearance-none cursor-pointer accent-neutral-900"
+                    style={{ background: `linear-gradient(to right, #171717 ${c.weight * 2}%, #f5f5f5 ${c.weight * 2}%)` }} />
+                  <p className="text-[10px] text-neutral-400 mt-1">{c.description}</p>
                 </div>
               ))}
             </div>

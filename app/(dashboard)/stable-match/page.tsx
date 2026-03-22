@@ -71,13 +71,14 @@ export default function StableMatchPage() {
 
     const scored: ScoredCandidate[] = [];
     try {
-      const resp = await fetch("/api/score", {
+      const API = "https://aicm3pweed.us-east-1.awsapprunner.com";
+      const resp = await fetch(`${API}/talent-pluto/score`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          candidates: slot.candidates.map(c => ({ id: c.id, name: c.name, fullText: c.fullText })),
-          jobDescription: `${slot.role.title}\n\n${slot.role.description}`,
-          apiKey: getApiKey(),
+          candidates: slot.candidates.map(c => ({ id: c.id, name: c.name, fullText: c.fullText, linkedinUrl: c.linkedinUrl || "" })),
+          job_description: `${slot.role.title}\n\n${slot.role.description}`,
+          api_key: getApiKey(),
         }),
       });
 

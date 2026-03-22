@@ -5,6 +5,7 @@ export interface ScoredCandidate {
   linkedin_url?: string;
   evidence?: Record<string, string>;
   criteria?: { name: string; score: number; max: number; evidence: string }[];
+  similarity?: number;
 }
 
 export interface MatchSession {

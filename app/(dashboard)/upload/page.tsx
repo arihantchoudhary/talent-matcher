@@ -262,6 +262,7 @@ export default function UploadPage() {
                 reasoning: data.reasoning || data.error || "", highlights: data.highlights || [], gaps: data.gaps || [],
                 photo_url: data.photo_url || "", linkedin_url: data.linkedin_url || "",
                 evidence: data.evidence || {}, criteria: data.criteria || [],
+                similarity: data.similarity,
               });
               if (data.tokens) { const t = (data.tokens.prompt || 0) + (data.tokens.completion || 0); localTokens += t; setTotalTokens(prev => prev + t); }
               if (data.cost) { localCost += data.cost; setTotalCost(prev => prev + data.cost); }
@@ -417,7 +418,9 @@ export default function UploadPage() {
         <div className="flex items-center justify-between mb-6">
           <div>
             <h1 className="text-2xl font-bold">{results.length} candidates ranked</h1>
-            <p className="text-sm text-neutral-500">{jobTitle} &middot; Mean {mean} &middot; Std Dev {stdDev} {totalTokens > 0 && <>&middot; {(totalTokens/1000).toFixed(1)}k tokens (${totalCost.toFixed(3)})</>}</p>
+            <p className="text-sm text-neutral-500">{jobTitle} &middot; Mean {mean} &middot; Std Dev {stdDev} {totalTokens > 0 && <>&middot; {(totalTokens/1000).toFixed(1)}k tokens (${totalCost.toFixed(3)})</>}
+              {results.some(r => r.similarity != null) && <> &middot; Embedding similarity computed</>}
+            </p>
           </div>
           <div className="flex items-center gap-2">
             <button onClick={() => { setStep("setup"); setResults([]); scoring.reset(); }} className="text-xs text-neutral-500 hover:text-neutral-900 border border-neutral-200 rounded-lg px-3 py-1.5">New match</button>
@@ -493,6 +496,7 @@ export default function UploadPage() {
                       <span className="text-[10px] text-neutral-400 font-mono">#{c.rank}</span>
                       <span className="font-semibold text-sm">{c.name}</span>
                       <span className={`px-2 py-0.5 text-xs font-bold ${c.score >= 70 ? "bg-neutral-900 text-white" : c.score >= 50 ? "bg-neutral-100" : "text-neutral-400"}`}>{c.score}</span>
+                      {c.similarity != null && <span className="text-[10px] text-neutral-400 font-mono" title="Embedding cosine similarity (dot product)">{(c.similarity * 100).toFixed(0)}% sim</span>}
                     </div>
                     <p className="text-xs text-neutral-500 line-clamp-1 mt-0.5">{c.reasoning}</p>
                   </div>
@@ -500,7 +504,20 @@ export default function UploadPage() {
                 {expanded === c.id && (
                   <div className="px-4 pb-4 border-t border-neutral-100 fade-in">
                     <div className="mt-3 h-1 bg-neutral-100 mb-3"><div className="h-full bg-neutral-900" style={{ width: `${c.score}%` }} /></div>
-                    {c.linkedin_url && <a href={c.linkedin_url} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 text-xs text-neutral-400 hover:text-neutral-900 mb-2">LinkedIn</a>}
+                    <div className="flex items-center gap-3 mb-2">
+                      {c.linkedin_url && <a href={c.linkedin_url} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 text-xs text-neutral-400 hover:text-neutral-900">LinkedIn</a>}
+                      {c.similarity != null && (
+                        <div className="flex items-center gap-2 text-[10px]">
+                          <span className="text-neutral-400">GPT: <span className="font-bold text-neutral-900">{c.score}</span></span>
+                          <span className="text-neutral-300">|</span>
+                          <span className="text-neutral-400">Dot product: <span className="font-bold text-neutral-900">{(c.similarity * 100).toFixed(1)}%</span></span>
+                          <span className="text-neutral-300">|</span>
+                          <span className={`font-medium ${Math.abs(c.score - c.similarity * 100) > 20 ? "text-amber-600" : "text-neutral-400"}`}>
+                            {Math.abs(c.score - c.similarity * 100) > 20 ? "divergent" : "aligned"}
+                          </span>
+                        </div>
+                      )}
+                    </div>
                     <p className="text-sm text-neutral-700 mb-3">{c.reasoning}</p>
                     {c.criteria && c.criteria.length > 0 && (
                       <div className="flex flex-col sm:flex-row gap-4 mb-3">
@@ -598,6 +615,7 @@ export default function UploadPage() {
                   <th className="text-left px-4 py-2 text-xs font-semibold text-neutral-500">Reasoning</th>
                   <th className="text-left px-4 py-2 text-xs font-semibold text-neutral-500">Strengths</th>
                   <th className="text-left px-4 py-2 text-xs font-semibold text-neutral-500">Gaps</th>
+                  <th className="text-left px-4 py-2 text-xs font-semibold text-neutral-500">Sim</th>
                   <th className="text-left px-4 py-2 text-xs font-semibold text-neutral-500">LinkedIn</th>
                 </tr>
               </thead>
@@ -615,6 +633,7 @@ export default function UploadPage() {
                     <td className="px-4 py-2 text-xs text-neutral-500 max-w-sm">{c.reasoning}</td>
                     <td className="px-4 py-2 text-xs text-neutral-500">{(c.highlights||[]).slice(0,2).join(", ")}</td>
                     <td className="px-4 py-2 text-xs text-neutral-400">{(c.gaps||[]).slice(0,2).join(", ")}</td>
+                    <td className="px-4 py-2 text-xs font-mono text-neutral-500">{c.similarity != null ? `${(c.similarity * 100).toFixed(0)}%` : "—"}</td>
                     <td className="px-4 py-2">{c.linkedin_url && <a href={c.linkedin_url} target="_blank" rel="noopener noreferrer" className="text-xs text-neutral-400 hover:text-neutral-700">Open</a>}</td>
                   </tr>
                 ))}

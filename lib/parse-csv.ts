@@ -2,6 +2,7 @@ export interface ParsedCandidate {
   id: string;
   name: string;
   fullText: string;
+  linkedinUrl?: string;
 }
 
 // Known LinkedIn slug → name mappings for candidates without extractable names
@@ -122,10 +123,17 @@ export function parseCSV(raw: string): ParsedCandidate[] {
     const name = detectName(headers, values);
     const fullText = Object.entries(rawFields).filter(([, v]) => v.length < 2000).map(([k, v]) => `${k}: ${v}`).join("\n");
 
+    // Find LinkedIn URL
+    let linkedinUrl: string | undefined;
+    for (const [, v] of Object.entries(rawFields)) {
+      if (v.includes("linkedin.com/in/")) { linkedinUrl = v; break; }
+    }
+
     candidates.push({
       id: rawFields["id"] || rawFields["user_id"] || `row-${i}`,
       name: name || `Candidate ${i}`,
       fullText,
+      linkedinUrl,
     });
   }
   return candidates;

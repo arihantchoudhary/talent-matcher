@@ -82,14 +82,15 @@ export default function UploadPage() {
     let doneCount = 0;
 
     try {
-      console.log(`[MATCH] Calling /api/score with ${parsed.length} candidates...`);
-      const resp = await fetch("/api/score", {
+      const API = "https://aicm3pweed.us-east-1.awsapprunner.com";
+      console.log(`[MATCH] Calling backend ${API}/talent-pluto/score with ${parsed.length} candidates...`);
+      const resp = await fetch(`${API}/talent-pluto/score`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          candidates: parsed.map(c => ({ id: c.id, name: c.name, fullText: c.fullText })),
-          jobDescription: `${jobTitle}\n\n${jobDesc}`,
-          apiKey: getApiKey(),
+          candidates: parsed.map(c => ({ id: c.id, name: c.name, fullText: c.fullText, linkedinUrl: c.linkedinUrl || "" })),
+          job_description: `${jobTitle}\n\n${jobDesc}`,
+          api_key: getApiKey(),
         }),
       });
 

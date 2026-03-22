@@ -658,30 +658,32 @@ export default function UploadPage() {
 
       {/* Submit */}
       {rowCount > 0 && (
-        <div className="flex items-center gap-3 mb-3">
+        <div className="flex items-center gap-3 mb-3 fade-in">
           <span className="text-xs text-neutral-500">GPT-score top</span>
           <div className="flex items-center gap-1">
             {[10, 25, 50, 100].map(n => (
               <button key={n} onClick={() => setTopK(n)}
-                className={`px-2.5 py-1 rounded text-xs font-medium transition-colors ${topK === n ? "bg-neutral-900 text-white" : "border border-neutral-200 text-neutral-500 hover:border-neutral-400"}`}>
+                className={`px-2.5 py-1.5 rounded-lg text-xs font-medium transition-all duration-300 ${topK === n ? "bg-neutral-900 text-white scale-110 shadow-md" : "border border-neutral-200 text-neutral-500 hover:border-neutral-400 scale-100"}`}>
                 {n}
               </button>
             ))}
             {rowCount > 100 && (
               <button onClick={() => setTopK(rowCount)}
-                className={`px-2.5 py-1 rounded text-xs font-medium transition-colors ${topK === rowCount ? "bg-neutral-900 text-white" : "border border-neutral-200 text-neutral-500 hover:border-neutral-400"}`}>
+                className={`px-2.5 py-1.5 rounded-lg text-xs font-medium transition-all duration-300 ${topK === rowCount ? "bg-neutral-900 text-white scale-110 shadow-md" : "border border-neutral-200 text-neutral-500 hover:border-neutral-400 scale-100"}`}>
                 All ({rowCount})
               </button>
             )}
           </div>
-          <span className="text-xs text-neutral-400">
+          <span className="text-xs text-neutral-400 transition-all duration-300">
             {rowCount > topK ? `of ${rowCount} (rest filtered by embedding similarity)` : `of ${rowCount}`}
           </span>
         </div>
       )}
       <button onClick={startScoring} disabled={!csvText || rowCount === 0}
-        className="w-full py-4 bg-neutral-900 text-white font-semibold text-sm rounded-lg hover:bg-black disabled:opacity-30 disabled:cursor-not-allowed transition-colors">
-        Score {rowCount > 0 ? (rowCount > topK ? `top ${topK} of ${rowCount}` : `${rowCount}`) : ""} candidates for {jobTitle}
+        className="w-full py-4 bg-neutral-900 text-white font-semibold text-sm rounded-lg hover:bg-black hover:shadow-lg disabled:opacity-30 disabled:cursor-not-allowed transition-all duration-300 active:scale-[0.98]">
+        <span key={topK} className="inline-block" style={{ animation: "fadeIn 0.3s ease-out" }}>
+          Score {rowCount > 0 ? (rowCount > topK ? `top ${topK} of ${rowCount}` : `${rowCount}`) : ""} candidates for {jobTitle}
+        </span>
       </button>
     </div>
   );

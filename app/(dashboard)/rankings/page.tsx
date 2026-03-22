@@ -7,16 +7,23 @@ export default function HistoryPage() {
   const [sessions, setSessions] = useState<MatchSession[]>([]);
   const [viewingSession, setViewingSession] = useState<MatchSession | null>(null);
   const [loading, setLoading] = useState(true);
-  const [groupBy, setGroupBy] = useState<"time" | "role">("role");
+  const [groupBy, setGroupBy] = useState<"time" | "role" | "judge">("role");
+  const [judgeFilter, setJudgeFilter] = useState("all");
 
   useEffect(() => {
     getSessions().then((s) => { setSessions(s); setLoading(false); });
   }, []);
 
-  // Group by role
+  // Get unique judges
+  const judges = [...new Set(sessions.map(s => s.judge || "").filter(Boolean))];
+
+  // Filter by judge
+  const filtered = judgeFilter === "all" ? sessions : sessions.filter(s => (s.judge || "") === judgeFilter);
+
+  // Group
   const grouped = new Map<string, MatchSession[]>();
-  for (const s of sessions) {
-    const key = groupBy === "role" ? s.role : new Date(s.created_at).toLocaleDateString();
+  for (const s of filtered) {
+    const key = groupBy === "role" ? s.role : groupBy === "judge" ? (s.judge || "No judge") : new Date(s.created_at).toLocaleDateString();
     if (!grouped.has(key)) grouped.set(key, []);
     grouped.get(key)!.push(s);
   }
@@ -133,15 +140,24 @@ export default function HistoryPage() {
             <p className="text-sm text-neutral-500 mt-0.5">{sessions.length} session{sessions.length !== 1 ? "s" : ""}</p>
           </div>
           <div className="flex gap-1.5">
-            <button onClick={() => setGroupBy("role")}
-              className={`px-3 py-1.5 rounded-lg text-xs font-medium border transition-colors ${groupBy === "role" ? "bg-neutral-900 text-white border-neutral-900" : "bg-white text-neutral-600 border-neutral-200"}`}>
-              By role
-            </button>
-            <button onClick={() => setGroupBy("time")}
-              className={`px-3 py-1.5 rounded-lg text-xs font-medium border transition-colors ${groupBy === "time" ? "bg-neutral-900 text-white border-neutral-900" : "bg-white text-neutral-600 border-neutral-200"}`}>
-              By date
-            </button>
+            {(["role", "judge", "time"] as const).map(g => (
+              <button key={g} onClick={() => setGroupBy(g)}
+                className={`px-3 py-1.5 rounded-lg text-xs font-medium border transition-colors ${groupBy === g ? "bg-neutral-900 text-white border-neutral-900" : "bg-white text-neutral-600 border-neutral-200"}`}>
+                By {g}
+              </button>
+            ))}
           </div>
+        </div>
+
+        {/* Judge filter pills */}
+        {judges.length > 0 && (
+          <div className="flex gap-1.5 mb-6 overflow-x-auto">
+            <button onClick={() => setJudgeFilter("all")} className={`shrink-0 px-3 py-1.5 rounded-full text-xs font-medium transition-colors ${judgeFilter === "all" ? "bg-neutral-900 text-white" : "border border-neutral-200 text-neutral-500"}`}>All judges</button>
+            {judges.map(j => (
+              <button key={j} onClick={() => setJudgeFilter(j)} className={`shrink-0 px-3 py-1.5 rounded-full text-xs font-medium font-serif italic transition-colors ${judgeFilter === j ? "bg-neutral-900 text-white" : "border border-neutral-200 text-neutral-500"}`}>{j}</button>
+            ))}
+          </div>
+        )}
         </div>
 
         {sessions.length === 0 ? (
@@ -182,11 +198,12 @@ export default function HistoryPage() {
                             {s.candidate_count} candidates &middot; {s.file_name} &middot; {new Date(s.created_at).toLocaleDateString()} {new Date(s.created_at).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
                             {"user_name" in s && s.user_name ? <> &middot; by {String(s.user_name)}</> : null}
                           </div>
-                          <div className="flex gap-3 mt-1.5">
+                          <div className="flex gap-3 mt-1.5 flex-wrap">
+                            {s.judge && <span className="text-xs text-neutral-700 font-serif italic">{s.judge}</span>}
                             <span className="text-xs text-emerald-600 font-medium">{s.top_tier} top tier</span>
                             <span className="text-xs text-indigo-600 font-medium">{s.good_fit} good fit</span>
                             {s.duration ? <span className="text-xs text-neutral-400">{s.duration}s</span> : null}
-                            {"cost" in s && (s as {cost?: number}).cost ? <span className="text-xs text-neutral-400">${Number((s as {cost?: number}).cost).toFixed(3)}</span> : null}
+                            {s.cost ? <span className="text-xs text-neutral-400">${Number(s.cost).toFixed(3)}</span> : null}
                           </div>
                         </div>
 

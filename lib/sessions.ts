@@ -25,6 +25,7 @@ export interface MatchSession {
   device?: string;
   tokens?: number;
   cost?: number;
+  judge?: string;
 }
 
 const API = process.env.NEXT_PUBLIC_API_URL || "https://aicm3pweed.us-east-1.awsapprunner.com";
@@ -54,7 +55,7 @@ export async function saveSession(session: {
   candidateCount: number; topTier: number; goodFit: number; avgScore: number;
   results: ScoredCandidate[]; duration?: number;
   userId?: string; userName?: string; device?: string;
-  tokens?: number; cost?: number;
+  tokens?: number; cost?: number; judge?: string;
 }): Promise<MatchSession | null> {
   try {
     const resp = await fetch(`${API}/talent-pluto/sessions`, {
@@ -76,6 +77,7 @@ export async function saveSession(session: {
         device: session.device || "unknown",
         tokens: session.tokens || 0,
         cost: session.cost || 0,
+        judge: session.judge || "",
       }),
     });
     if (!resp.ok) {

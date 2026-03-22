@@ -184,6 +184,7 @@ export default function HistoryPage() {
                           <div className="flex gap-3 mt-1.5">
                             <span className="text-xs text-emerald-600 font-medium">{s.top_tier} top tier</span>
                             <span className="text-xs text-indigo-600 font-medium">{s.good_fit} good fit</span>
+                            {(s as MatchSession & {duration?: number}).duration ? <span className="text-xs text-neutral-400">{(s as MatchSession & {duration?: number}).duration}s</span> : null}
                           </div>
                         </div>
 

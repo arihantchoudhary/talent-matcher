@@ -67,10 +67,9 @@ export default function UploadPage() {
   async function startScoring() {
     if (!csvText) return;
     const parsed = parseCSV(csvText);
+    const startTime = Date.now();
     console.log(`[MATCH] Parsed ${parsed.length} candidates from CSV`);
-    console.log(`[MATCH] Sample candidate:`, parsed[0]);
     console.log(`[MATCH] Role: ${jobTitle}`);
-    console.log(`[MATCH] API key present: ${!!getApiKey() ? "user key" : "server default"}`);
     if (parsed.length === 0) { console.error("[MATCH] No candidates parsed!"); return; }
 
     setStep("scoring");
@@ -140,7 +139,8 @@ export default function UploadPage() {
               setResults([...sorted]);
             }
             if (data.type === "done") {
-              // Save session to history
+              const duration = Math.round((Date.now() - startTime) / 1000);
+              console.log(`[MATCH] Done in ${duration}s — ${scoredMap.size} scored`);
               const finalResults = [...scoredMap.values()].sort((a, b) => b.score - a.score);
               finalResults.forEach((s, i) => s.rank = i + 1);
               setResults(finalResults);
@@ -154,6 +154,7 @@ export default function UploadPage() {
                 goodFit: finalResults.filter(r => r.score >= 50 && r.score < 70).length,
                 avgScore: Math.round(finalResults.reduce((s, r) => s + r.score, 0) / finalResults.length),
                 results: finalResults,
+                duration,
               });
               setStep("results");
             }
@@ -161,9 +162,31 @@ export default function UploadPage() {
         }
       }
     } catch (err) {
-      console.error(err);
+      console.error("[MATCH] Stream error:", err);
     }
-    if (step !== "results") setStep("results");
+    // If stream ended without explicit "done", still show results
+    if (scoredMap.size > 0) {
+      const duration = Math.round((Date.now() - startTime) / 1000);
+      console.log(`[MATCH] Stream ended — ${scoredMap.size}/${parsed.length} scored in ${duration}s`);
+      const finalResults = [...scoredMap.values()].sort((a, b) => b.score - a.score);
+      finalResults.forEach((s, i) => s.rank = i + 1);
+      setResults(finalResults);
+      if (step !== "results") {
+        saveSession({
+          role: jobTitle,
+          roleCategory: ROLES[selectedIdx]?.category || "Custom",
+          description: jobDesc.substring(0, 300),
+          fileName: fileName || "unknown.csv",
+          candidateCount: parsed.length,
+          topTier: finalResults.filter(r => r.score >= 70).length,
+          goodFit: finalResults.filter(r => r.score >= 50 && r.score < 70).length,
+          avgScore: Math.round(finalResults.reduce((s, r) => s + r.score, 0) / finalResults.length),
+          results: finalResults,
+          duration,
+        });
+        setStep("results");
+      }
+    }
   }
 
   const role = ROLES[selectedIdx];

@@ -397,6 +397,25 @@ export default function UploadPage() {
               Download JSON
             </button>
           </div>
+
+          {/* Score distribution */}
+          <div className="border border-neutral-200 bg-white p-4 mb-6">
+            <p className="text-xs uppercase tracking-[0.1em] text-neutral-400 mb-3">Score Distribution</p>
+            <div className="flex items-end gap-1 h-16">
+              {[0,10,20,30,40,50,60,70,80,90].map(b => {
+                const count = results.filter(r => r.score >= b && r.score < b + 10).length;
+                const max = Math.max(...[0,10,20,30,40,50,60,70,80,90].map(x => results.filter(r => r.score >= x && r.score < x + 10).length), 1);
+                return (
+                  <div key={b} className="flex-1 flex flex-col items-center gap-0.5">
+                    {count > 0 && <span className="text-[9px] text-neutral-500 font-medium">{count}</span>}
+                    <div className="w-full bg-neutral-900 rounded-sm" style={{ height: `${(count / max) * 48}px`, minHeight: count > 0 ? 2 : 0 }} />
+                    <span className="text-[9px] text-neutral-400">{b}</span>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+
           <div className="space-y-2">
             {results.map(c => {
               const isOpen = expanded === c.id;

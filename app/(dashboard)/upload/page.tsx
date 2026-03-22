@@ -30,15 +30,65 @@ export default function UploadPage() {
   const [cityFilter, setCityFilter] = useState("All");
   const [roleSearch, setRoleSearch] = useState("");
 
-  // Rubric
-  const [criteria, setCriteria] = useState([
-    { name: "Relevant Experience", weight: 25, description: "Years and quality of experience in relevant roles" },
-    { name: "Industry Fit", weight: 20, description: "Familiarity with the target industry/sector" },
-    { name: "Sales Capability", weight: 20, description: "Track record of sales, pipeline, and revenue generation" },
-    { name: "Stakeholder Presence", weight: 15, description: "Ability to engage with senior decision-makers" },
-    { name: "Cultural Fit", weight: 10, description: "Drive, ambition, coachability, team orientation" },
-    { name: "Location", weight: 10, description: "Proximity to office, willingness to work in-person" },
-  ]);
+  // Rubric presets (judges)
+  const PRESETS: Record<string, { label: string; desc: string; criteria: typeof criteria }> = {
+    balanced: { label: "Balanced", desc: "Equal weight across all criteria",
+      criteria: [
+        { name: "Relevant Experience", weight: 25, description: "Years and quality of experience in relevant roles" },
+        { name: "Industry Fit", weight: 20, description: "Familiarity with the target industry/sector" },
+        { name: "Sales Capability", weight: 20, description: "Track record of sales, pipeline, and revenue generation" },
+        { name: "Stakeholder Presence", weight: 15, description: "Ability to engage with senior decision-makers" },
+        { name: "Cultural Fit", weight: 10, description: "Drive, ambition, coachability, team orientation" },
+        { name: "Location", weight: 10, description: "Proximity to office, willingness to work in-person" },
+      ]},
+    hunter: { label: "Pipeline Builder", desc: "Prioritize outbound, prospecting, cold outreach",
+      criteria: [
+        { name: "Outbound & Prospecting", weight: 30, description: "Cold calling, email sequences, multi-channel outreach" },
+        { name: "Pipeline Generation", weight: 25, description: "Track record of building qualified pipeline from scratch" },
+        { name: "Sales Tools", weight: 15, description: "Proficiency with Salesforce, Outreach, LinkedIn Sales Navigator" },
+        { name: "Relevant Experience", weight: 15, description: "Years in SDR/BDR or top-of-funnel roles" },
+        { name: "Drive & Resilience", weight: 10, description: "High activity volume, handles rejection well" },
+        { name: "Location", weight: 5, description: "Proximity to office" },
+      ]},
+    closer: { label: "Deal Closer", desc: "Prioritize closing, deal sizes, enterprise selling",
+      criteria: [
+        { name: "Closing Experience", weight: 30, description: "Track record of closing deals, quota attainment" },
+        { name: "Deal Size", weight: 20, description: "Average deal size, enterprise vs SMB experience" },
+        { name: "Enterprise Selling", weight: 20, description: "Multi-stakeholder, 6+ month sales cycles" },
+        { name: "Stakeholder Presence", weight: 15, description: "Engaging VP/C-suite decision makers" },
+        { name: "Industry Fit", weight: 10, description: "Familiarity with the target sector" },
+        { name: "Location", weight: 5, description: "Proximity to office" },
+      ]},
+    pedigree: { label: "Pedigree", desc: "Prioritize top companies, elite schools, brand names",
+      criteria: [
+        { name: "Company Quality", weight: 35, description: "Top-tier employers (Goldman, McKinsey, Google, Stripe, etc.)" },
+        { name: "Education", weight: 25, description: "Elite universities, relevant degrees" },
+        { name: "Career Trajectory", weight: 20, description: "Fast promotions, increasing responsibility" },
+        { name: "Relevant Experience", weight: 10, description: "Years in relevant roles" },
+        { name: "Cultural Fit", weight: 5, description: "Drive, ambition, team orientation" },
+        { name: "Location", weight: 5, description: "Proximity to office" },
+      ]},
+    scrappy: { label: "Startup DNA", desc: "Prioritize founders, 0→1 builders, scrappiness",
+      criteria: [
+        { name: "Founding / 0→1 Experience", weight: 30, description: "Built something from scratch — company, team, or product" },
+        { name: "Scrappiness", weight: 25, description: "Operated with limited resources, wore many hats" },
+        { name: "Ownership Mentality", weight: 20, description: "Took initiative without being told, drove outcomes" },
+        { name: "Sales Capability", weight: 15, description: "Revenue generation in any context" },
+        { name: "Cultural Fit", weight: 5, description: "High drive, low ego, team player" },
+        { name: "Location", weight: 5, description: "Proximity to office" },
+      ]},
+    custom: { label: "Custom", desc: "Define your own criteria and weights", criteria: [] },
+  };
+
+  const [selectedPreset, setSelectedPreset] = useState("balanced");
+  const [criteria, setCriteria] = useState(PRESETS.balanced.criteria);
+
+  function selectPreset(key: string) {
+    setSelectedPreset(key);
+    if (key !== "custom" && PRESETS[key]) {
+      setCriteria([...PRESETS[key].criteria]);
+    }
+  }
 
   // Scoring state
   const [step, setStep] = useState<"setup" | "scoring" | "results">("setup");
@@ -439,19 +489,32 @@ export default function UploadPage() {
           {/* Rubric */}
           <div className="border border-neutral-200 bg-white rounded-lg p-5">
             <div className="flex items-center justify-between mb-3">
-              <p className="text-xs uppercase tracking-[0.15em] text-neutral-400">Scoring Rubric</p>
+              <p className="text-xs uppercase tracking-[0.15em] text-neutral-400">Scoring Perspective</p>
               <span className={`text-xs ${criteria.reduce((s, c) => s + c.weight, 0) === 100 ? "text-neutral-400" : "text-red-500 font-medium"}`}>
                 {criteria.reduce((s, c) => s + c.weight, 0)}%
               </span>
             </div>
+
+            {/* Preset buttons */}
+            <div className="grid grid-cols-3 gap-1.5 mb-4">
+              {Object.entries(PRESETS).map(([key, preset]) => (
+                <button key={key} onClick={() => selectPreset(key)}
+                  className={`text-left rounded-lg p-2.5 border transition-all ${selectedPreset === key ? "border-neutral-900 bg-neutral-950 text-white" : "border-neutral-100 hover:border-neutral-300"}`}>
+                  <div className={`text-xs font-semibold ${selectedPreset === key ? "text-white" : ""}`}>{preset.label}</div>
+                  <div className={`text-[10px] mt-0.5 ${selectedPreset === key ? "text-neutral-400" : "text-neutral-400"}`}>{preset.desc}</div>
+                </button>
+              ))}
+            </div>
+
+            {/* Editable criteria */}
             <div className="space-y-2">
               {criteria.map((c, i) => (
                 <div key={i} className="flex items-center gap-2">
-                  <input value={c.name} onChange={e => { const n = [...criteria]; n[i] = { ...n[i], name: e.target.value }; setCriteria(n); }}
+                  <input value={c.name} onChange={e => { setSelectedPreset("custom"); const n = [...criteria]; n[i] = { ...n[i], name: e.target.value }; setCriteria(n); }}
                     className="flex-1 border border-neutral-100 rounded px-2 py-1.5 text-xs font-medium focus:outline-none focus:border-neutral-300" placeholder="Criterion" />
-                  <input type="number" min={0} max={100} value={c.weight} onChange={e => { const n = [...criteria]; n[i] = { ...n[i], weight: parseInt(e.target.value) || 0 }; setCriteria(n); }}
+                  <input type="number" min={0} max={100} value={c.weight} onChange={e => { setSelectedPreset("custom"); const n = [...criteria]; n[i] = { ...n[i], weight: parseInt(e.target.value) || 0 }; setCriteria(n); }}
                     className="w-12 border border-neutral-100 rounded px-2 py-1.5 text-xs text-center focus:outline-none focus:border-neutral-300" />
-                  <button onClick={() => setCriteria(criteria.filter((_, j) => j !== i))} className="text-neutral-300 hover:text-red-500 text-xs">x</button>
+                  <button onClick={() => { setSelectedPreset("custom"); setCriteria(criteria.filter((_, j) => j !== i)); }} className="text-neutral-300 hover:text-red-500 text-xs">x</button>
                 </div>
               ))}
             </div>

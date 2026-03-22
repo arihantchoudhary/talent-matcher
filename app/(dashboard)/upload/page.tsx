@@ -349,14 +349,56 @@ export default function UploadPage() {
                     {c.linkedin_url && <a href={c.linkedin_url} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 text-xs text-neutral-400 hover:text-neutral-900 mb-2">LinkedIn</a>}
                     <p className="text-sm text-neutral-700 mb-3">{c.reasoning}</p>
                     {c.criteria && c.criteria.length > 0 && (
-                      <div className="grid grid-cols-2 md:grid-cols-3 gap-2 mb-3">
-                        {c.criteria.map((cr, i) => (
-                          <div key={i} className="border border-neutral-100 rounded p-2">
-                            <div className="flex justify-between text-xs mb-1"><span className="font-medium">{cr.name}</span><span className="font-bold">{cr.score}/{cr.max}</span></div>
-                            <div className="h-1 bg-neutral-100 rounded"><div className="h-full bg-neutral-900 rounded" style={{ width: `${cr.max > 0 ? (cr.score / cr.max) * 100 : 0}%` }} /></div>
-                            {cr.evidence && <p className="text-[10px] text-neutral-500 mt-1">{cr.evidence}</p>}
-                          </div>
-                        ))}
+                      <div className="flex gap-6 mb-3">
+                        {/* Pie chart */}
+                        <div className="shrink-0">
+                          <svg width="100" height="100" viewBox="0 0 100 100">
+                            {(() => {
+                              const colors = ["#171717", "#404040", "#737373", "#a3a3a3", "#d4d4d4", "#e5e5e5"];
+                              let cumulative = 0;
+                              const total = c.criteria.reduce((s, cr) => s + (cr.max || 0), 0) || 100;
+                              return c.criteria.map((cr, i) => {
+                                const pct = (cr.score || 0) / total;
+                                const startAngle = cumulative * 2 * Math.PI;
+                                cumulative += (cr.max || 0) / total;
+                                const endAngle = cumulative * 2 * Math.PI;
+                                const scorePct = (cr.score || 0) / total;
+                                const scoreEndAngle = startAngle + scorePct * 2 * Math.PI;
+                                const x1 = 50 + 45 * Math.cos(startAngle - Math.PI / 2);
+                                const y1 = 50 + 45 * Math.sin(startAngle - Math.PI / 2);
+                                const x2 = 50 + 45 * Math.cos(scoreEndAngle - Math.PI / 2);
+                                const y2 = 50 + 45 * Math.sin(scoreEndAngle - Math.PI / 2);
+                                const large = scorePct > 0.5 ? 1 : 0;
+                                return (
+                                  <g key={i}>
+                                    <title>{cr.name}: {cr.score}/{cr.max} — {cr.evidence || ""}</title>
+                                    <path d={`M50,50 L${x1},${y1} A45,45 0 ${large},1 ${x2},${y2} Z`} fill={colors[i % colors.length]} className="hover:opacity-80 transition-opacity cursor-pointer" />
+                                  </g>
+                                );
+                              });
+                            })()}
+                            <circle cx="50" cy="50" r="22" fill="white" />
+                            <text x="50" y="50" textAnchor="middle" dominantBaseline="central" className="text-lg font-bold" fill="#171717">{c.score}</text>
+                          </svg>
+                        </div>
+                        {/* Legend */}
+                        <div className="flex-1 space-y-1.5">
+                          {c.criteria.map((cr, i) => {
+                            const colors = ["#171717", "#404040", "#737373", "#a3a3a3", "#d4d4d4", "#e5e5e5"];
+                            return (
+                              <div key={i} className="flex items-start gap-2">
+                                <div className="w-2.5 h-2.5 rounded-sm shrink-0 mt-0.5" style={{ backgroundColor: colors[i % colors.length] }} />
+                                <div className="flex-1">
+                                  <div className="flex justify-between">
+                                    <span className="text-[11px] font-medium">{cr.name}</span>
+                                    <span className="text-[11px] font-bold tabular-nums">{cr.score}/{cr.max}</span>
+                                  </div>
+                                  {cr.evidence && <p className="text-[10px] text-neutral-500 leading-tight">{cr.evidence}</p>}
+                                </div>
+                              </div>
+                            );
+                          })}
+                        </div>
                       </div>
                     )}
                     <div className="flex gap-4">

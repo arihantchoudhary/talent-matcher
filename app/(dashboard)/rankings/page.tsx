@@ -186,6 +186,7 @@ export default function HistoryPage() {
                             <span className="text-xs text-emerald-600 font-medium">{s.top_tier} top tier</span>
                             <span className="text-xs text-indigo-600 font-medium">{s.good_fit} good fit</span>
                             {s.duration ? <span className="text-xs text-neutral-400">{s.duration}s</span> : null}
+                            {"cost" in s && (s as {cost?: number}).cost ? <span className="text-xs text-neutral-400">${Number((s as {cost?: number}).cost).toFixed(3)}</span> : null}
                           </div>
                         </div>
 

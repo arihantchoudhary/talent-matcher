@@ -191,7 +191,7 @@ export default function UploadPage() {
                 role: jobTitle, roleCategory: ROLES[selectedIdx]?.category || "Custom", description: jobDesc.substring(0, 300),
                 fileName: fileName || "unknown.csv", candidateCount: parsed.length,
                 topTier: finalResults.filter(r => r.score >= 70).length, goodFit: finalResults.filter(r => r.score >= 50 && r.score < 70).length,
-                avgScore: Math.round(finalResults.reduce((s, r) => s + r.score, 0) / finalResults.length), results: finalResults, duration,
+                avgScore: Math.round(finalResults.reduce((s, r) => s + r.score, 0) / finalResults.length), results: finalResults, duration, tokens: totalTokens, cost: Math.round(totalCost * 10000) / 10000,
               });
               setStep("results");
             }
@@ -208,7 +208,7 @@ export default function UploadPage() {
         role: jobTitle, roleCategory: ROLES[selectedIdx]?.category || "Custom", description: jobDesc.substring(0, 300),
         fileName: fileName || "unknown.csv", candidateCount: parsed.length,
         topTier: finalResults.filter(r => r.score >= 70).length, goodFit: finalResults.filter(r => r.score >= 50 && r.score < 70).length,
-        avgScore: Math.round(finalResults.reduce((s, r) => s + r.score, 0) / finalResults.length), results: finalResults, duration,
+        avgScore: Math.round(finalResults.reduce((s, r) => s + r.score, 0) / finalResults.length), results: finalResults, duration, tokens: totalTokens, cost: Math.round(totalCost * 10000) / 10000,
       });
       setStep("results");
     }

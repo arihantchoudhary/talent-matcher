@@ -229,20 +229,71 @@ export default function UploadPage() {
 
   // ── SCORING ──
   if (step === "scoring") {
+    const enrichCount = logs.filter(l => l.step === "enrich").length;
+    const elapsed = Math.round((Date.now() - (scoring.isScoring ? Date.now() : Date.now())) / 1000);
+
     return (
       <div className="max-w-5xl mx-auto px-6 py-8">
         <h1 className="text-2xl font-bold tracking-tight mb-1">Matching Algorithm</h1>
         <p className="text-sm text-neutral-500 mb-4">{progress.done} of {progress.total} candidates scored for <span className="font-medium text-neutral-900">{jobTitle}</span></p>
-        <div className="border border-neutral-200 bg-white rounded-lg p-4 mb-6 text-sm text-neutral-600">
-          <p className="font-medium text-neutral-900 mb-1">What&apos;s happening:</p>
-          <p>Each candidate is <strong>parsed</strong> from your CSV, <strong>enriched</strong> with LinkedIn data, <strong>scored</strong> by GPT-4o-mini against your rubric, then <strong>ranked</strong>.</p>
+
+        {/* Progress bar */}
+        <div className="h-2 bg-neutral-100 rounded-full mb-6 overflow-hidden">
+          <div className="h-full bg-neutral-900 rounded-full transition-all duration-500" style={{ width: `${pct}%` }} />
         </div>
-        <div className="h-1 bg-neutral-100 mb-6"><div className="h-full bg-neutral-900 transition-all duration-300" style={{ width: `${pct}%` }} /></div>
+
+        {/* Status cards */}
+        <div className="grid grid-cols-4 gap-3 mb-6">
+          <div className="border border-neutral-200 bg-white rounded-lg p-3 text-center">
+            <div className="text-xl font-bold">{progress.total}</div>
+            <div className="text-[10px] text-neutral-400 uppercase mt-0.5">Parsed</div>
+          </div>
+          <div className="border border-neutral-200 bg-white rounded-lg p-3 text-center">
+            <div className="text-xl font-bold">{enrichCount}</div>
+            <div className="text-[10px] text-neutral-400 uppercase mt-0.5">Enriched</div>
+          </div>
+          <div className="border border-neutral-200 bg-white rounded-lg p-3 text-center">
+            <div className="text-xl font-bold">{progress.done}</div>
+            <div className="text-[10px] text-neutral-400 uppercase mt-0.5">Scored</div>
+          </div>
+          <div className={`border rounded-lg p-3 text-center ${pct === 100 ? "border-neutral-900 bg-neutral-900 text-white" : "border-neutral-200 bg-white"}`}>
+            <div className="text-xl font-bold">{pct}%</div>
+            <div className={`text-[10px] uppercase mt-0.5 ${pct === 100 ? "text-neutral-400" : "text-neutral-400"}`}>Complete</div>
+          </div>
+        </div>
+
+        {/* Pipeline steps */}
+        <div className="border border-neutral-200 bg-white rounded-lg p-4 mb-6">
+          <div className="flex items-center gap-3">
+            {[
+              { label: "Parse CSV", done: progress.total > 0 },
+              { label: "LinkedIn Enrich", done: enrichCount > 0 },
+              { label: "GPT-4o Score", done: progress.done > 0 },
+              { label: "Rank Results", done: pct === 100 },
+            ].map((step, i) => (
+              <div key={i} className="flex items-center gap-2">
+                {i > 0 && <div className={`w-8 h-px ${step.done ? "bg-neutral-900" : "bg-neutral-200"}`} />}
+                <div className={`flex items-center gap-1.5 ${step.done ? "text-neutral-900" : "text-neutral-300"}`}>
+                  <div className={`w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-bold ${step.done ? "bg-neutral-900 text-white" : "border-2 border-neutral-200"}`}>
+                    {step.done ? <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><path d="M20 6 9 17l-5-5" /></svg> : i + 1}
+                  </div>
+                  <span className="text-xs font-medium hidden md:inline">{step.label}</span>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
         <div className="grid lg:grid-cols-2 gap-6">
           <div>
             <p className="text-xs uppercase tracking-[0.15em] text-neutral-400 mb-3">Pipeline Log</p>
-            <div className="border border-neutral-200 bg-white max-h-96 overflow-y-auto font-mono text-xs">
-              {logs.slice(0, 40).map((log, i) => (
+            <div className="border border-neutral-200 bg-white max-h-80 overflow-y-auto font-mono text-xs rounded-lg">
+              {logs.length === 0 ? (
+                <div className="p-6 text-center text-neutral-400">
+                  <div className="w-6 h-6 border-2 border-neutral-300 border-t-neutral-900 rounded-full animate-spin mx-auto mb-2" />
+                  Loading LinkedIn profiles...
+                </div>
+              ) : logs.slice(0, 40).map((log, i) => (
                 <div key={i} className="px-3 py-1.5 border-b border-neutral-50 flex gap-2">
                   <span className={`shrink-0 w-12 font-semibold ${log.step === "parse" ? "text-blue-600" : log.step === "enrich" ? "text-emerald-600" : log.step === "score" ? "text-amber-600" : log.step === "result" ? "text-neutral-900" : "text-red-500"}`}>{log.step}</span>
                   <span className="text-neutral-400 shrink-0 w-24 truncate">{log.name}</span>

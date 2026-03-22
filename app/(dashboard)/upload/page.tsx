@@ -537,15 +537,12 @@ export default function UploadPage() {
             <div className="grid grid-cols-3 md:grid-cols-6 gap-2 mb-6">
               {Object.entries(PRESETS).map(([key, preset]) => (
                 <button key={key} onClick={() => selectPreset(key)}
-                  className={`rounded-lg p-3 text-center transition-all ${selectedPreset === key ? "bg-neutral-900 text-white shadow-md" : "border border-neutral-200 hover:border-neutral-400 hover:shadow-sm"}`}>
-                  <div className={`text-sm font-semibold font-serif italic ${selectedPreset === key ? "" : ""}`}>{preset.label}</div>
+                  className={`rounded-lg p-3 text-center transition-all duration-300 ${selectedPreset === key ? "bg-neutral-900 text-white shadow-lg scale-105 ring-2 ring-neutral-900 ring-offset-2" : "border border-neutral-200 hover:border-neutral-400 hover:shadow-sm scale-100"}`}>
+                  <div className="text-sm font-semibold font-serif italic">{preset.label}</div>
                   <div className={`text-[9px] mt-1 leading-tight ${selectedPreset === key ? "text-neutral-400" : "text-neutral-400"}`}>{preset.desc}</div>
                 </button>
               ))}
             </div>
-
-            {/* Selected judge description */}
-            <p className="text-[11px] text-neutral-500 mb-4">{PRESETS[selectedPreset]?.desc}</p>
 
             {/* Sliders */}
             <div className="space-y-4 mb-4">
@@ -563,8 +560,8 @@ export default function UploadPage() {
                   </div>
                   <input type="range" min={0} max={50} value={c.weight}
                     onChange={e => { setSelectedPreset("custom"); const n = [...criteria]; n[i] = { ...n[i], weight: parseInt(e.target.value) }; setCriteria(n); }}
-                    className="w-full h-2 bg-neutral-100 rounded-full appearance-none cursor-pointer accent-neutral-900"
-                    style={{ background: `linear-gradient(to right, #171717 ${c.weight * 2}%, #f5f5f5 ${c.weight * 2}%)` }} />
+                    className="w-full h-2.5 bg-neutral-100 rounded-full appearance-none cursor-pointer"
+                    style={{ background: `linear-gradient(to right, #171717 ${c.weight * 2}%, #f5f5f5 ${c.weight * 2}%)`, transition: "background 0.5s ease" }} />
                   <p className="text-[10px] text-neutral-400 mt-1">{c.description}</p>
                 </div>
               ))}

@@ -7,9 +7,11 @@ import { loadRoles } from "@/lib/roles-api";
 import { getApiKey } from "@/lib/api-key";
 import { parseCSV } from "@/lib/parse-csv";
 import { saveSession, ScoredCandidate } from "@/lib/sessions";
+import { useScoringContext } from "@/lib/scoring-context";
 
 export default function UploadPage() {
   const { user } = useUser();
+  const scoring = useScoringContext();
 
   // Roles from API
   const [ROLES, setROLES] = useState<Role[]>(DEFAULT_ROLES);
@@ -41,12 +43,27 @@ export default function UploadPage() {
     { name: "Location", weight: 10, description: "Proximity to office, willingness to work in-person" },
   ]);
 
-  // Scoring state
+  // Scoring state — syncs with global context so scoring survives tab switches
   const [step, setStep] = useState<"setup" | "scoring" | "results">("setup");
   const [progress, setProgress] = useState({ done: 0, total: 0 });
   const [results, setResults] = useState<ScoredCandidate[]>([]);
   const [logs, setLogs] = useState<{ name: string; step: string; detail: string }[]>([]);
   const [expanded, setExpanded] = useState<string | null>(null);
+
+  // Sync from global context — if scoring was running and we navigated back
+  useEffect(() => {
+    if (scoring.isScoring) {
+      setStep("scoring");
+      setProgress(scoring.progress);
+      setResults(scoring.results);
+      setLogs(scoring.logs);
+      setJobTitle(scoring.jobTitle);
+    } else if (scoring.results.length > 0 && step === "setup") {
+      setStep("results");
+      setResults(scoring.results);
+      setJobTitle(scoring.jobTitle);
+    }
+  }, [scoring.isScoring, scoring.progress.done, scoring.results.length]);
 
   const filteredRoles = useMemo(() => {
     let list = ROLES;
@@ -81,9 +98,14 @@ export default function UploadPage() {
     if (!csvText) return;
     const parsed = parseCSV(csvText);
     const startTime = Date.now();
-    console.log(`[MATCH] Parsed ${parsed.length} candidates from CSV`);
-    console.log(`[MATCH] Role: ${jobTitle}`);
-    if (parsed.length === 0) { console.error("[MATCH] No candidates parsed!"); return; }
+    if (parsed.length === 0) return;
+
+    // Start in global context too — survives tab switches
+    const jd = `${jobTitle}\n\n${jobDesc}\n\nSCORING RUBRIC (weight each criterion accordingly):\n${criteria.map(c => `- ${c.name} (${c.weight}%): ${c.description}`).join("\n")}`;
+    scoring.startScoring(
+      parsed.map(c => ({ id: c.id, name: c.name, fullText: c.fullText, linkedinUrl: c.linkedinUrl })),
+      jobTitle, jd, getApiKey(),
+    );
 
     setStep("scoring");
     setProgress({ done: 0, total: parsed.length });

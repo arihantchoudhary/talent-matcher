@@ -3,6 +3,7 @@
 import { useState, useRef, useMemo, useEffect, DragEvent } from "react";
 import { ROLES as DEFAULT_ROLES, CATEGORIES, CITIES, Role } from "@/lib/roles";
 import { loadRoles } from "@/lib/roles-api";
+import { getApiKey } from "@/lib/api-key";
 import { parseCSV } from "@/lib/parse-csv";
 import { saveSession, ScoredCandidate } from "@/lib/sessions";
 
@@ -81,7 +82,7 @@ export default function UploadPage() {
         body: JSON.stringify({
           candidates: parsed.map(c => ({ id: c.id, name: c.name, fullText: c.fullText })),
           jobDescription: `${jobTitle}\n\n${jobDesc}`,
-          apiKey: "",
+          apiKey: getApiKey(),
         }),
       });
 

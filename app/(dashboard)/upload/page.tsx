@@ -531,37 +531,50 @@ export default function UploadPage() {
 
           {/* Rubric */}
           <div className="border border-neutral-200 bg-white rounded-lg p-5">
-            <div className="flex items-center justify-between mb-3">
+            <div className="flex items-center justify-between mb-4">
               <p className="text-xs uppercase tracking-[0.15em] text-neutral-400">Scoring Perspective</p>
               <span className={`text-xs ${criteria.reduce((s, c) => s + c.weight, 0) === 100 ? "text-neutral-400" : "text-red-500 font-medium"}`}>
                 {criteria.reduce((s, c) => s + c.weight, 0)}%
               </span>
             </div>
 
-            {/* Preset buttons */}
-            <div className="grid grid-cols-3 gap-1.5 mb-4">
+            {/* Preset buttons — named judges */}
+            <div className="flex gap-1.5 mb-5 overflow-x-auto pb-1">
               {Object.entries(PRESETS).map(([key, preset]) => (
                 <button key={key} onClick={() => selectPreset(key)}
-                  className={`text-left rounded-lg p-2.5 border transition-all ${selectedPreset === key ? "border-neutral-900 bg-neutral-950 text-white" : "border-neutral-100 hover:border-neutral-300"}`}>
-                  <div className={`text-xs font-semibold ${selectedPreset === key ? "text-white" : ""}`}>{preset.label}</div>
-                  <div className={`text-[10px] mt-0.5 ${selectedPreset === key ? "text-neutral-400" : "text-neutral-400"}`}>{preset.desc}</div>
+                  className={`shrink-0 px-3 py-1.5 rounded-full text-xs font-medium transition-all ${selectedPreset === key ? "bg-neutral-900 text-white" : "border border-neutral-200 text-neutral-500 hover:border-neutral-400"}`}>
+                  {preset.label}
                 </button>
               ))}
             </div>
 
-            {/* Editable criteria */}
-            <div className="space-y-2">
+            {/* Description of selected preset */}
+            <p className="text-[11px] text-neutral-500 mb-4">{PRESETS[selectedPreset]?.desc}</p>
+
+            {/* Animated bars */}
+            <div className="space-y-3 mb-4">
               {criteria.map((c, i) => (
-                <div key={i} className="flex items-center gap-2">
-                  <input value={c.name} onChange={e => { setSelectedPreset("custom"); const n = [...criteria]; n[i] = { ...n[i], name: e.target.value }; setCriteria(n); }}
-                    className="flex-1 border border-neutral-100 rounded px-2 py-1.5 text-xs font-medium focus:outline-none focus:border-neutral-300" placeholder="Criterion" />
-                  <input type="number" min={0} max={100} value={c.weight} onChange={e => { setSelectedPreset("custom"); const n = [...criteria]; n[i] = { ...n[i], weight: parseInt(e.target.value) || 0 }; setCriteria(n); }}
-                    className="w-12 border border-neutral-100 rounded px-2 py-1.5 text-xs text-center focus:outline-none focus:border-neutral-300" />
-                  <button onClick={() => { setSelectedPreset("custom"); setCriteria(criteria.filter((_, j) => j !== i)); }} className="text-neutral-300 hover:text-red-500 text-xs">x</button>
+                <div key={c.name || i}>
+                  <div className="flex items-center justify-between mb-1">
+                    <input value={c.name} onChange={e => { setSelectedPreset("custom"); const n = [...criteria]; n[i] = { ...n[i], name: e.target.value }; setCriteria(n); }}
+                      className="text-xs font-medium bg-transparent border-none p-0 focus:outline-none focus:ring-0 w-auto" placeholder="Criterion" />
+                    <div className="flex items-center gap-1">
+                      <input type="number" min={0} max={100} value={c.weight} onChange={e => { setSelectedPreset("custom"); const n = [...criteria]; n[i] = { ...n[i], weight: parseInt(e.target.value) || 0 }; setCriteria(n); }}
+                        className="w-8 text-xs text-right font-bold bg-transparent border-none p-0 focus:outline-none" />
+                      <span className="text-[10px] text-neutral-400">%</span>
+                      <button onClick={() => { setSelectedPreset("custom"); setCriteria(criteria.filter((_, j) => j !== i)); }} className="text-neutral-200 hover:text-red-500 ml-1">
+                        <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M18 6 6 18M6 6l12 12" /></svg>
+                      </button>
+                    </div>
+                  </div>
+                  <div className="h-2 bg-neutral-100 rounded-full overflow-hidden">
+                    <div className="h-full bg-neutral-900 rounded-full" style={{ width: `${c.weight}%`, transition: "width 0.5s cubic-bezier(0.4, 0, 0.2, 1)" }} />
+                  </div>
+                  <p className="text-[10px] text-neutral-400 mt-0.5">{c.description}</p>
                 </div>
               ))}
             </div>
-            <button onClick={() => setCriteria([...criteria, { name: "", weight: 0, description: "" }])} className="text-[10px] text-neutral-400 hover:text-neutral-700 mt-2">+ Add</button>
+            <button onClick={() => setCriteria([...criteria, { name: "", weight: 0, description: "" }])} className="text-[10px] text-neutral-400 hover:text-neutral-700">+ Add criterion</button>
           </div>
         </div>
       </div>

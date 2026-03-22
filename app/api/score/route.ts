@@ -33,10 +33,19 @@ async function loadLinkedInDB(): Promise<Map<string, string>> {
 }
 
 export async function POST(req: NextRequest) {
-  const { candidates, jobDescription, apiKey: clientKey } = await req.json();
+  const { candidates, jobDescription, apiKey: clientKey, idealCandidate, criteria } = await req.json();
   const apiKey = clientKey || process.env.OPENAI_API_KEY;
   if (!apiKey) return Response.json({ error: "No API key" }, { status: 400 });
   if (!candidates?.length) return Response.json({ error: "No candidates" }, { status: 400 });
+
+  // Build scoring rubric from criteria weights + ideal candidate
+  const rubricParts: string[] = [];
+  if (criteria?.length) {
+    rubricParts.push("SCORING CRITERIA (weight each accordingly):");
+    for (const c of criteria) rubricParts.push(`- ${c.name}: ${c.weight}%`);
+  }
+  if (idealCandidate) rubricParts.push(`\nIDEAL CANDIDATE:\n${idealCandidate}`);
+  const rubric = rubricParts.join("\n");
 
   const openai = new OpenAI({ apiKey });
 
@@ -104,7 +113,7 @@ export async function POST(req: NextRequest) {
                 const resp = await openai.chat.completions.create({
                   model: "gpt-4o-mini", temperature: 0.3, max_tokens: 350,
                   messages: [
-                    { role: "system", content: `Score candidates 0-100. Use full range: 85-100 exceptional, 70-84 strong, 55-69 decent, 40-54 partial, 25-39 weak, 0-24 poor.\nReturn ONLY JSON: {"score":<n>,"reasoning":"<2-3 sentences>","highlights":["..."],"gaps":["..."]}\n\nROLE:\n${jobDescription.substring(0, 1500)}` },
+                    { role: "system", content: `Score candidates 0-100. Use full range: 85-100 exceptional, 70-84 strong, 55-69 decent, 40-54 partial, 25-39 weak, 0-24 poor.\nReturn ONLY JSON: {"score":<n>,"reasoning":"<2-3 sentences>","highlights":["..."],"gaps":["..."]}\n\nROLE:\n${jobDescription.substring(0, 1500)}${rubric ? `\n\n${rubric}` : ""}` },
                     { role: "user", content: candidateText },
                   ],
                 });

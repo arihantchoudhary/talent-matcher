@@ -229,7 +229,7 @@ export default function UploadPage() {
     try {
       const resp = await fetch(`${API}/talent-pluto/score`, {
         method: "POST", headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ candidates: parsed.map(c => ({ id: c.id, name: c.name, fullText: c.fullText, linkedinUrl: c.linkedinUrl || "" })), job_description: jd, api_key: getApiKey(), top_k: topK, ideal_candidate: `${profileToText(idealProfile)}\n\n${idealCandidate}` }),
+        body: JSON.stringify({ candidates: parsed.map(c => ({ id: c.id, name: c.name, fullText: c.fullText, linkedinUrl: c.linkedinUrl || "" })), job_description: jd, api_key: getApiKey(), top_k: topK, ideal_candidate: `${profileToText(idealProfile)}\n\n${idealCandidate}`, criteria: criteria.filter(c => c.weight > 0).map(c => ({ name: c.name, weight: c.weight })) }),
       });
 
       const reader = resp.body?.getReader();
@@ -740,9 +740,9 @@ export default function UploadPage() {
                         </button>
                       );
                     })}
-                    <input value={idealProfile[key]}
+                    <input value={idealProfile[key]} placeholder="custom..."
                       onChange={e => { setIdealProfile(prev => ({ ...prev, [key]: e.target.value })); setSelectedPreset("custom"); }}
-                      className="flex-1 min-w-[120px] border-b border-neutral-200 px-1 py-0.5 text-[11px] text-neutral-600 focus:outline-none focus:border-neutral-400" />
+                      className="w-24 border-b border-transparent hover:border-neutral-200 focus:border-neutral-400 px-1 py-0.5 text-[11px] text-neutral-400 focus:text-neutral-700 focus:outline-none" />
                   </div>
                 </div>
               ))}

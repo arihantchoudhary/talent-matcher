@@ -1,8 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { getSessions, getSession, deleteSession, MatchSession } from "@/lib/sessions";
-import { RankedList } from "./ranked-list";
+import { getSessions, getSession, deleteSession, MatchSession, ScoredCandidate } from "@/lib/sessions";
 
 export default function HistoryPage() {
   const [sessions, setSessions] = useState<MatchSession[]>([]);
@@ -41,33 +40,85 @@ export default function HistoryPage() {
   // Viewing a specific session's results
   if (viewingSession) {
     const s = viewingSession;
+    const results = (s.results || []).sort((a, b) => (b.score || 0) - (a.score || 0));
+    const topTier = results.filter(r => r.score >= 70);
+    const goodFit = results.filter(r => r.score >= 50 && r.score < 70);
+    const moderate = results.filter(r => r.score >= 30 && r.score < 50);
+    const lowFit = results.filter(r => r.score < 30);
+
+    // Score distribution
+    const buckets = [0,10,20,30,40,50,60,70,80,90].map(b => ({
+      label: b, count: results.filter(r => r.score >= b && r.score < b + 10).length,
+    }));
+    const maxBucket = Math.max(...buckets.map(b => b.count), 1);
+
     return (
-      <div className="flex-1 overflow-auto">
-        <div className="max-w-4xl mx-auto px-6 py-8">
-          <button onClick={() => setViewingSession(null)} className="flex items-center gap-1.5 text-sm text-zinc-500 hover:text-zinc-900 mb-6 transition-colors">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="m15 18-6-6 6-6" /></svg>
-            Back to history
-          </button>
+      <div className="max-w-5xl mx-auto px-6 py-8">
+        <button onClick={() => setViewingSession(null)} className="flex items-center gap-1.5 text-sm text-neutral-500 hover:text-neutral-900 mb-6 transition-colors">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="m15 18-6-6 6-6" /></svg>
+          Back to history
+        </button>
 
-          <div className="mb-6">
-            <div className="flex items-center gap-2 mb-1">
-              <span className="px-2 py-0.5 rounded text-xs font-semibold bg-indigo-100 text-indigo-700">{s.role_category}</span>
-              <h1 className="text-2xl font-bold">{s.role}</h1>
-            </div>
-            <p className="text-sm text-zinc-500">
-              {s.candidate_count} candidates &middot; {s.file_name} &middot; {new Date(s.created_at).toLocaleString()}
-            </p>
+        {/* Header */}
+        <div className="mb-8">
+          <div className="flex items-center gap-2 mb-1">
+            {s.role_category && <span className="px-2 py-0.5 rounded text-xs font-semibold bg-neutral-100 text-neutral-700">{s.role_category}</span>}
+            <h1 className="text-2xl font-bold tracking-tight">{s.role}</h1>
           </div>
-
-          <div className="grid grid-cols-4 gap-3 mb-6">
-            <StatCard label="Candidates" value={s.candidate_count} />
-            <StatCard label="Avg Score" value={s.avg_score} />
-            <StatCard label="Top Tier" value={s.top_tier} accent="emerald" />
-            <StatCard label="Good Fit" value={s.good_fit} accent="indigo" />
-          </div>
-
-          <RankedList candidates={s.results} />
+          <p className="text-sm text-neutral-500">
+            {s.candidate_count} candidates scored &middot; {s.file_name} &middot; {new Date(s.created_at).toLocaleString()}
+          </p>
         </div>
+
+        {/* Stats + distribution */}
+        <div className="grid lg:grid-cols-2 gap-6 mb-8">
+          <div className="grid grid-cols-4 gap-3">
+            <StatCard label="Total" value={results.length} />
+            <StatCard label="Avg" value={s.avg_score} />
+            <StatCard label="Top Tier" value={topTier.length} accent="dark" />
+            <StatCard label="Good Fit" value={goodFit.length} />
+          </div>
+          <div className="border border-neutral-200 bg-white p-4">
+            <p className="text-xs uppercase tracking-[0.1em] text-neutral-400 mb-3">Score Distribution</p>
+            <div className="flex items-end gap-1 h-16">
+              {buckets.map(b => (
+                <div key={b.label} className="flex-1 flex flex-col items-center gap-0.5">
+                  {b.count > 0 && <span className="text-[8px] text-neutral-400">{b.count}</span>}
+                  <div className="w-full bg-neutral-900 rounded-sm" style={{ height: `${(b.count / maxBucket) * 48}px`, minHeight: b.count > 0 ? 2 : 0 }} />
+                  <span className="text-[8px] text-neutral-400">{b.label}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        {/* Algorithm info */}
+        <div className="border border-neutral-200 bg-white p-5 mb-8">
+          <p className="text-xs uppercase tracking-[0.1em] text-neutral-400 mb-3">Matching Algorithm</p>
+          <div className="grid grid-cols-4 gap-4 text-sm">
+            <div><span className="font-semibold">1. Parse</span><p className="text-xs text-neutral-500 mt-0.5">Extract fields from CSV</p></div>
+            <div><span className="font-semibold">2. Enrich</span><p className="text-xs text-neutral-500 mt-0.5">LinkedIn profiles, photos, experience</p></div>
+            <div><span className="font-semibold">3. Score</span><p className="text-xs text-neutral-500 mt-0.5">GPT-4o-mini 0-100 with reasoning</p></div>
+            <div><span className="font-semibold">4. Rank</span><p className="text-xs text-neutral-500 mt-0.5">Sort by score, tier classification</p></div>
+          </div>
+        </div>
+
+        {/* Tier sections */}
+        {[
+          { label: "Top Tier (70+)", items: topTier, border: "border-neutral-900" },
+          { label: "Good Fit (50-69)", items: goodFit, border: "border-neutral-300" },
+          { label: "Moderate (30-49)", items: moderate, border: "border-neutral-200" },
+          { label: "Low Fit (<30)", items: lowFit, border: "border-neutral-100" },
+        ].filter(t => t.items.length > 0).map(tier => (
+          <div key={tier.label} className="mb-8">
+            <h2 className="text-sm font-semibold text-neutral-500 mb-3">{tier.label} ({tier.items.length})</h2>
+            <div className="space-y-2">
+              {tier.items.map((c, i) => (
+                <CandidateRow key={c.id || i} candidate={c} tier={tier} />
+              ))}
+            </div>
+          </div>
+        ))}
       </div>
     );
   }
@@ -159,13 +210,65 @@ export default function HistoryPage() {
 }
 
 function StatCard({ label, value, accent }: { label: string; value: number; accent?: string }) {
-  const border = accent === "emerald" ? "border-emerald-200" : accent === "indigo" ? "border-indigo-200" : "border-zinc-200";
-  const bg = accent === "emerald" ? "bg-emerald-50" : accent === "indigo" ? "bg-indigo-50" : "bg-white";
-  const text = accent === "emerald" ? "text-emerald-700" : accent === "indigo" ? "text-indigo-700" : "";
   return (
-    <div className={`rounded-xl border ${border} ${bg} p-4`}>
-      <div className={`text-2xl font-bold ${text}`}>{value}</div>
-      <div className="text-xs text-zinc-500 mt-0.5">{label}</div>
+    <div className={`border p-4 ${accent === "dark" ? "border-neutral-900 bg-neutral-950 text-white" : "border-neutral-200 bg-white"}`}>
+      <div className="text-2xl font-bold">{value}</div>
+      <div className={`text-xs mt-0.5 ${accent === "dark" ? "text-neutral-400" : "text-neutral-500"}`}>{label}</div>
+    </div>
+  );
+}
+
+function CandidateRow({ candidate: c }: { candidate: ScoredCandidate; tier: { border: string } }) {
+  const [open, setOpen] = useState(false);
+  return (
+    <div className="border border-neutral-200 bg-white overflow-hidden">
+      <button onClick={() => setOpen(!open)} className="w-full text-left px-4 py-3 flex items-start gap-3 hover:bg-neutral-50 transition-colors">
+        {c.photo_url ? (
+          <img src={c.photo_url} alt={c.name} className="shrink-0 w-9 h-9 rounded-full object-cover border border-neutral-200" />
+        ) : (
+          <span className="shrink-0 w-9 h-9 rounded-full bg-neutral-100 flex items-center justify-center text-xs font-bold text-neutral-500">
+            {c.name?.charAt(0) || "?"}
+          </span>
+        )}
+        <div className="flex-1 min-w-0">
+          <div className="flex items-center gap-2">
+            <span className="font-semibold text-sm">{c.name}</span>
+            <span className={`px-2 py-0.5 text-xs font-bold ${c.score >= 70 ? "bg-neutral-900 text-white" : c.score >= 50 ? "bg-neutral-100 text-neutral-700" : "text-neutral-400"}`}>
+              {c.score}
+            </span>
+          </div>
+          <p className="text-xs text-neutral-500 mt-0.5 line-clamp-1">{c.reasoning}</p>
+        </div>
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className={`shrink-0 mt-2 text-neutral-400 transition-transform ${open ? "rotate-180" : ""}`}><path d="m6 9 6 6 6-6" /></svg>
+      </button>
+      {open && (
+        <div className="px-4 pb-4 border-t border-neutral-100 fade-in">
+          <div className="mt-3 h-1 bg-neutral-100 mb-3"><div className="h-full bg-neutral-900" style={{ width: `${c.score}%` }} /></div>
+          <p className="text-sm text-neutral-700 mb-3 leading-relaxed">{c.reasoning}</p>
+          <div className="grid sm:grid-cols-2 gap-3">
+            {(c.highlights || []).length > 0 && (
+              <div>
+                <p className="text-xs uppercase tracking-[0.1em] text-neutral-400 mb-1.5">Strengths</p>
+                {c.highlights.map((h, i) => (
+                  <p key={i} className="text-xs text-neutral-700 mb-1 flex items-start gap-1.5">
+                    <span className="text-neutral-400 shrink-0">+</span> {h}
+                  </p>
+                ))}
+              </div>
+            )}
+            {(c.gaps || []).length > 0 && (
+              <div>
+                <p className="text-xs uppercase tracking-[0.1em] text-neutral-400 mb-1.5">Gaps</p>
+                {c.gaps.map((g, i) => (
+                  <p key={i} className="text-xs text-neutral-600 mb-1 flex items-start gap-1.5">
+                    <span className="text-neutral-300 shrink-0">-</span> {g}
+                  </p>
+                ))}
+              </div>
+            )}
+          </div>
+        </div>
+      )}
     </div>
   );
 }

@@ -100,6 +100,15 @@ export default function UploadPage() {
   const [totalTokens, setTotalTokens] = useState(0);
   const [totalCost, setTotalCost] = useState(0);
   const [viewMode, setViewMode] = useState<"list" | "card" | "table">("list");
+  const [elapsed, setElapsed] = useState(0);
+  const [startTime] = useState(() => Date.now());
+
+  // Elapsed timer
+  useEffect(() => {
+    if (step !== "scoring") return;
+    const interval = setInterval(() => setElapsed(Math.round((Date.now() - startTime) / 1000)), 1000);
+    return () => clearInterval(interval);
+  }, [step, startTime]);
 
   // Sync from global context
   useEffect(() => {
@@ -235,7 +244,10 @@ export default function UploadPage() {
     return (
       <div className="max-w-5xl mx-auto px-6 py-8">
         <h1 className="text-2xl font-bold tracking-tight mb-1">Matching Algorithm</h1>
-        <p className="text-sm text-neutral-500 mb-4">{progress.done} of {progress.total} candidates scored for <span className="font-medium text-neutral-900">{jobTitle}</span></p>
+        <p className="text-sm text-neutral-500 mb-4">
+          {progress.done} of {progress.total} candidates scored for <span className="font-medium text-neutral-900">{jobTitle}</span>
+          <span className="ml-3 tabular-nums font-mono text-neutral-400">{Math.floor(elapsed / 60)}:{String(elapsed % 60).padStart(2, "0")}</span>
+        </p>
 
         {/* Progress bar */}
         <div className="h-2 bg-neutral-100 rounded-full mb-6 overflow-hidden">
@@ -500,9 +512,11 @@ export default function UploadPage() {
                 {results.map(c => (
                   <tr key={c.id} className="hover:bg-neutral-50">
                     <td className="px-4 py-2 text-xs text-neutral-400">{c.rank}</td>
-                    <td className="px-4 py-2 flex items-center gap-2">
-                      {c.photo_url ? <img src={c.photo_url} alt="" className="w-6 h-6 rounded-full object-cover shrink-0" /> : null}
-                      <span className="font-medium text-sm">{c.name}</span>
+                    <td className="px-4 py-2">
+                      <div className="flex items-center gap-2">
+                        {c.photo_url ? <img src={c.photo_url} alt="" className="w-6 h-6 rounded-full object-cover shrink-0" /> : null}
+                        <span className="font-medium text-sm">{c.name}</span>
+                      </div>
                     </td>
                     <td className="px-4 py-2"><span className={`px-2 py-0.5 text-xs font-bold ${c.score >= 70 ? "bg-neutral-900 text-white" : c.score >= 50 ? "bg-neutral-100" : "text-neutral-400"}`}>{c.score}</span></td>
                     <td className="px-4 py-2 text-xs text-neutral-500 max-w-xs truncate">{c.reasoning}</td>

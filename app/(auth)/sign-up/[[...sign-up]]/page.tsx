@@ -34,18 +34,21 @@ export default function SignUpPage() {
             appearance={{
               elements: {
                 rootBox: "w-full",
-                card: "shadow-none border-0 p-0 w-full",
-                headerTitle: "text-2xl font-bold tracking-tight",
+                cardBox: "shadow-none border-0 w-full",
+                card: "shadow-none border-0 p-0 w-full bg-transparent",
+                headerTitle: "text-2xl font-bold tracking-tight text-neutral-900",
                 headerSubtitle: "text-sm text-neutral-500",
-                formButtonPrimary: "bg-neutral-900 hover:bg-black text-sm font-medium h-10",
-                formFieldInput: "border-neutral-200 focus:border-neutral-900 focus:ring-neutral-900 text-sm h-10",
+                formButtonPrimary: "bg-neutral-900 hover:bg-black text-sm font-medium h-10 rounded-none",
+                formFieldInput: "border-neutral-200 focus:border-neutral-900 focus:ring-neutral-900 text-sm h-10 rounded-none",
                 footerActionLink: "text-neutral-900 font-medium hover:text-black",
+                footer: "hidden",
                 dividerLine: "bg-neutral-200",
                 dividerText: "text-neutral-400 text-xs",
-                socialButtonsBlockButton: "border-neutral-200 text-sm h-10 font-medium",
+                socialButtonsBlockButton: "border-neutral-200 text-sm h-10 font-medium rounded-none",
                 formFieldLabel: "text-sm font-medium text-neutral-700",
                 identityPreviewEditButton: "text-neutral-900",
-                internal: "",
+                badge: "hidden",
+                logoBox: "hidden",
               },
               layout: {
                 socialButtonsPlacement: "top",
@@ -53,6 +56,7 @@ export default function SignUpPage() {
               },
             }}
           />
+          <p className="text-xs text-neutral-400 mt-4 text-center">Already have an account? <a href="/sign-in" className="text-neutral-900 font-medium hover:underline">Sign in</a></p>
         </div>
       </div>
     </div>

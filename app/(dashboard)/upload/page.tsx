@@ -331,12 +331,71 @@ export default function UploadPage() {
     return (
       <div className="flex-1 overflow-auto">
         <div className="max-w-4xl mx-auto px-6 py-8">
-          <div className="flex items-center justify-between mb-6">
+          <div className="flex items-center justify-between mb-4">
             <div>
               <h1 className="text-2xl font-bold">{results.length} candidates scored</h1>
               <p className="text-sm text-zinc-500">Ranked for <span className="font-medium text-zinc-700">{jobTitle}</span></p>
             </div>
-            <button onClick={() => { setStep("setup"); setResults([]); }} className="text-sm text-indigo-600 hover:text-indigo-800">New match</button>
+            <button onClick={() => { setStep("setup"); setResults([]); scoring.reset(); }} className="text-sm text-neutral-500 hover:text-neutral-900">New match</button>
+          </div>
+
+          {/* Stats */}
+          {(() => {
+            const scores = results.map(r => r.score);
+            const mean = scores.reduce((a, b) => a + b, 0) / scores.length;
+            const stdDev = Math.sqrt(scores.reduce((s, x) => s + (x - mean) ** 2, 0) / scores.length);
+            const top = scores.filter(s => s >= 70).length;
+            const good = scores.filter(s => s >= 50 && s < 70).length;
+            const mod = scores.filter(s => s >= 30 && s < 50).length;
+            const low = scores.filter(s => s < 30).length;
+            return (
+              <div className="grid grid-cols-3 md:grid-cols-6 gap-3 mb-6">
+                <div className="border border-neutral-200 bg-white p-3 text-center">
+                  <div className="text-lg font-bold">{Math.round(mean)}</div>
+                  <div className="text-[10px] text-neutral-400 uppercase">Mean</div>
+                </div>
+                <div className="border border-neutral-200 bg-white p-3 text-center">
+                  <div className="text-lg font-bold">{Math.round(stdDev)}</div>
+                  <div className="text-[10px] text-neutral-400 uppercase">Std Dev</div>
+                </div>
+                <div className="border border-neutral-900 bg-neutral-950 text-white p-3 text-center">
+                  <div className="text-lg font-bold">{top}</div>
+                  <div className="text-[10px] text-neutral-400 uppercase">Top Tier</div>
+                </div>
+                <div className="border border-neutral-200 bg-white p-3 text-center">
+                  <div className="text-lg font-bold">{good}</div>
+                  <div className="text-[10px] text-neutral-400 uppercase">Good Fit</div>
+                </div>
+                <div className="border border-neutral-200 bg-white p-3 text-center">
+                  <div className="text-lg font-bold">{mod}</div>
+                  <div className="text-[10px] text-neutral-400 uppercase">Moderate</div>
+                </div>
+                <div className="border border-neutral-200 bg-white p-3 text-center">
+                  <div className="text-lg font-bold">{low}</div>
+                  <div className="text-[10px] text-neutral-400 uppercase">Low Fit</div>
+                </div>
+              </div>
+            );
+          })()}
+
+          {/* Download results */}
+          <div className="flex gap-2 mb-6">
+            <button onClick={() => {
+              const csv = ["Rank,Name,Score,Reasoning,Highlights,Gaps,LinkedIn URL",
+                ...results.map(r => `${r.rank},"${r.name}",${r.score},"${(r.reasoning||'').replace(/"/g,'""')}","${(r.highlights||[]).join('; ')}","${(r.gaps||[]).join('; ')}","${r.linkedin_url||''}"`)
+              ].join("\n");
+              const blob = new Blob([csv], { type: "text/csv" });
+              const a = document.createElement("a"); a.href = URL.createObjectURL(blob); a.download = `${jobTitle.replace(/[^a-z0-9]/gi, '-')}-rankings.csv`; a.click();
+            }} className="px-4 py-2 text-xs font-medium bg-neutral-900 text-white rounded-lg hover:bg-black transition-colors">
+              Download CSV
+            </button>
+            <button onClick={() => {
+              const json = JSON.stringify(results.map(r => ({ rank: r.rank, name: r.name, score: r.score, reasoning: r.reasoning, highlights: r.highlights, gaps: r.gaps, linkedin_url: r.linkedin_url, criteria: r.criteria })), null, 2);
+              const blob = new Blob([json], { type: "application/json" });
+              const a = document.createElement("a"); a.href = URL.createObjectURL(blob); a.download = `${jobTitle.replace(/[^a-z0-9]/gi, '-')}-rankings.json`; a.click();
+            }} className="px-4 py-2 text-xs font-medium border border-neutral-200 rounded-lg hover:bg-neutral-50 transition-colors">
+              Download JSON
+            </button>
           </div>
           <div className="space-y-2">
             {results.map(c => {

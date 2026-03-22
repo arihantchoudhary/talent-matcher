@@ -86,7 +86,7 @@ export default async function LandingPage() {
               { t: "Session history", d: "Every match is saved. Review past sessions, compare runs, track candidate pipelines." },
               { t: "Role templates", d: "20 built-in roles across Sales, GTM, Engineering, Product, Finance. Add your own." },
             ].map((f) => (
-              <div key={f.t} className="border-l-2 border-neutral-900 pl-4">
+              <div key={f.t}>
                 <h3 className="text-base font-semibold mb-1">{f.t}</h3>
                 <p className="text-sm text-neutral-600 leading-relaxed">{f.d}</p>
               </div>

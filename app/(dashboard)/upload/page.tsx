@@ -65,7 +65,7 @@ export default function UploadPage() {
   const [selectedPreset, setSelectedPreset] = useState("balanced");
   const [criteria, setCriteria] = useState(PRESETS.balanced.criteria);
   const [idealCandidate, setIdealCandidate] = useState(PRESETS.balanced.idealCandidate);
-  const [profileMode, setProfileMode] = useState<"fields" | "text">("fields");
+  // profileMode removed — replaced by nlEditMode for dropdown/text toggle
   const [idealProfile, setIdealProfile] = useState({
     years_experience: "2-3",
     industries: "financial-services, technology",
@@ -697,54 +697,46 @@ export default function UploadPage() {
           ))}
         </div>
 
-        {/* Ideal candidate profile — inline editable fields + freeform */}
+        {/* Ideal candidate profile — pill selector + freeform text toggle */}
         <div className="mb-5">
-          <div className="flex items-center justify-between mb-2">
-            <p className="text-xs font-medium text-neutral-500">Ideal Candidate Profile</p>
-            <button onClick={() => setProfileMode(profileMode === "fields" ? "text" : "fields")}
-              className="text-[10px] text-neutral-400 hover:text-neutral-600 transition-colors">
-              {profileMode === "fields" ? "Edit as text" : "Back to fields"}
-            </button>
-          </div>
-          {profileMode === "text" ? (
-            <textarea value={idealCandidate} onChange={e => { setIdealCandidate(e.target.value); setSelectedPreset("custom"); }}
-              rows={4} placeholder="Describe your ideal candidate in plain language..."
-              className="w-full border border-neutral-200 rounded-lg px-3 py-2.5 text-sm text-neutral-700 resize-y focus:outline-none focus:border-neutral-400 leading-relaxed" />
-          ) : (
-            <div className="border border-neutral-200 rounded-lg p-3 space-y-2.5 overflow-hidden">
-              {([
-                ["years_experience", "Experience", ["1-2 yr", "2-3 yr", "3-5 yr", "5-8 yr", "8+"]],
-                ["industries", "Industries", ["tech", "finserv", "legal", "consulting", "healthcare", "SaaS"]],
-                ["sales_focus", "Focus", ["SMB", "mid-market", "enterprise", "PLG"]],
-                ["buyer_personas", "Buyer", ["C-suite", "VP/Dir", "Dept Head", "Technical", "End-user"]],
-                ["location", "Location", ["NYC", "SF", "Remote", "Austin", "Chicago", "Boston"]],
-                ["background", "Background", ["consulting", "banking", "law", "founder", "big tech", "SDR/BDR"]],
-              ] as [keyof typeof idealProfile, string, string[]][]).map(([key, label, options]) => (
-                <div key={key} className="flex items-center gap-2 min-w-0">
-                  <span className="text-[9px] text-neutral-400 w-16 shrink-0 text-right uppercase tracking-wider leading-tight">{label}</span>
-                  <div className="flex flex-wrap gap-1 min-w-0">
-                    {options.map(opt => {
-                      const current = idealProfile[key].toLowerCase();
-                      const active = current.includes(opt.toLowerCase()) || current.includes(opt.split("/")[0].toLowerCase());
-                      return (
-                        <button key={opt} onClick={() => {
-                          const val = idealProfile[key];
-                          const newVal = active
-                            ? val.split(",").map(s => s.trim()).filter(s => !s.toLowerCase().includes(opt.toLowerCase())).join(", ")
-                            : val ? `${val}, ${opt}` : opt;
-                          setIdealProfile(prev => ({ ...prev, [key]: newVal }));
-                          setSelectedPreset("custom");
-                        }}
-                          className={`px-1.5 py-0.5 rounded text-[10px] transition-colors shrink-0 ${active ? "bg-neutral-900 text-white" : "bg-neutral-50 text-neutral-500 hover:bg-neutral-100 border border-neutral-200"}`}>
-                          {opt}
-                        </button>
-                      );
-                    })}
-                  </div>
-                </div>
-              ))}
+          <div className="border border-neutral-200 rounded-lg overflow-hidden">
+            <div className="flex items-center justify-between px-3 py-2 bg-neutral-50 border-b border-neutral-100">
+              <span className="text-[10px] font-medium text-neutral-500 uppercase tracking-wider">Ideal Candidate Profile</span>
+              <button onClick={() => { setNlEditMode(!nlEditMode); if (nlEditMode) setIdealCandidate(nlSelectionsToText(nlSelections)); }}
+                className="text-[10px] text-neutral-400 hover:text-neutral-600 transition-colors">
+                {nlEditMode ? "Back to dropdowns" : "Edit as text"}
+              </button>
             </div>
-          )}
+            {nlEditMode ? (
+              <textarea value={idealCandidate} onChange={e => { setIdealCandidate(e.target.value); setSelectedPreset("custom"); }}
+                rows={4} placeholder="Describe your ideal candidate in plain language..."
+                className="w-full px-3 py-2.5 text-sm text-neutral-700 resize-y focus:outline-none leading-relaxed" />
+            ) : (
+              <div className="p-3 space-y-2.5">
+                {(Object.entries(NL_OPTIONS) as [NLCategory, string[]][]).map(([cat, options]) => (
+                  <div key={cat} className="flex items-start gap-2 min-w-0">
+                    <span className="text-[9px] text-neutral-400 w-20 shrink-0 text-right uppercase tracking-wider pt-1 leading-tight">
+                      {cat === "buyer_personas" ? "Buyer" : cat === "sales_focus" ? "Focus" : cat.replace(/_/g, " ")}
+                    </span>
+                    <div className="flex flex-wrap gap-1 min-w-0">
+                      {options.map(opt => {
+                        const active = nlSelections[cat].includes(opt);
+                        return (
+                          <button key={opt} onClick={() => toggleNlOption(cat, opt)}
+                            className={`px-2 py-0.5 rounded-full text-[10px] transition-all duration-150 shrink-0 ${active ? "bg-neutral-900 text-white" : "bg-neutral-50 text-neutral-500 hover:bg-neutral-100 border border-neutral-200"}`}>
+                            {opt}
+                          </button>
+                        );
+                      })}
+                    </div>
+                  </div>
+                ))}
+                <div className="pt-2 border-t border-neutral-100">
+                  <p className="text-[10px] text-neutral-500 leading-relaxed italic">{idealCandidate || "Select options above to build description"}</p>
+                </div>
+              </div>
+            )}
+          </div>
         </div>
 
         {/* Criteria weights — compact */}

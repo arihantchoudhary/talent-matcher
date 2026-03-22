@@ -439,7 +439,7 @@ export default function UploadPage() {
                     {c.linkedin_url && <a href={c.linkedin_url} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 text-xs text-neutral-400 hover:text-neutral-900 mb-2">LinkedIn</a>}
                     <p className="text-sm text-neutral-700 mb-3">{c.reasoning}</p>
                     {c.criteria && c.criteria.length > 0 && (
-                      <div className="flex gap-6 mb-3">
+                      <div className="flex flex-col sm:flex-row gap-4 mb-3">
                         {/* Pie chart */}
                         <div className="shrink-0">
                           <svg width="100" height="100" viewBox="0 0 100 100">
@@ -569,7 +569,7 @@ export default function UploadPage() {
       <h1 className="text-2xl font-bold tracking-tight mb-6">New Match</h1>
 
       {/* 3-column: Role | CSV | JD — all visible without scrolling */}
-      <div className="grid md:grid-cols-3 gap-3 mb-4">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-3 mb-4">
         {/* 1. Role picker */}
         <div className="border border-neutral-200 bg-white rounded-lg p-4">
           <p className="text-[10px] uppercase tracking-[0.15em] text-neutral-400 mb-2">1. Role</p>

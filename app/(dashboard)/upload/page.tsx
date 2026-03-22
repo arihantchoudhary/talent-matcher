@@ -477,57 +477,53 @@ export default function UploadPage() {
       </div>
 
       {/* Two column layout */}
-      <div className="grid lg:grid-cols-5 gap-6 mb-6">
-        {/* Left column: CSV + Role */}
-        <div className="lg:col-span-2 space-y-4">
-          {/* CSV upload */}
-          <div className="border border-neutral-200 bg-white rounded-lg p-5">
-            <p className="text-xs uppercase tracking-[0.15em] text-neutral-400 mb-3">Candidates</p>
-            <div onDragOver={e => { e.preventDefault(); setDragging(true); }} onDragLeave={() => setDragging(false)} onDrop={handleDrop}
-              onClick={() => fileRef.current?.click()}
-              className={`border-2 border-dashed rounded-lg p-6 text-center cursor-pointer transition-all ${dragging ? "border-neutral-900 bg-neutral-50" : fileName ? "border-emerald-300 bg-emerald-50/50" : "border-neutral-200 hover:border-neutral-300"}`}>
-              <input ref={fileRef} type="file" accept=".csv" className="hidden" onChange={e => e.target.files?.[0] && handleFile(e.target.files[0])} />
-              {fileName ? (
-                <div><p className="font-semibold text-sm">{fileName}</p><p className="text-xs text-neutral-500">{rowCount} candidates</p></div>
-              ) : (
-                <div><p className="text-sm font-medium">Drop CSV or click</p><p className="text-[10px] text-neutral-400 mt-1">Any format</p></div>
-              )}
-            </div>
-          </div>
-
-          {/* Role */}
-          <div className="border border-neutral-200 bg-white rounded-lg p-5">
-            <p className="text-xs uppercase tracking-[0.15em] text-neutral-400 mb-3">Role</p>
-            <button onClick={() => setShowPicker(!showPicker)} className="w-full text-left rounded border border-neutral-200 p-3 hover:bg-neutral-50 text-sm">
-              <div className="flex items-center gap-2">
-                <span className="px-1.5 py-0.5 rounded text-[10px] font-semibold bg-neutral-100">{role.category}</span>
-                <span className="font-medium">{role.title}</span>
-              </div>
-            </button>
-            {showPicker && (
-              <div className="mt-2 border border-neutral-200 rounded-lg bg-white shadow-lg max-h-48 overflow-y-auto">
-                <div className="p-2 border-b border-neutral-100 flex gap-1 overflow-x-auto">
-                  {["All", ...CATEGORIES].map(c => (
-                    <button key={c} onClick={() => setCatFilter(c)} className={`shrink-0 px-2 py-1 rounded text-[10px] ${catFilter === c ? "bg-neutral-900 text-white" : "text-neutral-500"}`}>{c}</button>
-                  ))}
-                </div>
-                {filteredRoles.map((r, i) => {
-                  const ri = ROLES.indexOf(r);
-                  return <button key={ri} onClick={() => pickRole(ri)} className="w-full text-left px-3 py-2 text-sm hover:bg-neutral-50">{r.title}</button>;
-                })}
-              </div>
+      {/* Top row: CSV + Role & JD combined */}
+      <div className="grid lg:grid-cols-2 gap-4 mb-6">
+        {/* CSV upload */}
+        <div className="border border-neutral-200 bg-white rounded-lg p-5">
+          <p className="text-xs uppercase tracking-[0.15em] text-neutral-400 mb-3">Candidates</p>
+          <div onDragOver={e => { e.preventDefault(); setDragging(true); }} onDragLeave={() => setDragging(false)} onDrop={handleDrop}
+            onClick={() => fileRef.current?.click()}
+            className={`border-2 border-dashed rounded-lg p-8 text-center cursor-pointer transition-all ${dragging ? "border-neutral-900 bg-neutral-50" : fileName ? "border-emerald-300 bg-emerald-50/50" : "border-neutral-200 hover:border-neutral-300"}`}>
+            <input ref={fileRef} type="file" accept=".csv" className="hidden" onChange={e => e.target.files?.[0] && handleFile(e.target.files[0])} />
+            {fileName ? (
+              <div><p className="font-semibold">{fileName}</p><p className="text-sm text-neutral-500 mt-1">{rowCount} candidates</p></div>
+            ) : (
+              <div><p className="font-medium">Drop CSV or click to browse</p><p className="text-xs text-neutral-400 mt-1">Any format — we auto-detect columns</p></div>
             )}
           </div>
         </div>
 
-        {/* Right column: JD + Rubric */}
-        <div className="lg:col-span-3 space-y-4">
-          {/* Job description */}
-          <div className="border border-neutral-200 bg-white rounded-lg p-5">
-            <p className="text-xs uppercase tracking-[0.15em] text-neutral-400 mb-3">Job Description</p>
-            <input value={jobTitle} onChange={e => setJobTitle(e.target.value)} className="w-full border border-neutral-200 rounded px-3 py-2 text-sm font-medium mb-2 focus:outline-none focus:border-neutral-400" />
-            <textarea value={jobDesc} onChange={e => setJobDesc(e.target.value)} rows={4} className="w-full border border-neutral-200 rounded px-3 py-2 text-xs resize-none focus:outline-none focus:border-neutral-400" />
-          </div>
+        {/* Role + JD combined */}
+        <div className="border border-neutral-200 bg-white rounded-lg p-5">
+          <p className="text-xs uppercase tracking-[0.15em] text-neutral-400 mb-3">Role & Job Description</p>
+          <button onClick={() => setShowPicker(!showPicker)} className="w-full text-left rounded border border-neutral-200 p-2.5 hover:bg-neutral-50 text-sm mb-3">
+            <div className="flex items-center gap-2">
+              <span className="px-1.5 py-0.5 rounded text-[10px] font-semibold bg-neutral-100">{role.category}</span>
+              <span className="font-medium">{role.title}</span>
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="ml-auto text-neutral-400"><path d="m6 9 6 6 6-6" /></svg>
+            </div>
+          </button>
+          {showPicker && (
+            <div className="mb-3 border border-neutral-200 rounded-lg bg-white shadow-lg max-h-40 overflow-y-auto">
+              <div className="p-2 border-b border-neutral-100 flex gap-1 overflow-x-auto">
+                {["All", ...CATEGORIES].map(c => (
+                  <button key={c} onClick={() => setCatFilter(c)} className={`shrink-0 px-2 py-1 rounded text-[10px] ${catFilter === c ? "bg-neutral-900 text-white" : "text-neutral-500"}`}>{c}</button>
+                ))}
+              </div>
+              {filteredRoles.map((r, i) => {
+                const ri = ROLES.indexOf(r);
+                return <button key={ri} onClick={() => pickRole(ri)} className="w-full text-left px-3 py-2 text-sm hover:bg-neutral-50">{r.title}</button>;
+              })}
+            </div>
+          )}
+          <input value={jobTitle} onChange={e => setJobTitle(e.target.value)} className="w-full border border-neutral-200 rounded px-3 py-2 text-sm font-medium mb-2 focus:outline-none focus:border-neutral-400" />
+          <textarea value={jobDesc} onChange={e => setJobDesc(e.target.value)} rows={3} className="w-full border border-neutral-200 rounded px-3 py-2 text-xs resize-none focus:outline-none focus:border-neutral-400" />
+        </div>
+      </div>
+
+      {/* Scoring perspective — full width, bigger */}
+      <div className="mb-6">
 
           {/* Rubric */}
           <div className="border border-neutral-200 bg-white rounded-lg p-5">
@@ -576,7 +572,6 @@ export default function UploadPage() {
             </div>
             <button onClick={() => setCriteria([...criteria, { name: "", weight: 0, description: "" }])} className="text-[10px] text-neutral-400 hover:text-neutral-700">+ Add criterion</button>
           </div>
-        </div>
       </div>
 
       {/* Submit */}

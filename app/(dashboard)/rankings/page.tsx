@@ -240,14 +240,14 @@ function StatCard({ label, value, accent }: { label: string; value: number; acce
 function CandidateRow({ candidate: c }: { candidate: ScoredCandidate; tier: { border: string } }) {
   const [open, setOpen] = useState(false);
   return (
-    <div className="border border-neutral-200 bg-white overflow-hidden">
-      <button onClick={() => setOpen(!open)} className="w-full text-left px-4 py-3 flex items-start gap-3 hover:bg-neutral-50 transition-colors">
+    <div className="border border-neutral-200 bg-white overflow-hidden rounded-lg">
+      <button onClick={() => setOpen(!open)} className="w-full text-left p-4 flex items-start gap-4 hover:bg-neutral-50 transition-colors">
         {c.photo_url ? (
-          <img src={c.photo_url} alt={c.name} className="shrink-0 w-9 h-9 rounded-full object-cover border border-neutral-200" />
+          <img src={c.photo_url} alt={c.name} className="shrink-0 w-12 h-12 rounded-xl object-cover border border-neutral-200" />
         ) : (
-          <span className="shrink-0 w-9 h-9 rounded-full bg-neutral-100 flex items-center justify-center text-xs font-bold text-neutral-500">
+          <div className="shrink-0 w-12 h-12 rounded-xl bg-neutral-100 flex items-center justify-center text-lg font-bold text-neutral-400">
             {c.name?.charAt(0) || "?"}
-          </span>
+          </div>
         )}
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-2">
@@ -256,7 +256,8 @@ function CandidateRow({ candidate: c }: { candidate: ScoredCandidate; tier: { bo
               {c.score}
             </span>
           </div>
-          <p className="text-xs text-neutral-500 mt-0.5 line-clamp-1">{c.reasoning}</p>
+          <p className="text-xs text-neutral-500 mt-0.5 line-clamp-2">{c.reasoning}</p>
+          {c.linkedin_url && <a href={c.linkedin_url} target="_blank" rel="noopener noreferrer" onClick={e => e.stopPropagation()} className="text-[10px] text-neutral-400 hover:text-neutral-700 mt-1 inline-block">LinkedIn</a>}
         </div>
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className={`shrink-0 mt-2 text-neutral-400 transition-transform ${open ? "rotate-180" : ""}`}><path d="m6 9 6 6 6-6" /></svg>
       </button>

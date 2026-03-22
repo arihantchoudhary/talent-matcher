@@ -67,7 +67,11 @@ export default function UploadPage() {
   async function startScoring() {
     if (!csvText) return;
     const parsed = parseCSV(csvText);
-    if (parsed.length === 0) return;
+    console.log(`[MATCH] Parsed ${parsed.length} candidates from CSV`);
+    console.log(`[MATCH] Sample candidate:`, parsed[0]);
+    console.log(`[MATCH] Role: ${jobTitle}`);
+    console.log(`[MATCH] API key present: ${!!getApiKey() ? "user key" : "server default"}`);
+    if (parsed.length === 0) { console.error("[MATCH] No candidates parsed!"); return; }
 
     setStep("scoring");
     setProgress({ done: 0, total: parsed.length });
@@ -78,6 +82,7 @@ export default function UploadPage() {
     let doneCount = 0;
 
     try {
+      console.log(`[MATCH] Calling /api/score with ${parsed.length} candidates...`);
       const resp = await fetch("/api/score", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -88,8 +93,15 @@ export default function UploadPage() {
         }),
       });
 
+      console.log(`[MATCH] Response status: ${resp.status} ${resp.statusText}`);
+      if (!resp.ok) {
+        const errText = await resp.text();
+        console.error(`[MATCH] API error:`, errText);
+        return;
+      }
+
       const reader = resp.body?.getReader();
-      if (!reader) return;
+      if (!reader) { console.error("[MATCH] No response body reader"); return; }
       const decoder = new TextDecoder();
       let buffer = "";
 
@@ -105,9 +117,15 @@ export default function UploadPage() {
           try {
             const data = JSON.parse(line.slice(6));
             if (data.type === "log") {
+              console.log(`[PIPELINE] ${data.step} | ${data.name} | ${data.detail}`);
               setLogs(prev => [{ name: data.name, step: data.step, detail: data.detail }, ...prev].slice(0, 100));
             }
+            if (data.type === "enriched") {
+              console.log(`[MATCH] LinkedIn DB loaded: ${data.count} profiles available for enrichment`);
+            }
             if (data.type === "scored" || data.type === "error") {
+              console.log(`[SCORED] ${data.name}: ${data.score}/100 ${data.type === "error" ? "ERROR: " + data.error : ""}`);
+
               doneCount++;
               scoredMap.set(data.id, {
                 id: data.id, rank: 0, name: data.name,

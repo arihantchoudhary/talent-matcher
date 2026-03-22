@@ -92,11 +92,11 @@ function detectName(headers: string[], values: string[]): string {
         const slug = decodeURIComponent(match[1]).replace(/\/$/, "").toLowerCase();
         // Check known slug map first
         if (SLUG_NAMES[slug]) return SLUG_NAMES[slug];
-        // Try hyphenated slugs (first-last pattern)
-        if (slug.includes("-") && slug.length < 40 && !/[0-9]{4,}/.test(slug)) {
+        // Extract name from slug: split on hyphens, keep only alpha parts (2+ chars), need at least 2
+        if (slug.includes("-") && slug.length < 60) {
           const parts = slug.split("-").filter(p => p.length > 1 && /^[a-z]+$/i.test(p));
           if (parts.length >= 2) {
-            return parts.map(w => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase()).join(" ");
+            return parts.slice(0, 3).map(w => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase()).join(" ");
           }
         }
       }

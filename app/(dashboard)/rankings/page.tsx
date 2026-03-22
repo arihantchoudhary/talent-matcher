@@ -18,6 +18,7 @@ export default function HistoryPage() {
   const [loading, setLoading] = useState(true);
   const [groupBy, setGroupBy] = useState<"time" | "role" | "judge">("role");
   const [judgeFilter, setJudgeFilter] = useState("all");
+  const [scoreFilter, setScoreFilter] = useState<number | null>(null);
 
   useEffect(() => {
     getSessions().then((raw) => {
@@ -121,17 +122,26 @@ export default function HistoryPage() {
             <StatBlock value={s.cost ? `$${Number(s.cost).toFixed(3)}` : "—"} label="Cost" />
           </div>
 
-          {/* Distribution */}
-          <div className="mb-10">
-            <h2 className="text-[10px] uppercase tracking-[0.15em] text-neutral-400 mb-4">Score Distribution</h2>
-            <div className="flex items-end gap-[3px] h-24">
-              {buckets.map(b => (
-                <div key={b.label} className="flex-1 flex flex-col items-center gap-1">
-                  {b.count > 0 && <span className="text-[9px] font-medium text-neutral-500">{b.count}</span>}
-                  <div className="w-full bg-neutral-900 rounded-sm transition-all" style={{ height: `${(b.count / maxBucket) * 72}px`, minHeight: b.count > 0 ? 3 : 0 }} />
-                  <span className="text-[9px] text-neutral-400">{b.label}</span>
-                </div>
-              ))}
+          {/* Score distribution — clickable bars (same as upload results) */}
+          <div className="border border-neutral-200 bg-white p-5 mb-10">
+            <div className="flex items-center justify-between mb-3">
+              <h2 className="text-[10px] uppercase tracking-[0.15em] text-neutral-400">Score Distribution</h2>
+              {scoreFilter !== null && (
+                <button onClick={() => setScoreFilter(null)} className="text-[10px] text-neutral-400 hover:text-neutral-900 underline">Show all</button>
+              )}
+            </div>
+            <div className="flex items-end gap-1.5 h-20">
+              {buckets.map(b => {
+                const isActive = scoreFilter === b.label;
+                return (
+                  <button key={b.label} onClick={() => setScoreFilter(isActive ? null : b.label)} className="flex-1 flex flex-col items-center gap-1 group">
+                    {b.count > 0 && <span className={`text-[9px] font-medium ${isActive ? "text-neutral-900" : "text-neutral-400"}`}>{b.count}</span>}
+                    <div className={`w-full rounded-sm transition-all ${isActive ? "bg-neutral-900" : b.count > 0 ? "bg-neutral-300 group-hover:bg-neutral-900" : "bg-neutral-100"}`}
+                      style={{ height: `${(b.count / maxBucket) * 60}px`, minHeight: b.count > 0 ? 3 : 0 }} />
+                    <span className={`text-[9px] ${isActive ? "text-neutral-900 font-bold" : "text-neutral-400"}`}>{b.label}</span>
+                  </button>
+                );
+              })}
             </div>
           </div>
 
@@ -148,13 +158,13 @@ export default function HistoryPage() {
             ))}
           </div>
 
-          {/* Tier sections */}
+          {/* Tier sections — filtered by score range if histogram bar clicked */}
           {[
             { label: "Top Tier", range: "70+", items: topTier, bg: "bg-neutral-900", text: "text-white" },
             { label: "Good Fit", range: "50-69", items: goodFit, bg: "bg-neutral-100", text: "text-neutral-900" },
             { label: "Moderate", range: "30-49", items: moderate, bg: "bg-white", text: "text-neutral-700" },
             { label: "Low Fit", range: "<30", items: lowFit, bg: "bg-white", text: "text-neutral-500" },
-          ].filter(t => t.items.length > 0).map(tier => (
+          ].map(t => ({ ...t, items: scoreFilter !== null ? t.items.filter(r => r.score >= scoreFilter && r.score < scoreFilter + 10) : t.items })).filter(t => t.items.length > 0).map(tier => (
             <div key={tier.label} className="mb-8">
               <div className="flex items-center gap-2 mb-3">
                 <span className={`px-2 py-0.5 rounded text-[10px] font-bold ${tier.bg} ${tier.text}`}>{tier.label}</span>
@@ -307,25 +317,26 @@ function Metric({ value, label, highlight }: { value: string | number; label: st
   );
 }
 
-// ── Candidate row ──
+// ── Candidate row — matches upload/results page exactly ──
 function CandidateRow({ candidate: c }: { candidate: ScoredCandidate }) {
   const [open, setOpen] = useState(false);
   return (
     <div className="border border-neutral-200 bg-white hover:border-neutral-300 transition-colors">
-      <button onClick={() => setOpen(!open)} className="w-full text-left p-3 sm:p-4 flex items-center gap-3">
+      <div className="flex items-center gap-4 p-4 cursor-pointer hover:bg-neutral-50" onClick={() => setOpen(!open)}>
         {/* Photo */}
         {c.photo_url ? (
-          <img src={c.photo_url} alt="" className="w-9 h-9 rounded-full object-cover shrink-0 border border-neutral-200" />
+          <img src={c.photo_url} alt={c.name} className="w-12 h-12 rounded-lg object-cover shrink-0" />
         ) : (
-          <div className="w-9 h-9 rounded-full bg-neutral-100 shrink-0 flex items-center justify-center text-[10px] font-bold text-neutral-400">
+          <div className="w-12 h-12 rounded-lg bg-neutral-100 shrink-0 flex items-center justify-center text-neutral-400 font-bold">
             {(c.name || "?")[0]}
           </div>
         )}
 
-        {/* Name + meta */}
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-2">
-            <span className="text-sm font-medium text-neutral-900 truncate">{c.name}</span>
+            <span className="text-[10px] text-neutral-400 font-mono">#{c.rank}</span>
+            <span className="font-semibold text-sm">{c.name}</span>
+            <span className={`px-2 py-0.5 text-xs font-bold ${c.score >= 70 ? "bg-neutral-900 text-white" : c.score >= 50 ? "bg-neutral-100" : "text-neutral-400"}`}>{c.score}</span>
             {c.linkedin_url && (
               <a href={c.linkedin_url} target="_blank" rel="noopener noreferrer" onClick={e => e.stopPropagation()}
                 className="text-neutral-400 hover:text-neutral-600 shrink-0">
@@ -333,43 +344,69 @@ function CandidateRow({ candidate: c }: { candidate: ScoredCandidate }) {
               </a>
             )}
           </div>
-          {c.reasoning && <p className="text-[11px] text-neutral-500 truncate mt-0.5">{c.reasoning}</p>}
+          <p className="text-xs text-neutral-500 line-clamp-1 mt-0.5">{c.reasoning}</p>
         </div>
+      </div>
 
-        {/* Score */}
-        <div className={`shrink-0 w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold ${
-          c.score >= 70 ? "bg-neutral-900 text-white" : c.score >= 50 ? "bg-neutral-200 text-neutral-900" : "bg-neutral-100 text-neutral-500"
-        }`}>
-          {c.score}
-        </div>
-      </button>
-
-      {/* Expanded detail */}
+      {/* Expanded — same as upload results: pie chart + legend + evidence + highlights/gaps */}
       {open && (
-        <div className="px-4 pb-4 pt-1 border-t border-neutral-100 space-y-3">
-          {c.reasoning && (
-            <p className="text-xs text-neutral-600 leading-relaxed">{c.reasoning}</p>
-          )}
+        <div className="px-4 pb-4 border-t border-neutral-100">
+          <div className="mt-3 h-1 bg-neutral-100 mb-3"><div className="h-full bg-neutral-900" style={{ width: `${c.score}%` }} /></div>
+          <p className="text-sm text-neutral-700 mb-3">{c.reasoning}</p>
           {c.criteria && c.criteria.length > 0 && (
-            <div className="space-y-1.5">
-              {c.criteria.map((cr, j) => (
-                <div key={j} className="flex items-center gap-2">
-                  <span className="text-[10px] text-neutral-500 w-28 shrink-0 truncate">{cr.name}</span>
-                  <div className="flex-1 h-1.5 bg-neutral-100 rounded-full overflow-hidden">
-                    <div className="h-full bg-neutral-900 rounded-full" style={{ width: `${(cr.score / (cr.max || 1)) * 100}%` }} />
-                  </div>
-                  <span className="text-[10px] font-bold text-neutral-700 w-10 text-right tabular-nums">{cr.score}/{cr.max}</span>
-                </div>
-              ))}
+            <div className="flex flex-col sm:flex-row gap-4 mb-3">
+              {/* Donut pie chart */}
+              <div className="shrink-0">
+                <svg width="100" height="100" viewBox="0 0 100 100">
+                  {(() => {
+                    const colors = ["#171717", "#404040", "#737373", "#a3a3a3", "#d4d4d4", "#e5e5e5"];
+                    let cumulative = 0;
+                    const total = c.criteria!.reduce((s, cr) => s + (cr.max || 0), 0) || 100;
+                    return c.criteria!.map((cr, i) => {
+                      const startAngle = cumulative * 2 * Math.PI;
+                      cumulative += (cr.max || 0) / total;
+                      const scorePct = (cr.score || 0) / total;
+                      const scoreEndAngle = startAngle + scorePct * 2 * Math.PI;
+                      const x1 = 50 + 45 * Math.cos(startAngle - Math.PI / 2);
+                      const y1 = 50 + 45 * Math.sin(startAngle - Math.PI / 2);
+                      const x2 = 50 + 45 * Math.cos(scoreEndAngle - Math.PI / 2);
+                      const y2 = 50 + 45 * Math.sin(scoreEndAngle - Math.PI / 2);
+                      const large = scorePct > 0.5 ? 1 : 0;
+                      return (
+                        <g key={i}>
+                          <title>{cr.name}: {cr.score}/{cr.max} — {cr.evidence || ""}</title>
+                          <path d={`M50,50 L${x1},${y1} A45,45 0 ${large},1 ${x2},${y2} Z`} fill={colors[i % colors.length]} className="hover:opacity-80 transition-opacity cursor-pointer" />
+                        </g>
+                      );
+                    });
+                  })()}
+                  <circle cx="50" cy="50" r="22" fill="white" />
+                  <text x="50" y="50" textAnchor="middle" dominantBaseline="central" className="text-lg font-bold" fill="#171717">{c.score}</text>
+                </svg>
+              </div>
+              {/* Legend with scores + evidence */}
+              <div className="flex-1 space-y-1.5">
+                {c.criteria!.map((cr, i) => {
+                  const colors = ["#171717", "#404040", "#737373", "#a3a3a3", "#d4d4d4", "#e5e5e5"];
+                  return (
+                    <div key={i} className="flex items-start gap-2">
+                      <div className="w-2.5 h-2.5 rounded-sm shrink-0 mt-0.5" style={{ backgroundColor: colors[i % colors.length] }} />
+                      <div className="flex-1">
+                        <div className="flex justify-between">
+                          <span className="text-[11px] font-medium">{cr.name}</span>
+                          <span className="text-[11px] font-bold tabular-nums">{cr.score}/{cr.max}</span>
+                        </div>
+                        {cr.evidence && <p className="text-[10px] text-neutral-500 leading-tight">{cr.evidence}</p>}
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
             </div>
           )}
-          <div className="flex gap-3 flex-wrap">
-            {(c.highlights || []).map((h, i) => (
-              <span key={i} className="text-[10px] text-neutral-600 bg-neutral-50 px-2 py-0.5 border border-neutral-200">{h}</span>
-            ))}
-            {(c.gaps || []).map((g, i) => (
-              <span key={i} className="text-[10px] text-neutral-400 bg-white px-2 py-0.5 border border-neutral-100 line-through">{g}</span>
-            ))}
+          <div className="flex gap-4">
+            {(c.highlights||[]).length > 0 && <div>{c.highlights!.map((h,i) => <span key={i} className="inline-block text-[10px] bg-neutral-50 border border-neutral-100 rounded px-1.5 py-0.5 mr-1 mb-1">+ {h}</span>)}</div>}
+            {(c.gaps||[]).length > 0 && <div>{c.gaps!.map((g,i) => <span key={i} className="inline-block text-[10px] text-neutral-400 bg-neutral-50 border border-neutral-100 rounded px-1.5 py-0.5 mr-1 mb-1">- {g}</span>)}</div>}
           </div>
         </div>
       )}

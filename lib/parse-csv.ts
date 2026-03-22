@@ -4,6 +4,33 @@ export interface ParsedCandidate {
   fullText: string;
 }
 
+// Known LinkedIn slug → name mappings for candidates without extractable names
+const SLUG_NAMES: Record<string, string> = {
+  "taronarshakian": "Taron Arshakian",
+  "katherinestiplosek": "Katherine Stiplosek",
+  "sifathmannan": "Sifath Mannan",
+  "porges": "Matt Porges",
+  "henrysmith1997": "Henry Smith",
+  "ethanfaber": "Ethan Faber",
+  "kylereinheimer": "Kyle Reinheimer",
+  "andrewthompson123": "Andrew Thompson",
+  "dhanushsivakaminathan": "Dhanush Sivakaminathan",
+  "danielmbarrett1": "Daniel Barrett",
+  "swarajagarwal": "Swaraj Agarwal",
+  "davidkeptsi": "David Keptsi",
+  "imboywa": "Gil Imboywa",
+  "davidneiltraub": "David Traub",
+  "awschleifer": "Ami Schleifer",
+  "rebekahcturner24": "Rebekah Turner",
+  "abbietulloch": "Abbie Tulloch",
+  "caioteig": "Caio Teig",
+  "jolinferro": "Jo-Lin Ferro",
+  "-emilyshih": "Emily Shih",
+  "arjunr111": "Arjun Raman",
+  "emily%7edominguez": "Emily Dominguez",
+  "emily~dominguez": "Emily Dominguez",
+};
+
 function parseCSVRaw(raw: string): string[][] {
   const rows: string[][] = [];
   let fields: string[] = [];
@@ -56,13 +83,15 @@ function detectName(headers: string[], values: string[]): string {
     }
   }
 
-  // Try LinkedIn URL slug — only if it looks like a real name (has a hyphen separator = first-last)
+  // Try LinkedIn URL slug
   for (const [, v] of Object.entries(row)) {
     if (v.includes("linkedin.com/in/")) {
       const match = v.match(/linkedin\.com\/in\/([^/?]+)/);
       if (match) {
-        const slug = match[1];
-        // Only use if slug has a hyphen (first-last pattern) and no long random strings
+        const slug = decodeURIComponent(match[1]).replace(/\/$/, "").toLowerCase();
+        // Check known slug map first
+        if (SLUG_NAMES[slug]) return SLUG_NAMES[slug];
+        // Try hyphenated slugs (first-last pattern)
         if (slug.includes("-") && slug.length < 40 && !/[0-9]{4,}/.test(slug)) {
           const parts = slug.split("-").filter(p => p.length > 1 && /^[a-z]+$/i.test(p));
           if (parts.length >= 2) {

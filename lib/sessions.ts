@@ -4,6 +4,7 @@ export interface ScoredCandidate {
   photo_url?: string;
   linkedin_url?: string;
   evidence?: Record<string, string>;
+  criteria?: { name: string; score: number; max: number; evidence: string }[];
 }
 
 export interface MatchSession {

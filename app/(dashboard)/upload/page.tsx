@@ -147,6 +147,7 @@ export default function UploadPage() {
                 photo_url: data.photo_url || "",
                 linkedin_url: data.linkedin_url || "",
                 evidence: data.evidence || {},
+                criteria: data.criteria || [],
               });
               setProgress({ done: doneCount, total: parsed.length });
               const sorted = [...scoredMap.values()].sort((a, b) => b.score - a.score);
@@ -343,24 +344,44 @@ export default function UploadPage() {
                       )}
                       <p className="text-sm text-zinc-700 mb-3">{c.reasoning}</p>
 
-                      {/* Evidence from CSV/LinkedIn */}
-                      {c.evidence && Object.keys(c.evidence).length > 0 && (
-                        <div className="mb-3">
-                          <h4 className="text-xs font-semibold text-zinc-400 uppercase mb-2">Source Evidence</h4>
-                          <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
-                            {Object.entries(c.evidence).map(([key, val]) => (
-                              <div key={key} className="border border-zinc-100 rounded px-2 py-1.5 bg-zinc-50">
-                                <div className="text-[10px] text-zinc-400 uppercase">{key.replace(/_/g, " ")}</div>
-                                <div className="text-xs text-zinc-700 truncate" title={val}>{val}</div>
+                      {/* Per-criterion breakdown with evidence */}
+                      {c.criteria && c.criteria.length > 0 && (
+                        <div className="mb-4">
+                          <h4 className="text-xs font-semibold text-neutral-400 uppercase tracking-wider mb-2">Score Breakdown</h4>
+                          <div className="space-y-2">
+                            {c.criteria.map((cr, i) => (
+                              <div key={i} className="border border-neutral-100 rounded-lg p-2.5">
+                                <div className="flex items-center justify-between mb-1">
+                                  <span className="text-xs font-semibold">{cr.name}</span>
+                                  <span className="text-xs font-bold tabular-nums">{cr.score}/{cr.max}</span>
+                                </div>
+                                <div className="h-1.5 bg-neutral-100 rounded-full overflow-hidden mb-1.5">
+                                  <div className="h-full bg-neutral-900 rounded-full" style={{ width: `${cr.max > 0 ? (cr.score / cr.max) * 100 : 0}%` }} />
+                                </div>
+                                {cr.evidence && <p className="text-[11px] text-neutral-500 leading-relaxed">{cr.evidence}</p>}
                               </div>
                             ))}
                           </div>
                         </div>
                       )}
 
+                      {/* Raw data evidence */}
+                      {c.evidence && Object.keys(c.evidence).length > 0 && (
+                        <div className="mb-3">
+                          <h4 className="text-xs font-semibold text-neutral-400 uppercase tracking-wider mb-2">Raw Data</h4>
+                          <div className="flex flex-wrap gap-1.5">
+                            {Object.entries(c.evidence).map(([key, val]) => (
+                              <span key={key} className="text-[10px] text-neutral-600 bg-neutral-50 border border-neutral-100 rounded px-1.5 py-0.5" title={val}>
+                                {key.replace(/_/g, " ")}: {val.length > 30 ? val.slice(0, 30) + "..." : val}
+                              </span>
+                            ))}
+                          </div>
+                        </div>
+                      )}
+
                       <div className="grid sm:grid-cols-2 gap-3">
-                        {c.highlights.length > 0 && <div><h4 className="text-xs font-semibold text-zinc-400 uppercase mb-1.5">Strengths</h4>{c.highlights.map((h,i) => <p key={i} className="text-sm text-zinc-700 mb-1">+ {h}</p>)}</div>}
-                        {c.gaps.length > 0 && <div><h4 className="text-xs font-semibold text-zinc-400 uppercase mb-1.5">Gaps</h4>{c.gaps.map((g,i) => <p key={i} className="text-sm text-zinc-600 mb-1">- {g}</p>)}</div>}
+                        {c.highlights.length > 0 && <div><h4 className="text-xs font-semibold text-neutral-400 uppercase mb-1.5">Strengths</h4>{c.highlights.map((h,i) => <p key={i} className="text-xs text-neutral-700 mb-1">+ {h}</p>)}</div>}
+                        {c.gaps.length > 0 && <div><h4 className="text-xs font-semibold text-neutral-400 uppercase mb-1.5">Gaps</h4>{c.gaps.map((g,i) => <p key={i} className="text-xs text-neutral-600 mb-1">- {g}</p>)}</div>}
                       </div>
                     </div>
                   )}

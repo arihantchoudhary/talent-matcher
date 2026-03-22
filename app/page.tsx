@@ -16,8 +16,8 @@ export default async function LandingPage() {
               <Link href="/upload" className="text-sm font-medium hover:underline underline-offset-4">Dashboard</Link>
             ) : (
               <>
-                <Link href="/sign-in" className="text-sm text-neutral-500 hover:text-neutral-900">Sign in</Link>
-                <Link href="/sign-up" className="text-sm font-medium bg-neutral-900 text-white px-4 py-1.5 rounded-md hover:bg-black transition-colors">Get started</Link>
+                <Link href="/sign-in" className="text-sm text-neutral-500 hover:text-neutral-900 py-2">Sign in</Link>
+                <Link href="/sign-up" className="text-sm font-medium bg-neutral-900 text-white px-4 py-2 rounded-md hover:bg-black transition-colors">Get started</Link>
               </>
             )}
           </div>
@@ -147,7 +147,7 @@ export default async function LandingPage() {
           <h2 className="text-2xl md:text-3xl font-serif italic mb-4">Ready to match?</h2>
           <p className="text-neutral-400 mb-8">Free to start. No credit card.</p>
           <Link href={loggedIn ? "/upload" : "/sign-up"}
-            className="inline-block text-sm font-medium bg-white text-neutral-900 px-6 py-2.5 rounded-md hover:bg-neutral-100 transition-colors">
+            className="inline-block text-sm font-medium bg-white text-neutral-900 px-6 py-3 rounded-md hover:bg-neutral-100 transition-colors">
             {loggedIn ? "Go to dashboard" : "Get started free"}
           </Link>
         </div>

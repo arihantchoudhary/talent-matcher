@@ -100,6 +100,7 @@ export default function UploadPage() {
   const [totalTokens, setTotalTokens] = useState(0);
   const [totalCost, setTotalCost] = useState(0);
   const [viewMode, setViewMode] = useState<"list" | "card" | "table">("list");
+  const [scoreFilter, setScoreFilter] = useState<number | null>(null); // null = all, 40 = 40-49 range
   const [elapsed, setElapsed] = useState(0);
   const [startTime] = useState(() => Date.now());
 
@@ -354,21 +355,32 @@ export default function UploadPage() {
           </div>
         </div>
 
-        {/* Score distribution */}
-        <div className="border border-neutral-200 bg-white p-4 mb-6">
-          <div className="flex items-end gap-1 h-12">
+        {/* Score distribution — clickable bars */}
+        <div className="border border-neutral-200 bg-white rounded-lg p-5 mb-8">
+          <div className="flex items-center justify-between mb-3">
+            <p className="text-xs uppercase tracking-[0.1em] text-neutral-400">Score Distribution</p>
+            {scoreFilter !== null && (
+              <button onClick={() => setScoreFilter(null)} className="text-[10px] text-neutral-400 hover:text-neutral-900 underline">Show all</button>
+            )}
+          </div>
+          <div className="flex items-end gap-1.5 h-16">
             {[0,10,20,30,40,50,60,70,80,90].map(b => {
               const count = results.filter(r => r.score >= b && r.score < b + 10).length;
               const max = Math.max(...[0,10,20,30,40,50,60,70,80,90].map(x => results.filter(r => r.score >= x && r.score < x + 10).length), 1);
+              const isActive = scoreFilter === b;
               return (
-                <div key={b} className="flex-1 flex flex-col items-center gap-0.5">
-                  {count > 0 && <span className="text-[8px] text-neutral-500">{count}</span>}
-                  <div className="w-full bg-neutral-900 rounded-sm" style={{ height: `${(count / max) * 40}px`, minHeight: count > 0 ? 2 : 0 }} />
-                  <span className="text-[8px] text-neutral-400">{b}</span>
-                </div>
+                <button key={b} onClick={() => setScoreFilter(isActive ? null : b)} className="flex-1 flex flex-col items-center gap-1 group">
+                  {count > 0 && <span className={`text-[9px] font-medium ${isActive ? "text-neutral-900" : "text-neutral-400"}`}>{count}</span>}
+                  <div className={`w-full rounded transition-all ${isActive ? "bg-neutral-900" : count > 0 ? "bg-neutral-300 group-hover:bg-neutral-900" : "bg-neutral-100"}`}
+                    style={{ height: `${(count / max) * 48}px`, minHeight: count > 0 ? 3 : 0 }} />
+                  <span className={`text-[9px] ${isActive ? "text-neutral-900 font-bold" : "text-neutral-400"}`}>{b}</span>
+                </button>
               );
             })}
           </div>
+          {scoreFilter !== null && (
+            <p className="text-xs text-neutral-500 mt-3">Showing {results.filter(r => r.score >= scoreFilter && r.score < scoreFilter + 10).length} candidates with scores {scoreFilter}-{scoreFilter + 9}. Drag to re-rank within this group.</p>
+          )}
         </div>
 
         {/* View toggle */}
@@ -382,17 +394,23 @@ export default function UploadPage() {
         </div>
 
         {/* LIST VIEW */}
-        {viewMode === "list" && (
+        {viewMode === "list" && (() => {
+          const displayResults = scoreFilter !== null
+            ? results.filter(r => r.score >= scoreFilter && r.score < scoreFilter + 10)
+            : results;
+          return (
           <div className="space-y-2">
-            {results.map((c, idx) => (
+            {displayResults.map((c, idx) => {
+              const realIdx = results.indexOf(c);
+              return (
               <div key={c.id} className="border border-neutral-200 bg-white rounded-lg overflow-hidden">
                 <div className="flex items-center gap-4 p-4 cursor-pointer hover:bg-neutral-50" onClick={() => setExpanded(expanded === c.id ? null : c.id)}>
                   {/* Rerank arrows */}
                   <div className="flex flex-col gap-0.5 shrink-0">
-                    <button onClick={e => { e.stopPropagation(); moveCandidate(idx, "up"); }} className="text-neutral-300 hover:text-neutral-900 disabled:opacity-20" disabled={idx === 0}>
+                    <button onClick={e => { e.stopPropagation(); moveCandidate(realIdx, "up"); }} className="text-neutral-300 hover:text-neutral-900 disabled:opacity-20" disabled={realIdx === 0}>
                       <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="m18 15-6-6-6 6" /></svg>
                     </button>
-                    <button onClick={e => { e.stopPropagation(); moveCandidate(idx, "down"); }} className="text-neutral-300 hover:text-neutral-900 disabled:opacity-20" disabled={idx === results.length - 1}>
+                    <button onClick={e => { e.stopPropagation(); moveCandidate(realIdx, "down"); }} className="text-neutral-300 hover:text-neutral-900 disabled:opacity-20" disabled={realIdx === results.length - 1}>
                       <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="m6 9 6 6 6-6" /></svg>
                     </button>
                   </div>
@@ -471,9 +489,11 @@ export default function UploadPage() {
                   </div>
                 )}
               </div>
-            ))}
+            );
+            })}
           </div>
-        )}
+          );
+        })()}
 
         {/* CARD VIEW */}
         {viewMode === "card" && (

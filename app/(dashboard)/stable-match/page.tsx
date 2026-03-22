@@ -195,7 +195,7 @@ export default function StableMatchPage() {
             <h1 className="text-2xl font-bold">Stable Matching Results</h1>
             <p className="text-sm text-neutral-500">{totalMatched} matched, {unmatchedNames.length} unmatched across {matchResults.length} roles</p>
           </div>
-          <button onClick={() => { setStep("setup"); setMatchResults([]); }} className="text-sm text-purple-600 hover:text-purple-800">Start over</button>
+          <button onClick={() => { setStep("setup"); setMatchResults([]); }} className="text-sm text-neutral-900 hover:text-neutral-800">Start over</button>
         </div>
 
         <div className="space-y-4 mb-8">
@@ -205,7 +205,7 @@ export default function StableMatchPage() {
                 className="w-full text-left px-5 py-4 flex items-center justify-between hover:bg-neutral-50">
                 <div>
                   <div className="flex items-center gap-2">
-                    <span className="px-2 py-0.5 rounded text-xs font-semibold bg-purple-100 text-purple-700">Role {rIdx + 1}</span>
+                    <span className="px-2 py-0.5 rounded text-xs font-semibold bg-neutral-100 text-neutral-700">Role {rIdx + 1}</span>
                     <span className="font-semibold">{m.roleTitle}</span>
                   </div>
                   <p className="text-sm text-neutral-500 mt-0.5">{m.candidates.length} matched</p>
@@ -260,7 +260,7 @@ export default function StableMatchPage() {
   if (step === "matching") {
     return (
       <div className="max-w-2xl mx-auto px-6 py-16 text-center">
-        <div className="w-14 h-14 rounded-2xl bg-purple-100 flex items-center justify-center mx-auto mb-5 animate-pulse">
+        <div className="w-14 h-14 rounded-2xl bg-neutral-100 flex items-center justify-center mx-auto mb-5 animate-pulse">
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#7c3aed" strokeWidth="2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" /><circle cx="9" cy="7" r="4" /><path d="M22 21v-2a4 4 0 0 0-3-3.87" /><path d="M16 3.13a4 4 0 0 1 0 7.75" /></svg>
         </div>
         <h2 className="text-xl font-bold">Running Gale-Shapley...</h2>
@@ -302,12 +302,12 @@ export default function StableMatchPage() {
       </div>
 
       {/* Run stable match */}
-      <div className="mt-6 rounded-xl border border-purple-200 bg-purple-50 p-5 text-center">
+      <div className="mt-6 rounded-xl border border-neutral-200 bg-neutral-50 p-5 text-center">
         <p className="text-sm text-neutral-600 mb-3">
           {allDone} of {slots.length} roles scored &middot; {readyForMatch ? "Ready to match" : "Score at least 2 roles to run stable matching"}
         </p>
         <button onClick={runStableMatch} disabled={!readyForMatch}
-          className="px-6 py-3 rounded-xl bg-purple-600 text-white font-semibold text-sm hover:bg-purple-700 disabled:opacity-40 disabled:cursor-not-allowed transition-colors">
+          className="px-6 py-3 rounded-xl bg-neutral-900 text-white font-semibold text-sm hover:bg-neutral-700 disabled:opacity-40 disabled:cursor-not-allowed transition-colors">
           Run Gale-Shapley Stable Matching
         </button>
       </div>
@@ -375,7 +375,7 @@ function RoleSlotCard({ slot, idx, roles, onSelectRole, onFile, onCapacity, onSc
         <div onDragOver={e => { e.preventDefault(); setDragging(true); }} onDragLeave={() => setDragging(false)} onDrop={handleDrop}
           onClick={() => fileRef.current?.click()}
           className={`rounded-lg border border-dashed p-2.5 text-center cursor-pointer text-sm ${
-            dragging ? "border-purple-400 bg-purple-50" : slot.fileName ? "border-emerald-300 bg-emerald-50" : "border-neutral-200 hover:border-neutral-300"
+            dragging ? "border-neutral-400 bg-neutral-50" : slot.fileName ? "border-emerald-300 bg-emerald-50" : "border-neutral-200 hover:border-neutral-300"
           }`}>
           <input ref={fileRef} type="file" accept=".csv" className="hidden" onChange={e => e.target.files?.[0] && onFile(e.target.files[0])} />
           {slot.fileName ? (

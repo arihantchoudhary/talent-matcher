@@ -135,20 +135,11 @@ export function App({ defaultResults }: { defaultResults: ScoredCandidate[] }) {
   const shortlistedResults = results.filter((r) => shortlist.has(r.id));
 
   return (
-    <div className="min-h-screen">
-      {/* Nav */}
-      <nav className="sticky top-0 z-50 bg-white/80 backdrop-blur-lg border-b border-[var(--border)]">
-        <div className="max-w-7xl mx-auto px-4 h-14 flex items-center gap-4">
-          <div className="flex items-center gap-2">
-            <div className="w-8 h-8 rounded-xl bg-[var(--accent)] flex items-center justify-center shadow-sm">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" /><circle cx="9" cy="7" r="4" />
-                <path d="M22 21v-2a4 4 0 0 0-3-3.87" /><path d="M16 3.13a4 4 0 0 1 0 7.75" />
-              </svg>
-            </div>
-            <span className="font-bold text-base">Talent Matcher</span>
-          </div>
-          <div className="hidden sm:flex items-center gap-1 ml-4 text-sm">
+    <div>
+      {/* Step nav bar */}
+      <div className="border-b bg-muted/30">
+        <div className="max-w-7xl mx-auto px-4 h-11 flex items-center gap-4">
+          <div className="flex items-center gap-1 text-sm">
             <StepPill n="1" label="Upload" active={step === "upload"} done={step !== "upload"} onClick={() => setStep("upload")} />
             <Chevron />
             <StepPill n="2" label="Match" active={step === "scoring" || step === "results"} done={step === "checkout"} onClick={() => results.length > 0 ? setStep("results") : undefined} />
@@ -166,7 +157,7 @@ export function App({ defaultResults }: { defaultResults: ScoredCandidate[] }) {
             </button>
           )}
         </div>
-      </nav>
+      </div>
 
       <main>
         {step === "upload" && <UploadStep onStart={handleStartScoring} />}

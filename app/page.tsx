@@ -1,5 +1,2 @@
-import { App } from "@/components/app";
-
-export default function Home() {
-  return <App defaultResults={[]} />;
-}
+// Root page — re-exports the marketing landing page
+export { default } from "./(marketing)/page";

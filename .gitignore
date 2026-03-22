@@ -6,3 +6,4 @@ out/
 takehome-assessment*
 data/candidates.csv
 .vercel
+.gstack/

@@ -156,7 +156,7 @@ export default async function LandingPage() {
       {/* Footer */}
       <footer className="border-t border-neutral-200 py-8 px-6">
         <div className="max-w-6xl mx-auto flex items-center justify-between text-xs text-neutral-400">
-          <span>Talent Matcher</span>
+          <span className="font-serif italic">Talent Matcher</span>
           <span>Powered by GPT-4o</span>
         </div>
       </footer>

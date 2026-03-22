@@ -49,6 +49,8 @@ export default function UploadPage() {
   const [results, setResults] = useState<ScoredCandidate[]>([]);
   const [logs, setLogs] = useState<{ name: string; step: string; detail: string }[]>([]);
   const [expanded, setExpanded] = useState<string | null>(null);
+  const [totalTokens, setTotalTokens] = useState(0);
+  const [totalCost, setTotalCost] = useState(0);
 
   // Sync from global context — if scoring was running and we navigated back
   useEffect(() => {
@@ -171,6 +173,8 @@ export default function UploadPage() {
                 evidence: data.evidence || {},
                 criteria: data.criteria || [],
               });
+              if (data.tokens) setTotalTokens(prev => prev + (data.tokens.prompt || 0) + (data.tokens.completion || 0));
+              if (data.cost) setTotalCost(prev => prev + data.cost);
               setProgress({ done: doneCount, total: parsed.length });
               const sorted = [...scoredMap.values()].sort((a, b) => b.score - a.score);
               sorted.forEach((s, i) => s.rank = i + 1);
@@ -374,6 +378,12 @@ export default function UploadPage() {
                   <div className="text-lg font-bold">{low}</div>
                   <div className="text-[10px] text-neutral-400 uppercase">Low Fit</div>
                 </div>
+                {totalTokens > 0 && (
+                  <div className="border border-neutral-200 bg-white p-3 text-center col-span-2 md:col-span-1">
+                    <div className="text-lg font-bold">{(totalTokens / 1000).toFixed(1)}k</div>
+                    <div className="text-[10px] text-neutral-400 uppercase">Tokens (${totalCost.toFixed(4)})</div>
+                  </div>
+                )}
               </div>
             );
           })()}

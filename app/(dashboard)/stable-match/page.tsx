@@ -3,72 +3,80 @@
 import { useState, useRef, useEffect, DragEvent } from "react";
 import { ROLES as DEFAULT_ROLES, Role } from "@/lib/roles";
 import { loadRoles } from "@/lib/roles-api";
-import { parseCSV } from "@/lib/parse-csv";
+import { parseCSV, ParsedCandidate } from "@/lib/parse-csv";
 import { getApiKey } from "@/lib/api-key";
+import { stableMatch, MatchPreference } from "@/lib/stable-match";
 
-interface MatchedCandidate { idx: number; name: string; score: number; reasoning: string; highlights: string[]; gaps: string[]; }
-interface RoleMatch { roleIdx: number; roleTitle: string; candidates: MatchedCandidate[]; }
-interface UnmatchedCandidate { idx: number; name: string; bestRoleTitle: string; bestScore: number; reasoning: string; }
+interface ScoredCandidate { id: string; name: string; score: number; reasoning: string; highlights: string[]; gaps: string[]; }
+
+interface RoleSlot {
+  role: Role | null;
+  roleIdx: number;
+  fileName: string | null;
+  candidates: ParsedCandidate[];
+  scored: ScoredCandidate[];
+  scoring: boolean;
+  done: boolean;
+  capacity: number;
+}
+
+interface StableResult {
+  roleTitle: string;
+  candidates: ScoredCandidate[];
+}
 
 export default function StableMatchPage() {
   const [roles, setRoles] = useState<Role[]>(DEFAULT_ROLES);
-  const [selectedRoles, setSelectedRoles] = useState<Set<number>>(new Set());
-  const [capacities, setCapacities] = useState<Record<number, number>>({});
-
-  // CSV
-  const [fileName, setFileName] = useState<string | null>(null);
-  const [csvText, setCsvText] = useState<string | null>(null);
-  const [rowCount, setRowCount] = useState(0);
-  const [dragging, setDragging] = useState(false);
-  const fileRef = useRef<HTMLInputElement>(null);
-
-  // Scoring
-  const [step, setStep] = useState<"setup" | "scoring" | "results">("setup");
-  const [progress, setProgress] = useState({ scored: 0, total: 0, currentRole: "" });
-  const [matches, setMatches] = useState<RoleMatch[]>([]);
-  const [unmatched, setUnmatched] = useState<UnmatchedCandidate[]>([]);
+  const [slots, setSlots] = useState<RoleSlot[]>([createSlot(0)]);
+  const [step, setStep] = useState<"setup" | "matching" | "results">("setup");
+  const [matchResults, setMatchResults] = useState<StableResult[]>([]);
+  const [unmatchedNames, setUnmatchedNames] = useState<string[]>([]);
   const [expandedRole, setExpandedRole] = useState<number | null>(null);
 
   useEffect(() => { loadRoles().then(setRoles); }, []);
 
-  function handleFile(file: File) {
-    setFileName(file.name);
+  function createSlot(idx: number): RoleSlot {
+    return { role: null, roleIdx: idx, fileName: null, candidates: [], scored: [], scoring: false, done: false, capacity: 3 };
+  }
+
+  function addSlot() {
+    setSlots(prev => [...prev, createSlot(prev.length)]);
+  }
+
+  function removeSlot(idx: number) {
+    if (slots.length <= 1) return;
+    setSlots(prev => prev.filter((_, i) => i !== idx));
+  }
+
+  function updateSlot(idx: number, updates: Partial<RoleSlot>) {
+    setSlots(prev => prev.map((s, i) => i === idx ? { ...s, ...updates } : s));
+  }
+
+  function handleFile(slotIdx: number, file: File) {
     const reader = new FileReader();
-    reader.onload = (e) => { const t = e.target?.result as string; setCsvText(t); setRowCount(parseCSV(t).length); };
+    reader.onload = (e) => {
+      const text = e.target?.result as string;
+      const parsed = parseCSV(text);
+      updateSlot(slotIdx, { fileName: file.name, candidates: parsed });
+    };
     reader.readAsText(file);
   }
-  function handleDrop(e: DragEvent) { e.preventDefault(); setDragging(false); e.dataTransfer.files[0] && handleFile(e.dataTransfer.files[0]); }
 
-  function toggleRole(idx: number) {
-    setSelectedRoles(prev => {
-      const n = new Set(prev);
-      if (n.has(idx)) n.delete(idx); else n.add(idx);
-      return n;
-    });
-    if (!capacities[idx]) setCapacities(prev => ({ ...prev, [idx]: 3 }));
-  }
+  // Score one slot's candidates against its role
+  async function scoreSlot(slotIdx: number) {
+    const slot = slots[slotIdx];
+    if (!slot.role || slot.candidates.length === 0) return;
 
-  async function startMatching() {
-    if (!csvText || selectedRoles.size === 0) return;
-    const parsed = parseCSV(csvText);
-    if (parsed.length === 0) return;
+    updateSlot(slotIdx, { scoring: true, scored: [] });
 
-    const rolesList = [...selectedRoles].map(idx => ({
-      title: roles[idx].title,
-      description: roles[idx].description,
-      capacity: capacities[idx] || 3,
-    }));
-
-    setStep("scoring");
-    setProgress({ scored: 0, total: parsed.length * rolesList.length, currentRole: rolesList[0].title });
-
+    const scored: ScoredCandidate[] = [];
     try {
-      const resp = await fetch("/api/stable-match", {
+      const resp = await fetch("/api/score", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          candidates: parsed.map(c => ({ id: c.id, name: c.name, fullText: c.fullText })),
-          roles: rolesList,
+          candidates: slot.candidates.map(c => ({ id: c.id, name: c.name, fullText: c.fullText })),
+          jobDescription: `${slot.role.title}\n\n${slot.role.description}`,
           apiKey: getApiKey(),
         }),
       });
@@ -89,86 +97,136 @@ export default function StableMatchPage() {
           if (!line.startsWith("data: ")) continue;
           try {
             const data = JSON.parse(line.slice(6));
-            if (data.type === "scored") {
-              setProgress({ scored: data.scored, total: data.total, currentRole: data.roleTitle });
-            } else if (data.type === "scoring_role") {
-              setProgress(prev => ({ ...prev, currentRole: data.roleTitle }));
-            } else if (data.type === "done") {
-              setMatches(data.matches || []);
-              setUnmatched(data.unmatched || []);
-              setStep("results");
+            if (data.type === "scored" || data.type === "error") {
+              scored.push({
+                id: data.id, name: data.name, score: data.score || 0,
+                reasoning: data.reasoning || data.error || "",
+                highlights: data.highlights || [], gaps: data.gaps || [],
+              });
+              updateSlot(slotIdx, { scored: [...scored] });
             }
           } catch {}
         }
       }
-    } catch (err) {
-      console.error(err);
-      setStep("results");
-    }
+    } catch (err) { console.error(err); }
+
+    updateSlot(slotIdx, { scoring: false, done: true, scored });
   }
 
-  // ── SCORING ──
-  if (step === "scoring") {
-    const pct = progress.total > 0 ? Math.round((progress.scored / progress.total) * 100) : 0;
-    return (
-      <div className="max-w-2xl mx-auto px-6 py-16 text-center">
-        <div className="w-14 h-14 rounded-2xl bg-purple-100 flex items-center justify-center mx-auto mb-5 animate-pulse">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#7c3aed" strokeWidth="2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" /><circle cx="9" cy="7" r="4" /><path d="M22 21v-2a4 4 0 0 0-3-3.87" /><path d="M16 3.13a4 4 0 0 1 0 7.75" /></svg>
-        </div>
-        <h2 className="text-xl font-bold mb-1">Running stable matching...</h2>
-        <p className="text-sm text-zinc-500 mb-2">Scoring {rowCount} candidates against {selectedRoles.size} roles</p>
-        <p className="text-xs text-purple-600 font-medium mb-6">Currently: {progress.currentRole}</p>
-        <div className="h-2.5 rounded-full bg-zinc-100 overflow-hidden max-w-md mx-auto mb-2">
-          <div className="h-full rounded-full bg-purple-600 transition-all duration-300" style={{ width: `${pct}%` }} />
-        </div>
-        <p className="text-xs text-zinc-400">{progress.scored} / {progress.total} scores ({pct}%)</p>
-      </div>
-    );
+  // Run stable matching across all scored slots
+  function runStableMatch() {
+    const readySlots = slots.filter(s => s.done && s.scored.length > 0 && s.role);
+    if (readySlots.length < 2) return;
+
+    setStep("matching");
+
+    // Build global candidate list (deduplicate by name)
+    const allCandidates = new Map<string, { name: string; slotScores: Map<number, ScoredCandidate> }>();
+
+    readySlots.forEach((slot, slotIdx) => {
+      for (const sc of slot.scored) {
+        const key = sc.name.toLowerCase().trim();
+        if (!allCandidates.has(key)) {
+          allCandidates.set(key, { name: sc.name, slotScores: new Map() });
+        }
+        allCandidates.get(key)!.slotScores.set(slotIdx, sc);
+      }
+    });
+
+    const candidateList = [...allCandidates.values()];
+    const numRoles = readySlots.length;
+    const numCandidates = candidateList.length;
+
+    // Build score matrix
+    const scores: MatchPreference[][] = [];
+    for (let r = 0; r < numRoles; r++) {
+      const roleScores: MatchPreference[] = [];
+      for (let c = 0; c < numCandidates; c++) {
+        const sc = candidateList[c].slotScores.get(r);
+        roleScores.push({
+          roleIdx: r, candidateIdx: c,
+          score: sc?.score || 0,
+          reasoning: sc?.reasoning || "Not scored for this role",
+          highlights: sc?.highlights || [],
+          gaps: sc?.gaps || [],
+        });
+      }
+      scores.push(roleScores);
+    }
+
+    const result = stableMatch(numRoles, numCandidates, readySlots.map(s => s.capacity), scores);
+
+    // Build results
+    const results: StableResult[] = [];
+    for (let r = 0; r < numRoles; r++) {
+      const matched = result.roleMatches.get(r) || [];
+      results.push({
+        roleTitle: readySlots[r].role!.title,
+        candidates: matched
+          .map(cIdx => {
+            const pref = scores[r].find(s => s.candidateIdx === cIdx);
+            return {
+              id: `${cIdx}`, name: candidateList[cIdx].name,
+              score: pref?.score || 0, reasoning: pref?.reasoning || "",
+              highlights: pref?.highlights || [], gaps: pref?.gaps || [],
+            };
+          })
+          .sort((a, b) => b.score - a.score),
+      });
+    }
+
+    const unmatched = result.unmatched.map(cIdx => candidateList[cIdx].name);
+
+    setMatchResults(results);
+    setUnmatchedNames(unmatched);
+    setStep("results");
   }
+
+  const allDone = slots.filter(s => s.done).length;
+  const readyForMatch = slots.filter(s => s.done && s.scored.length > 0).length >= 2;
 
   // ── RESULTS ──
   if (step === "results") {
-    const totalMatched = matches.reduce((s, m) => s + m.candidates.length, 0);
+    const totalMatched = matchResults.reduce((s, m) => s + m.candidates.length, 0);
     return (
       <div className="max-w-4xl mx-auto px-6 py-8">
         <div className="flex items-center justify-between mb-6">
           <div>
             <h1 className="text-2xl font-bold">Stable Matching Results</h1>
-            <p className="text-sm text-zinc-500">{totalMatched} matched, {unmatched.length} unmatched across {matches.length} roles</p>
+            <p className="text-sm text-zinc-500">{totalMatched} matched, {unmatchedNames.length} unmatched across {matchResults.length} roles</p>
           </div>
-          <button onClick={() => { setStep("setup"); setMatches([]); setUnmatched([]); }} className="text-sm text-indigo-600 hover:text-indigo-800">New match</button>
+          <button onClick={() => { setStep("setup"); setMatchResults([]); }} className="text-sm text-purple-600 hover:text-purple-800">Start over</button>
         </div>
 
-        {/* Role matches */}
         <div className="space-y-4 mb-8">
-          {matches.map((m) => (
-            <div key={m.roleIdx} className="rounded-xl border border-zinc-200 bg-white overflow-hidden">
-              <button onClick={() => setExpandedRole(expandedRole === m.roleIdx ? null : m.roleIdx)}
-                className="w-full text-left px-5 py-4 flex items-center justify-between hover:bg-zinc-50 transition-colors">
+          {matchResults.map((m, rIdx) => (
+            <div key={rIdx} className="rounded-xl border border-zinc-200 bg-white overflow-hidden">
+              <button onClick={() => setExpandedRole(expandedRole === rIdx ? null : rIdx)}
+                className="w-full text-left px-5 py-4 flex items-center justify-between hover:bg-zinc-50">
                 <div>
                   <div className="flex items-center gap-2">
-                    <span className="px-2 py-0.5 rounded text-xs font-semibold bg-purple-100 text-purple-700">Role {m.roleIdx + 1}</span>
+                    <span className="px-2 py-0.5 rounded text-xs font-semibold bg-purple-100 text-purple-700">Role {rIdx + 1}</span>
                     <span className="font-semibold">{m.roleTitle}</span>
                   </div>
-                  <p className="text-sm text-zinc-500 mt-0.5">{m.candidates.length} candidate{m.candidates.length !== 1 ? "s" : ""} matched</p>
+                  <p className="text-sm text-zinc-500 mt-0.5">{m.candidates.length} matched</p>
                 </div>
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className={`text-zinc-400 transition-transform ${expandedRole === m.roleIdx ? "rotate-180" : ""}`}><path d="m6 9 6 6 6-6" /></svg>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className={`text-zinc-400 transition-transform ${expandedRole === rIdx ? "rotate-180" : ""}`}><path d="m6 9 6 6 6-6" /></svg>
               </button>
-              {expandedRole === m.roleIdx && (
+              {expandedRole === rIdx && (
                 <div className="border-t border-zinc-100 px-5 py-3 space-y-3 fade-in">
                   {m.candidates.length === 0 ? (
-                    <p className="text-sm text-zinc-400 py-4 text-center">No candidates matched to this role</p>
-                  ) : m.candidates.map((c) => {
+                    <p className="text-sm text-zinc-400 py-4 text-center">No candidates matched</p>
+                  ) : m.candidates.map((c, i) => {
                     const color = c.score >= 70 ? "bg-emerald-50 border-emerald-200 text-emerald-700" : c.score >= 50 ? "bg-indigo-50 border-indigo-200 text-indigo-700" : "bg-amber-50 border-amber-200 text-amber-700";
                     return (
-                      <div key={c.idx} className="flex items-start gap-3 py-2">
+                      <div key={i} className="flex items-start gap-3 py-2">
                         <span className={`shrink-0 px-2 py-0.5 rounded-full text-xs font-bold border ${color}`}>{c.score}</span>
                         <div>
                           <div className="font-medium text-sm">{c.name}</div>
                           <p className="text-xs text-zinc-500 mt-0.5">{c.reasoning}</p>
                           {c.highlights.length > 0 && (
                             <div className="flex gap-1 mt-1 flex-wrap">
-                              {c.highlights.map((h, i) => <span key={i} className="text-[10px] px-1.5 py-0.5 rounded bg-emerald-50 text-emerald-700 border border-emerald-100">{h}</span>)}
+                              {c.highlights.map((h, j) => <span key={j} className="text-[10px] px-1.5 py-0.5 rounded bg-emerald-50 text-emerald-700 border border-emerald-100">{h}</span>)}
                             </div>
                           )}
                         </div>
@@ -181,25 +239,32 @@ export default function StableMatchPage() {
           ))}
         </div>
 
-        {/* Unmatched */}
-        {unmatched.length > 0 && (
+        {unmatchedNames.length > 0 && (
           <div>
-            <h2 className="font-semibold text-sm text-zinc-500 mb-3">Unmatched candidates ({unmatched.length})</h2>
-            <div className="rounded-xl border border-zinc-200 bg-white divide-y divide-zinc-100">
-              {unmatched.slice(0, 20).map((c) => (
-                <div key={c.idx} className="px-4 py-3 flex items-center gap-3">
-                  <span className="text-xs text-zinc-400 bg-zinc-100 px-2 py-0.5 rounded-full">{c.bestScore}</span>
-                  <div className="flex-1 min-w-0">
-                    <span className="text-sm font-medium">{c.name}</span>
-                    <span className="text-xs text-zinc-400 ml-2">best: {c.bestRoleTitle}</span>
-                  </div>
-                  <span className="text-xs text-zinc-400 truncate max-w-48">{c.reasoning}</span>
-                </div>
-              ))}
-              {unmatched.length > 20 && <div className="px-4 py-2 text-xs text-zinc-400 text-center">+{unmatched.length - 20} more</div>}
+            <h2 className="font-semibold text-sm text-zinc-500 mb-3">Unmatched ({unmatchedNames.length})</h2>
+            <div className="rounded-xl border border-zinc-200 bg-white p-4">
+              <div className="flex flex-wrap gap-2">
+                {unmatchedNames.slice(0, 30).map((name, i) => (
+                  <span key={i} className="text-xs text-zinc-500 bg-zinc-100 px-2 py-1 rounded">{name}</span>
+                ))}
+                {unmatchedNames.length > 30 && <span className="text-xs text-zinc-400">+{unmatchedNames.length - 30} more</span>}
+              </div>
             </div>
           </div>
         )}
+      </div>
+    );
+  }
+
+  // ── MATCHING (brief) ──
+  if (step === "matching") {
+    return (
+      <div className="max-w-2xl mx-auto px-6 py-16 text-center">
+        <div className="w-14 h-14 rounded-2xl bg-purple-100 flex items-center justify-center mx-auto mb-5 animate-pulse">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#7c3aed" strokeWidth="2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" /><circle cx="9" cy="7" r="4" /><path d="M22 21v-2a4 4 0 0 0-3-3.87" /><path d="M16 3.13a4 4 0 0 1 0 7.75" /></svg>
+        </div>
+        <h2 className="text-xl font-bold">Running Gale-Shapley...</h2>
+        <p className="text-sm text-zinc-500 mt-2">Finding optimal stable assignments</p>
       </div>
     );
   }
@@ -209,86 +274,143 @@ export default function StableMatchPage() {
     <div className="max-w-4xl mx-auto px-6 py-8">
       <div className="mb-6">
         <h1 className="text-2xl font-bold tracking-tight">Stable Matching</h1>
-        <p className="text-sm text-zinc-500 mt-0.5">Select multiple roles, upload candidates, get optimal assignments via Gale-Shapley algorithm</p>
+        <p className="text-sm text-zinc-500 mt-0.5">Upload a CSV per role, score each, then run Gale-Shapley to optimally assign candidates</p>
       </div>
 
-      <div className="grid lg:grid-cols-2 gap-6">
-        {/* CSV */}
-        <div className="rounded-xl border border-zinc-200 bg-white p-5">
-          <h2 className="font-semibold text-sm mb-3">1. Upload candidates</h2>
-          <div onDragOver={e => { e.preventDefault(); setDragging(true); }} onDragLeave={() => setDragging(false)} onDrop={handleDrop}
-            onClick={() => fileRef.current?.click()}
-            className={`border-2 border-dashed rounded-xl p-6 text-center cursor-pointer transition-all ${dragging ? "border-purple-400 bg-purple-50" : fileName ? "border-emerald-300 bg-emerald-50" : "border-zinc-200 hover:border-zinc-300"}`}>
-            <input ref={fileRef} type="file" accept=".csv" className="hidden" onChange={e => e.target.files?.[0] && handleFile(e.target.files[0])} />
-            {fileName ? (
-              <div><p className="font-semibold text-emerald-700 text-sm">{fileName}</p><p className="text-xs text-zinc-500">{rowCount} candidates</p></div>
-            ) : (
-              <div><p className="font-medium text-sm">Drop CSV or click</p><p className="text-xs text-zinc-400 mt-0.5">Any format</p></div>
-            )}
-          </div>
-        </div>
+      {/* Role slots */}
+      <div className="space-y-4 mb-6">
+        {slots.map((slot, idx) => (
+          <RoleSlotCard
+            key={idx}
+            slot={slot}
+            idx={idx}
+            roles={roles}
+            onSelectRole={(rIdx) => updateSlot(idx, { role: roles[rIdx], roleIdx: rIdx })}
+            onFile={(file) => handleFile(idx, file)}
+            onCapacity={(cap) => updateSlot(idx, { capacity: cap })}
+            onScore={() => scoreSlot(idx)}
+            onRemove={() => removeSlot(idx)}
+            canRemove={slots.length > 1}
+          />
+        ))}
+      </div>
 
-        {/* Stats */}
-        <div className="rounded-xl border border-zinc-200 bg-white p-5">
-          <h2 className="font-semibold text-sm mb-3">Match summary</h2>
-          <div className="grid grid-cols-3 gap-3">
-            <div className="rounded-lg bg-zinc-50 p-3 text-center">
-              <div className="text-2xl font-bold">{rowCount}</div>
-              <div className="text-xs text-zinc-500">Candidates</div>
-            </div>
-            <div className="rounded-lg bg-purple-50 p-3 text-center">
-              <div className="text-2xl font-bold text-purple-700">{selectedRoles.size}</div>
-              <div className="text-xs text-zinc-500">Roles</div>
-            </div>
-            <div className="rounded-lg bg-zinc-50 p-3 text-center">
-              <div className="text-2xl font-bold">{[...selectedRoles].reduce((s, idx) => s + (capacities[idx] || 3), 0)}</div>
-              <div className="text-xs text-zinc-500">Total seats</div>
-            </div>
+      <div className="flex gap-3">
+        <button onClick={addSlot} className="flex-1 py-3 rounded-xl border-2 border-dashed border-zinc-300 text-sm font-medium text-zinc-500 hover:border-zinc-400 hover:bg-zinc-50 transition-colors">
+          + Add another role
+        </button>
+      </div>
+
+      {/* Run stable match */}
+      <div className="mt-6 rounded-xl border border-purple-200 bg-purple-50 p-5 text-center">
+        <p className="text-sm text-zinc-600 mb-3">
+          {allDone} of {slots.length} roles scored &middot; {readyForMatch ? "Ready to match" : "Score at least 2 roles to run stable matching"}
+        </p>
+        <button onClick={runStableMatch} disabled={!readyForMatch}
+          className="px-6 py-3 rounded-xl bg-purple-600 text-white font-semibold text-sm hover:bg-purple-700 disabled:opacity-40 disabled:cursor-not-allowed transition-colors">
+          Run Gale-Shapley Stable Matching
+        </button>
+      </div>
+    </div>
+  );
+}
+
+// ── Role Slot Card ──
+function RoleSlotCard({ slot, idx, roles, onSelectRole, onFile, onCapacity, onScore, onRemove, canRemove }: {
+  slot: RoleSlot; idx: number; roles: Role[];
+  onSelectRole: (rIdx: number) => void; onFile: (f: File) => void;
+  onCapacity: (n: number) => void; onScore: () => void; onRemove: () => void; canRemove: boolean;
+}) {
+  const fileRef = useRef<HTMLInputElement>(null);
+  const [showRolePicker, setShowRolePicker] = useState(false);
+  const [dragging, setDragging] = useState(false);
+
+  function handleDrop(e: DragEvent<HTMLDivElement>) { e.preventDefault(); setDragging(false); e.dataTransfer.files[0] && onFile(e.dataTransfer.files[0]); }
+
+  const pct = slot.candidates.length > 0 && slot.scored.length > 0 ? Math.round((slot.scored.length / slot.candidates.length) * 100) : 0;
+
+  return (
+    <div className={`rounded-xl border bg-white p-5 ${slot.done ? "border-emerald-200" : "border-zinc-200"}`}>
+      <div className="flex items-center justify-between mb-3">
+        <h3 className="font-semibold text-sm">Role {idx + 1}</h3>
+        <div className="flex items-center gap-2">
+          <div className="flex items-center gap-1.5">
+            <span className="text-xs text-zinc-500">Seats:</span>
+            <input type="number" min={1} max={50} value={slot.capacity}
+              onChange={e => onCapacity(parseInt(e.target.value) || 1)}
+              className="w-14 border border-zinc-200 rounded px-2 py-1 text-xs text-center" />
           </div>
+          {canRemove && <button onClick={onRemove} className="text-xs text-zinc-400 hover:text-red-500">Remove</button>}
         </div>
       </div>
 
-      {/* Role selection */}
-      <div className="rounded-xl border border-zinc-200 bg-white p-5 mt-6">
-        <h2 className="font-semibold text-sm mb-3">2. Select roles to match against</h2>
-        <div className="space-y-2 max-h-80 overflow-y-auto">
-          {roles.map((role, idx) => {
-            const selected = selectedRoles.has(idx);
-            return (
-              <div key={idx} className={`rounded-lg border p-3 transition-all ${selected ? "border-purple-300 bg-purple-50" : "border-zinc-200 hover:bg-zinc-50"}`}>
-                <div className="flex items-center gap-3">
-                  <button onClick={() => toggleRole(idx)}
-                    className={`w-5 h-5 rounded border-2 flex items-center justify-center transition-all ${selected ? "bg-purple-600 border-purple-600" : "border-zinc-300"}`}>
-                    {selected && <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="3"><path d="M20 6 9 17l-5-5" /></svg>}
-                  </button>
-                  <div className="flex-1 min-w-0">
-                    <div className="flex items-center gap-2">
-                      <span className="px-1.5 py-0.5 rounded text-[10px] font-semibold bg-indigo-100 text-indigo-700">{role.category}</span>
-                      <span className="text-sm font-medium">{role.title}</span>
-                      <span className="text-xs text-zinc-400">{role.experience}</span>
-                    </div>
-                  </div>
-                  {selected && (
-                    <div className="flex items-center gap-1.5 shrink-0">
-                      <span className="text-xs text-zinc-500">Seats:</span>
-                      <input type="number" min={1} max={50} value={capacities[idx] || 3}
-                        onChange={e => setCapacities(prev => ({ ...prev, [idx]: parseInt(e.target.value) || 1 }))}
-                        className="w-14 border border-zinc-200 rounded px-2 py-1 text-xs text-center" />
-                    </div>
-                  )}
-                </div>
+      <div className="grid md:grid-cols-2 gap-3">
+        {/* Role picker */}
+        <div>
+          <button onClick={() => setShowRolePicker(!showRolePicker)}
+            className="w-full text-left rounded-lg border border-zinc-200 p-2.5 hover:bg-zinc-50 text-sm">
+            {slot.role ? (
+              <div className="flex items-center gap-2">
+                <span className="px-1.5 py-0.5 rounded text-[10px] font-semibold bg-indigo-100 text-indigo-700">{slot.role.category}</span>
+                <span className="font-medium">{slot.role.title}</span>
               </div>
-            );
-          })}
+            ) : (
+              <span className="text-zinc-400">Select a role...</span>
+            )}
+          </button>
+          {showRolePicker && (
+            <div className="mt-1 rounded-lg border border-zinc-200 bg-white shadow-lg max-h-48 overflow-y-auto">
+              {roles.map((r, rIdx) => (
+                <button key={rIdx} onClick={() => { onSelectRole(rIdx); setShowRolePicker(false); }}
+                  className="w-full text-left px-3 py-2 text-sm hover:bg-zinc-50 flex items-center gap-2">
+                  <span className="px-1.5 py-0.5 rounded text-[9px] font-semibold bg-zinc-100 text-zinc-600">{r.category}</span>
+                  {r.title}
+                </button>
+              ))}
+            </div>
+          )}
+        </div>
+
+        {/* CSV upload */}
+        <div onDragOver={e => { e.preventDefault(); setDragging(true); }} onDragLeave={() => setDragging(false)} onDrop={handleDrop}
+          onClick={() => fileRef.current?.click()}
+          className={`rounded-lg border border-dashed p-2.5 text-center cursor-pointer text-sm ${
+            dragging ? "border-purple-400 bg-purple-50" : slot.fileName ? "border-emerald-300 bg-emerald-50" : "border-zinc-200 hover:border-zinc-300"
+          }`}>
+          <input ref={fileRef} type="file" accept=".csv" className="hidden" onChange={e => e.target.files?.[0] && onFile(e.target.files[0])} />
+          {slot.fileName ? (
+            <span className="text-emerald-700 font-medium">{slot.fileName} ({slot.candidates.length})</span>
+          ) : (
+            <span className="text-zinc-400">Drop CSV or click</span>
+          )}
         </div>
       </div>
 
-      {/* Submit */}
-      <button onClick={startMatching} disabled={!csvText || selectedRoles.size < 2}
-        className="w-full py-3.5 rounded-xl bg-purple-600 text-white font-semibold text-sm hover:bg-purple-700 disabled:opacity-40 disabled:cursor-not-allowed transition-colors mt-6">
-        Run stable matching ({rowCount} candidates x {selectedRoles.size} roles)
-      </button>
-      {selectedRoles.size < 2 && <p className="text-xs text-zinc-400 text-center mt-2">Select at least 2 roles for stable matching</p>}
+      {/* Score button / progress */}
+      {slot.role && slot.candidates.length > 0 && !slot.done && (
+        <div className="mt-3">
+          {slot.scoring ? (
+            <div>
+              <div className="h-1.5 rounded-full bg-zinc-100 overflow-hidden mb-1">
+                <div className="h-full rounded-full bg-indigo-600 transition-all" style={{ width: `${pct}%` }} />
+              </div>
+              <p className="text-xs text-zinc-400">{slot.scored.length} / {slot.candidates.length} scored</p>
+            </div>
+          ) : (
+            <button onClick={onScore}
+              className="w-full py-2 rounded-lg bg-indigo-600 text-white text-xs font-medium hover:bg-indigo-700 transition-colors">
+              Score {slot.candidates.length} candidates for {slot.role.title}
+            </button>
+          )}
+        </div>
+      )}
+
+      {slot.done && (
+        <div className="mt-3 flex items-center gap-2">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#16a34a" strokeWidth="2.5"><path d="M20 6 9 17l-5-5" /></svg>
+          <span className="text-xs text-emerald-700 font-medium">{slot.scored.length} candidates scored — ready for matching</span>
+        </div>
+      )}
     </div>
   );
 }

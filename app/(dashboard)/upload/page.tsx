@@ -235,10 +235,16 @@ export default function UploadPage() {
     return (
       <div className="max-w-5xl mx-auto px-6 py-8">
         <h1 className="text-2xl font-bold tracking-tight mb-1">Matching Algorithm</h1>
-        <p className="text-sm text-neutral-500 mb-6">{progress.done} of {progress.total} candidates scored for <span className="font-medium text-neutral-900">{jobTitle}</span></p>
+        <p className="text-sm text-neutral-500 mb-4">{progress.done} of {progress.total} candidates scored for <span className="font-medium text-neutral-900">{jobTitle}</span></p>
+
+        {/* What's happening */}
+        <div className="border border-neutral-200 bg-white rounded-lg p-4 mb-6 text-sm text-neutral-600">
+          <p className="font-medium text-neutral-900 mb-1">What&apos;s happening right now:</p>
+          <p>We&apos;re scoring each candidate in 4 steps. First, we <strong>parse</strong> their data from your CSV. Then we <strong>enrich</strong> it by matching their LinkedIn URL to our profile database — adding their full work history, education, and skills. Next, <strong>GPT-4o-mini</strong> evaluates them against your role description and rubric, scoring each criterion individually with evidence. Finally, we <strong>rank</strong> everyone by total score.</p>
+        </div>
 
         {/* Progress */}
-        <div className="h-1 bg-neutral-100 mb-8">
+        <div className="h-1 bg-neutral-100 mb-6">
           <div className="h-full bg-neutral-900 transition-all duration-300" style={{ width: `${pct}%` }} />
         </div>
 
@@ -246,7 +252,7 @@ export default function UploadPage() {
         <div className="grid grid-cols-4 gap-4 mb-8">
           {[
             { label: "1. Parse CSV", desc: "Extract fields from each row", count: progress.total },
-            { label: "2. LinkedIn Enrich", desc: "Pull profiles, experience, education", count: logs.filter(l => l.step === "enrich" && l.detail.includes("found")).length },
+            { label: "2. LinkedIn Enrich", desc: "Pull profiles, experience, education", count: logs.filter(l => l.step === "enrich").length },
             { label: "3. GPT-4o Score", desc: "Score 0-100 against role criteria", count: progress.done },
             { label: "4. Rank", desc: "Sort by score, identify fit tiers", count: results.length },
           ].map((s, i) => (

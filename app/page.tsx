@@ -52,7 +52,7 @@ export default async function LandingPage() {
       {/* How it works */}
       <section id="how" className="py-16 px-6">
         <div className="max-w-4xl mx-auto scroll-fade">
-          <p className="text-xs uppercase tracking-[0.2em] text-neutral-400 mb-4">Process</p>
+          <p className="text-xs uppercase tracking-[0.2em] text-neutral-500 mb-4">Process</p>
           <h2 className="text-2xl md:text-3xl font-serif italic mb-10">Three steps to your shortlist.</h2>
           <div className="grid md:grid-cols-3 gap-12 scroll-stagger">
             {[
@@ -61,9 +61,9 @@ export default async function LandingPage() {
               { n: "03", t: "Export", d: "Review the ranked list. Shortlist your picks. Download CSV or JSON for your ATS or interview pipeline." },
             ].map((s) => (
               <div key={s.n}>
-                <span className="text-xs text-neutral-300 font-mono">{s.n}</span>
+                <span className="text-xs text-neutral-400 font-mono">{s.n}</span>
                 <h3 className="text-lg font-semibold mt-2 mb-2">{s.t}</h3>
-                <p className="text-sm text-neutral-500 leading-relaxed">{s.d}</p>
+                <p className="text-sm text-neutral-600 leading-relaxed">{s.d}</p>
               </div>
             ))}
           </div>
@@ -75,7 +75,7 @@ export default async function LandingPage() {
       {/* Features */}
       <section className="py-16 px-6">
         <div className="max-w-4xl mx-auto scroll-fade">
-          <p className="text-xs uppercase tracking-[0.2em] text-neutral-400 mb-4">Capabilities</p>
+          <p className="text-xs uppercase tracking-[0.2em] text-neutral-500 mb-4">Capabilities</p>
           <h2 className="text-2xl md:text-3xl font-serif italic mb-10">Built for recruiting at scale.</h2>
           <div className="grid md:grid-cols-2 gap-x-16 gap-y-8 scroll-stagger">
             {[
@@ -88,7 +88,7 @@ export default async function LandingPage() {
             ].map((f) => (
               <div key={f.t} className="border-l-2 border-neutral-900 pl-4">
                 <h3 className="text-base font-semibold mb-1">{f.t}</h3>
-                <p className="text-sm text-neutral-500 leading-relaxed">{f.d}</p>
+                <p className="text-sm text-neutral-600 leading-relaxed">{f.d}</p>
               </div>
             ))}
           </div>
@@ -100,7 +100,7 @@ export default async function LandingPage() {
       {/* Pricing */}
       <section className="py-16 px-6">
         <div className="max-w-4xl mx-auto scroll-fade">
-          <p className="text-xs uppercase tracking-[0.2em] text-neutral-400 mb-4">Pricing</p>
+          <p className="text-xs uppercase tracking-[0.2em] text-neutral-500 mb-4">Pricing</p>
           <h2 className="text-2xl md:text-3xl font-serif italic mb-10">Simple, transparent pricing.</h2>
           <div className="grid md:grid-cols-3 gap-6 scroll-stagger">
             <PriceCard tier="Free" price="$0" period="forever" features={["50 scores/month", "1 role", "CSV export", "LinkedIn enrichment"]} />
@@ -115,7 +115,7 @@ export default async function LandingPage() {
       {/* Comparison */}
       <section className="py-16 px-6">
         <div className="max-w-4xl mx-auto scroll-fade">
-          <p className="text-xs uppercase tracking-[0.2em] text-neutral-400 mb-4">Comparison</p>
+          <p className="text-xs uppercase tracking-[0.2em] text-neutral-500 mb-4">Comparison</p>
           <h2 className="text-2xl md:text-3xl font-serif italic mb-10">How we compare.</h2>
           <div className="overflow-x-auto">
             <table className="w-full text-sm min-w-[600px]">

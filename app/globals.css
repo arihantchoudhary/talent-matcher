@@ -22,15 +22,8 @@ a:focus-visible, button:focus-visible {
   border-radius: 2px;
 }
 
-/* Hide Clerk branding, dev badge, footer */
-.cl-footer,
-.cl-internal-b3fm6y,
-.cl-internal-17eqig,
-[data-localization-key="footerPageLink__help"],
-[data-localization-key="footerPageLink__privacy"],
-[data-localization-key="footerPageLink__terms"],
-.cl-footerAction,
-.cl-footer .cl-internal-b3fm6y {
+/* Hide Clerk branding, dev badge, footer — use public class names only */
+.cl-footer {
   display: none !important;
 }
 .cl-card {

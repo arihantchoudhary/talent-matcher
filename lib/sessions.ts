@@ -3,6 +3,7 @@ export interface ScoredCandidate {
   reasoning: string; highlights: string[]; gaps: string[];
   photo_url?: string;
   linkedin_url?: string;
+  evidence?: Record<string, string>;
 }
 
 export interface MatchSession {

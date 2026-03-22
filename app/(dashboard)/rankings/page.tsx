@@ -158,9 +158,8 @@ export default function HistoryPage() {
             ))}
           </div>
         )}
-        </div>
 
-        {sessions.length === 0 ? (
+        {filtered.length === 0 && sessions.length === 0 ? (
           <div className="rounded-xl border border-neutral-200 bg-white p-12 text-center">
             <div className="w-12 h-12 rounded-full bg-neutral-100 flex items-center justify-center mx-auto mb-4">
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#a1a1aa" strokeWidth="2"><path d="M12 8v4l3 3m6-3a9 9 0 1 1-18 0 9 9 0 0 1 18 0z" /></svg>

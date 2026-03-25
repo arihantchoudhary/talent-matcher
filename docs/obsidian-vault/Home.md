@@ -21,6 +21,7 @@
 | How the system fits together | [[Architecture Overview]] |
 | How data moves through the system | [[Data Flow]] |
 | How AI scoring works | [[Scoring Engine]] |
+| How instant/free scoring works | [[Rapid Match]] |
 | How CSVs get parsed | [[CSV Parser]] |
 | How LinkedIn data improves scoring | [[LinkedIn Enrichment]] |
 | How multi-role matching works | [[Stable Matching]] |

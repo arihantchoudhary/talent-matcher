@@ -26,10 +26,13 @@ export default function RapidMatchPage() {
   // Results
   const [results, setResults] = useState<RapidResult[]>([]);
   const [elapsed, setElapsed] = useState(0);
-  const [step, setStep] = useState<"setup" | "results">("setup");
+  const [step, setStep] = useState<"setup" | "loading" | "results">("setup");
   const [expanded, setExpanded] = useState<string | null>(null);
   const [scoreFilter, setScoreFilter] = useState<number | null>(null);
   const [viewMode, setViewMode] = useState<"list" | "card" | "table">("list");
+
+  // LinkedIn DB cache (fetched once)
+  const linkedinDBRef = useRef<Map<string, { name: string; photo_url: string }> | null>(null);
 
   const filteredRoles = useMemo(() => {
     let list = ROLES;
@@ -60,11 +63,48 @@ export default function RapidMatchPage() {
     setShowPicker(false);
   }
 
-  function runMatch() {
+  async function runMatch() {
     if (!csvText) return;
+    setStep("loading");
+
+    // Fetch LinkedIn DB if not cached
+    if (!linkedinDBRef.current) {
+      try {
+        const API = "https://aicm3pweed.us-east-1.awsapprunner.com";
+        const resp = await fetch(`${API}/linkedin/database`, { signal: AbortSignal.timeout(8000) });
+        if (resp.ok) {
+          const data = await resp.json() as { items: { url?: string; name?: string; photo_url?: string }[] };
+          const db = new Map<string, { name: string; photo_url: string }>();
+          for (const item of data.items) {
+            const url = (item.url || "").replace(/\/$/, "").toLowerCase();
+            if (url) db.set(url, { name: item.name || "", photo_url: item.photo_url || "" });
+          }
+          linkedinDBRef.current = db;
+        }
+      } catch { /* continue without enrichment */ }
+    }
+
     const start = performance.now();
     const candidates = parseStructuredCSV(csvText);
-    if (candidates.length === 0) return;
+    if (candidates.length === 0) { setStep("setup"); return; }
+
+    // Enrich candidates with LinkedIn DB photos + names
+    const db = linkedinDBRef.current;
+    if (db) {
+      for (const c of candidates) {
+        if (!c.linkedinUrl) continue;
+        const normalized = c.linkedinUrl.replace(/\/$/, "").toLowerCase();
+        const match = db.get(normalized);
+        if (match) {
+          if (match.photo_url) c.photoUrl = match.photo_url;
+          // Use LinkedIn DB name if we only have a fallback name
+          if (match.name && (c.name.startsWith("Candidate ") || c.name.length <= 3)) {
+            c.name = match.name;
+          }
+        }
+      }
+    }
+
     const scored = rapidScoreAll(candidates, ROLES[selectedIdx]);
     setElapsed(Math.round(performance.now() - start));
     setResults(scored);
@@ -72,6 +112,16 @@ export default function RapidMatchPage() {
   }
 
   const role = ROLES[selectedIdx];
+
+  // ── LOADING ──
+  if (step === "loading") {
+    return (
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 py-20 text-center">
+        <div className="w-8 h-8 border-2 border-neutral-300 border-t-neutral-900 rounded-full animate-spin mx-auto mb-4" />
+        <p className="text-sm text-neutral-500">Loading LinkedIn photos...</p>
+      </div>
+    );
+  }
 
   // ── RESULTS VIEW ──
   if (step === "results") {

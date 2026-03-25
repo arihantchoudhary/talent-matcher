@@ -249,7 +249,8 @@ export function parseStructuredCSV(raw: string): RapidCandidate[] {
       highlights: getField(row, "highlights"),
       competencies: getField(row, "competencies"),
       linkedinUrl: getField(row, "linkedin_url", "linkedin_flagship_url", "linkedin_profile_url"),
-      photoUrl: getField(row, "profile_picture_storage", "altered_profile_picture_storage"),
+      // profile_picture_storage is a Supabase private bucket path (not a URL) — skip it
+      photoUrl: "",
       resumeSnippet: (getField(row, "resume_text") || getField(row, "sales_career_overview") || "").substring(0, 500),
       outboundStrategy: getField(row, "outbound_strategy_example"),
       salesCycleDescription: getField(row, "sales_cycle_description"),

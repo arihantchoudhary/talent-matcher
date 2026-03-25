@@ -1,49 +1,40 @@
 # Talent Matcher — Systems Design Vault
 
-> AI-powered candidate matching and ranking platform. Built as a take-home assessment, shipped as a production SaaS.
+**What it is:** An AI-powered candidate matching and ranking tool. Upload a CSV of candidates, pick a role, get ranked results with evidence for every score.
 
-## Quick Links
+**How I think about it in 4 points:**
 
-### Architecture
-- [[Architecture Overview]] — High-level system diagram and component map
-- [[Data Flow]] — End-to-end request lifecycle
-- [[API Design]] — Endpoint catalog and contracts
-- [[State Management]] — Client, server, and persistent state
+1. **The core pipeline is Parse → Enrich → Score → Rank.** Every CSV row gets parsed into a candidate, enriched with LinkedIn data, scored by GPT-4o-mini against a configurable rubric, and ranked with per-criterion evidence. The whole thing streams in real-time via SSE so the user sees candidates appearing on a live leaderboard.
 
-### Core Systems
-- [[Scoring Engine]] — GPT-4o-mini scoring pipeline with SSE streaming
-- [[CSV Parser]] — Generic parser with 7-level name detection fallback
-- [[LinkedIn Enrichment]] — Best-effort profile augmentation
-- [[Stable Matching]] — Gale-Shapley multi-role assignment algorithm
-- [[Rubric System]] — Configurable scoring perspectives ("judges")
-- [[Embedding Pre-Filter]] — HyDE-based candidate pre-filtering with top-K
+2. **The architecture is a split frontend/backend.** Next.js on Vercel handles the UI and auth. A FastAPI service on AWS App Runner handles the heavy lifting — GPT calls, LinkedIn enrichment, session storage. This split exists because Vercel has a 30-second timeout and scoring takes 60+ seconds.
 
-### Infrastructure
-- [[Authentication]] — Clerk integration and route protection
-- [[Payments]] — Stripe subscription and usage-based billing
-- [[Session Persistence]] — DynamoDB + localStorage fallback
-- [[Deployment]] — Vercel frontend + AWS App Runner backend
+3. **The product insight is that AI scoring only works if the recruiter controls the rubric.** Five named "judges" (John, Jake, Christian, Yash, Nazar) represent different hiring philosophies — a scrappy-builder mindset vs. a pedigree-seeker vs. a deal-closer. The recruiter picks a judge, and that changes the weights, the ideal candidate profile, and ultimately the rankings.
 
-### Design
-- [[Design System]] — B&W editorial aesthetic, typography, animations
-- [[Mobile Responsiveness]] — Responsive patterns and breakpoints
-- [[Design Audit Trail]] — Iterative visual polish findings
-
-### Process
-- [[Development Timeline]] — Phase-by-phase build log
-- [[Decision Log]] — Key architectural trade-offs and rationale
-- [[Build Phases]] — 8 phases from scaffold to monetization
+4. **Built in 21 hours, 100+ commits, 8 phases.** Scaffold → Foundation → AI Scoring → Advanced Features (Gale-Shapley) → Analytics → Rubric Perspectives → Design Polish → Production Ready (Stripe, HyDE, mobile).
 
 ---
 
-## The Story
+## Dig Deeper
 
-Built in a single continuous session: **March 21, 5:49 PM → March 22, 3:00 PM** (~21 hours).
-
-100+ commits. 8 distinct phases. From `next create-app` to a production SaaS with AI scoring, LinkedIn enrichment, Gale-Shapley matching, Stripe billing, and a polished editorial UI.
-
-The key insight: this wasn't just "build a CSV scorer." The systems thinking was about building a **recruiter's decision-making toolkit** — where the AI doesn't replace judgment, it surfaces evidence so humans can make better calls faster.
-
----
-
-*Navigate using `[[wiki-links]]` or the graph view to explore connections between systems.*
+| If they ask about... | Go to |
+|---------------------|-------|
+| How the system fits together | [[Architecture Overview]] |
+| How data moves through the system | [[Data Flow]] |
+| How AI scoring works | [[Scoring Engine]] |
+| How CSVs get parsed | [[CSV Parser]] |
+| How LinkedIn data improves scoring | [[LinkedIn Enrichment]] |
+| How multi-role matching works | [[Stable Matching]] |
+| How the rubric system works | [[Rubric System]] |
+| How you optimize cost with embeddings | [[Embedding Pre-Filter]] |
+| What APIs exist | [[API Design]] |
+| How state is managed | [[State Management]] |
+| How auth works | [[Authentication]] |
+| How billing works | [[Payments]] |
+| How sessions are stored | [[Session Persistence]] |
+| How it's deployed | [[Deployment]] |
+| The visual design choices | [[Design System]] |
+| Mobile design | [[Mobile Responsiveness]] |
+| The design audit process | [[Design Audit Trail]] |
+| Why you made specific trade-offs | [[Decision Log]] |
+| The chronological build story | [[Development Timeline]] |
+| Detailed phase-by-phase breakdown | [[Build Phases]] |

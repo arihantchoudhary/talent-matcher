@@ -1,128 +1,25 @@
 # Stable Matching (Gale-Shapley)
 
-Multi-role candidate assignment using the deferred acceptance algorithm. Nobel Prize in Economics (2012, Shapley & Roth).
+**Read this out loud in 4 points:**
 
-## The Problem
+1. **The problem: you have 3 open roles and 50 candidates. Scoring them per role gives you 150 scores, but how do you assign candidates to roles without conflicts?** Naive assignment (give each candidate to their highest-scored role) breaks because all top candidates cluster on one role. Gale-Shapley finds the assignment where no candidate and role both prefer each other over their current match.
 
-You have 3 open roles and 50 candidates. Scoring each candidate per role gives you 150 scores. But how do you **assign** candidates to roles optimally?
+2. **The algorithm is Nobel Prize-winning (Economics 2012, Shapley & Roth).** Roles "propose" to candidates in order of preference. Candidates accept if unmatched, or switch if the new role is better. This repeats until no proposals are left. The result is provably optimal — no swap could make both a role and a candidate happier.
 
-Naive approach: assign each candidate to their highest-scoring role. Problem: all candidates might cluster on one role.
+3. **It supports capacity (roles can hire more than one person).** A real hiring plan might need 3 SDRs + 2 AEs + 1 CSM. Each role stays in the proposal loop until all its seats are filled. Unmatched candidates are reported with their best-fit role, so you know who almost made it.
 
-## The Solution
+4. **The expensive part is scoring, not matching.** Matching runs in under 1 millisecond. But you need every candidate scored against every role first — that's 50 candidates × 3 roles = 150 GPT calls. The embedding pre-filter helps here: score only the top K per role.
 
-Gale-Shapley **stable matching** guarantees:
-1. No candidate-role pair both prefer each other over their current match
-2. The assignment is **role-optimal** (each role gets its best achievable candidates)
-3. Runs in O(n*m) time
+---
 
-## Algorithm
+## If they probe deeper
 
-```
-Input:
-  - N roles, each with capacity (e.g., Sales=3, Success=2, Marketing=1)
-  - M candidates
-  - scores[role][candidate] = GPT score
+**"Why not just sort by score and pick the top N?"** — Because a candidate might be #1 for Sales and #2 for Success. Greedy picking doesn't handle conflicts. Gale-Shapley guarantees no "jealousy" — no role and candidate both wish they were matched to each other instead.
 
-Build Preferences:
-  - rolePrefs[r] = candidates sorted by scores[r][c] descending
-  - candPrefs[c] = roles sorted by scores[r][c] descending
+**"What's the time complexity?"** — O(N × M) for the matching algorithm itself, where N is roles and M is candidates. Practically instant. The bottleneck is the N × M GPT calls before matching starts.
 
-Initialize:
-  - All roles are "free" (have unfilled capacity)
-  - All candidates are unmatched
+**"Where does this algorithm come from?"** — It's the same algorithm used for medical residency matching in the US (NRMP), school choice programs, and kidney exchange networks. 60+ years of research and real-world deployment.
 
-Loop until no free roles with candidates to propose to:
-  1. Pick a free role r
-  2. r proposes to the next candidate c on its preference list
-  3. If c is unmatched:
-     → c accepts r
-  4. If c is matched to role r':
-     → c compares r vs r' on their preference list
-     → c keeps the higher-ranked role, rejects the other
-     → rejected role becomes free again
-  5. If role r reaches capacity, remove from free list
-
-Output:
-  - roleMatches[r] = [candidate IDs]
-  - unmatched[] = candidates not assigned to any role
-```
-
-## Implementation
-
-```typescript
-// lib/stable-match.ts
-
-export interface MatchPreference {
-  candidateId: string;
-  score: number;
-}
-
-export interface StableMatchResult {
-  matches: Map<number, string[]>;  // roleIndex → candidateIds
-  unmatched: string[];             // candidates with no role
-}
-
-export function stableMatch(
-  numRoles: number,
-  numCandidates: number,
-  roleCapacities: number[],
-  scores: MatchPreference[][]
-): StableMatchResult
-```
-
-## Data Flow in the UI
-
-```
-Step 1: User creates N role slots
-        Each slot: role template + CSV upload
-
-Step 2: Click "Match"
-        → For each role × each candidate:
-           Score via GPT (N×M API calls)
-        → Stream results via SSE
-
-Step 3: Build preference matrices from scores
-
-Step 4: Run Gale-Shapley locally (client-side, <1ms)
-
-Step 5: Display:
-        - Per-role: matched candidates with scores
-        - Unmatched: candidates who didn't fit any role
-        - Best-fit indication: which role each unmatched
-          candidate scored highest on
-```
-
-## Why This Matters for Recruiting
-
-Real recruiters don't hire for one role at a time. They're filling a team:
-- 2 SDRs
-- 1 Enterprise AE
-- 1 Customer Success Manager
-
-Without stable matching, you'd score separately per role and manually reconcile conflicts ("Jane scored 85 for SDR and 82 for AE — which team needs her more?").
-
-Stable matching automates this: it finds the assignment where **no swap would make both a role and a candidate happier**.
-
-## Capacity Support
-
-Unlike classic Gale-Shapley (1:1 matching), this implementation supports **many-to-one** matching:
-
-```typescript
-roleCapacities = [3, 2, 1]  // Sales=3 spots, Success=2, Marketing=1
-```
-
-A role stays "free" (keeps proposing) until its capacity is filled.
-
-## Complexity Analysis
-
-| Metric | Value |
-|--------|-------|
-| GPT calls | N × M (roles × candidates) |
-| Algorithm runtime | O(N × M) |
-| Space | O(N × M) for score matrix |
-| For 3 roles, 50 candidates | 150 GPT calls + instant matching |
-
-## Related
+## See also
 - [[Scoring Engine]] — How per-role scores are generated
-- [[Architecture Overview]] — Where stable matching fits
-- [[Decision Log]] — Why Gale-Shapley over greedy assignment
+- [[Embedding Pre-Filter]] — How to reduce the N × M GPT call cost

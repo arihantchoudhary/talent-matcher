@@ -1,91 +1,28 @@
 # Architecture Overview
 
-## System Diagram
+**Read this out loud in 4 points:**
 
-```
-┌─────────────────────────────────────────────────────────┐
-│                    BROWSER (Client)                      │
-│                                                          │
-│  ┌──────────┐  ┌──────────┐  ┌──────────┐  ┌────────┐ │
-│  │ Upload   │  │ Scoring  │  │ Results  │  │ History│ │
-│  │ + Parse  │→ │ + Stream │→ │ + Rank   │  │ + Anal │ │
-│  └──────────┘  └──────────┘  └──────────┘  └────────┘ │
-│       │              │              │             │      │
-│  ┌────┴──────────────┴──────────────┴─────────────┴──┐  │
-│  │           ScoringProvider (React Context)          │  │
-│  │    Holds: progress, results, logs, error state     │  │
-│  └───────────────────────┬───────────────────────────┘  │
-│                          │ SSE Stream                    │
-└──────────────────────────┼──────────────────────────────┘
-                           │
-                    ┌──────┴──────┐
-                    │   Vercel    │
-                    │  (Next.js)  │
-                    │  Edge + SSR │
-                    └──────┬──────┘
-                           │
-              ┌────────────┼────────────┐
-              │            │            │
-     ┌────────┴───┐  ┌────┴────┐  ┌───┴──────┐
-     │  Clerk     │  │ Backend │  │  Stripe  │
-     │  (Auth)    │  │ FastAPI │  │ (Billing)│
-     └────────────┘  │ App     │  └──────────┘
-                     │ Runner  │
-                     └────┬────┘
-                          │
-              ┌───────────┼───────────┐
-              │           │           │
-        ┌─────┴──┐  ┌────┴───┐  ┌───┴────┐
-        │DynamoDB│  │ OpenAI │  │  S3    │
-        │Sessions│  │GPT-4o  │  │ Photos │
-        │Profiles│  │ -mini  │  │        │
-        └────────┘  └────────┘  └────────┘
-```
+1. **Three layers: browser, Vercel, and AWS backend.** The browser handles the UI — uploading CSVs, configuring the rubric, viewing results. Vercel serves the Next.js app and handles auth via Clerk. The AWS App Runner backend does the heavy lifting — calling GPT, querying the LinkedIn database, storing sessions in DynamoDB.
 
-## Component Responsibilities
+2. **The browser talks to the backend through SSE (Server-Sent Events).** When you hit "Score," the frontend opens a streaming connection to the backend. As each candidate gets scored, the backend pushes an event. The frontend updates a live progress bar and leaderboard. This is one-way (server to client only), which is simpler than WebSockets and works natively with Vercel.
 
-### Frontend Layer (Vercel / Next.js 15)
+3. **Every external service has a failure mode.** If OpenAI fails, we retry 3 times. If the LinkedIn database is slow, we skip enrichment and score with CSV data only. If DynamoDB is down, we save sessions to localStorage. If S3 is down, we show placeholder avatars. Nothing is allowed to break the scoring pipeline.
 
-| Component | Responsibility | Key File |
-|-----------|---------------|----------|
-| Landing Page | Marketing, pricing, CTA | `app/page.tsx` |
-| Upload Page | CSV parse, role select, rubric config, scoring, results | `app/(dashboard)/upload/page.tsx` |
-| Rankings Page | Session history, analytics, filtering | `app/(dashboard)/rankings/page.tsx` |
-| Stable Match | Multi-role Gale-Shapley UI | `app/(dashboard)/stable-match/page.tsx` |
-| Roles Page | CRUD for role templates | `app/(dashboard)/roles/page.tsx` |
-| Settings | API key, subscription, billing | `app/(dashboard)/settings/page.tsx` |
-| Scoring Context | Global state across dashboard | `lib/scoring-context.tsx` |
+4. **The frontend is a single-page dashboard with React Context.** One React Context holds all the scoring state — progress, results, logs. This means if you start scoring 93 candidates and switch to the Settings tab to check something, your results are still there when you switch back. Without this, navigating away would kill the SSE connection and lose everything.
 
-### Backend Layer (AWS App Runner / FastAPI)
+---
 
-The backend is a separate FastAPI service handling:
-1. **Scoring pipeline** — Parse → Enrich → GPT Score → Stream
-2. **Session CRUD** — DynamoDB persistence
-3. **LinkedIn DB** — 493-profile enrichment database
-4. **Stripe webhooks** — Subscription lifecycle
-5. **Role management** — Custom role persistence
+## If they probe deeper
 
-### External Services
+**"Why not WebSockets?"** — SSE is one-directional (server → client), which is all we need. WebSockets would add connection lifecycle management, ping/pong, and reconnection logic for no benefit. SSE also works natively with Vercel's edge runtime.
 
-| Service | Purpose | Failure Mode |
-|---------|---------|-------------|
-| OpenAI GPT-4o-mini | Candidate scoring | 3x retry with 1s backoff |
-| Clerk | Authentication | Middleware blocks unauthenticated |
-| Stripe | Payments | Frontend graceful error |
-| DynamoDB | Persistence | localStorage fallback |
-| S3 | LinkedIn photos | Placeholder avatar |
+**"Why split frontend and backend?"** — Vercel edge functions timeout at 30 seconds on the free tier. Scoring 93 candidates takes 60+ seconds. App Runner has no timeout limit and keeps the LinkedIn DB in memory between requests.
 
-## Key Architectural Decisions
+**"Why DynamoDB, not Postgres?"** — Sessions are JSON blobs with different shapes depending on the role. DynamoDB's schema-flexible model fits better than relational. It's also serverless (zero maintenance) and single-digit millisecond reads.
 
-→ See [[Decision Log]] for full rationale on each.
+**"Why Clerk for auth?"** — Zero config. `<ClerkProvider>` wraps the app, a middleware file protects routes. Auth was working in 15 minutes, not 2 hours. Trade-off is vendor lock-in and branding on the free tier (removed via CSS).
 
-1. **SSE over WebSockets** — Simpler, unidirectional, works with Vercel edge
-2. **React Context over Redux** — Single concern (scoring state), no need for global store
-3. **Backend scoring over edge functions** — Avoids Vercel timeout limits, centralized LinkedIn DB
-4. **localStorage fallback** — Graceful degradation when backend is down
-5. **GPT-4o-mini over GPT-4** — 4x cheaper, sufficient for structured rubric evaluation
-
-## Related
-- [[Data Flow]] — Detailed request lifecycle
-- [[API Design]] — Endpoint contracts
-- [[Deployment]] — Infrastructure topology
+## See also
+- [[Data Flow]] — The full request lifecycle, step by step
+- [[Decision Log]] — Every major trade-off with rationale
+- [[Deployment]] — How frontend and backend are deployed

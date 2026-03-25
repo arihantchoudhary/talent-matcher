@@ -1,134 +1,25 @@
 # CSV Parser
 
-A generic, hand-written CSV parser that handles arbitrary candidate data formats. The key insight: recruiter CSVs are messy and inconsistent, so the parser must be defensive.
+**Read this out loud in 4 points:**
 
-## Design Philosophy
+1. **The parser handles any CSV format a recruiter might upload.** Recruiter CSVs are messy — columns named differently ("Name" vs "full_name" vs "Candidate"), LinkedIn URLs buried in random fields, resume text blocks with commas and newlines inside quoted cells. The parser handles all of this without crashing.
 
-**Accept any CSV. Extract what you can. Never crash.**
+2. **Name detection uses a 7-level fallback chain.** It tries column "name" first, then "candidate_name", then "candidate"/"applicant", then first+last name columns, then resume text, then email prefix (jane.smith@gmail.com → Jane Smith), then LinkedIn URL slug (/in/jane-smith → Jane Smith). If nothing works, it falls back to "Candidate 1."
 
-Most CSV parsers assume well-formed data. Recruiter CSVs have:
-- Quoted fields with embedded commas and newlines
-- Inconsistent column naming (`Name`, `full_name`, `Candidate Name`, etc.)
-- LinkedIn URLs buried in random columns
-- Missing fields, extra columns, Unicode characters
-- Columns that are actually resume text blocks
+3. **It's hand-written (no library) in about 140 lines.** I needed simultaneous structure parsing and semantic column detection — no CSV library gives you that. The parser identifies which column contains names and which contains LinkedIn URLs while parsing the structure. Zero bundle size overhead.
 
-## Parser Implementation
+4. **Real-world data exposed edge cases that unit tests didn't.** Running the full 93-candidate CSV revealed 23 unnamed candidates whose LinkedIn slugs didn't follow the first-last pattern. A pragmatic slug-to-name map fixed those immediately, alongside improving the general algorithm to handle trailing numbers (jane-smith-123).
 
-### Hand-Written vs. Library
+---
 
-**Decision:** Write a custom parser instead of using `csv-parse` or `papaparse`.
+## If they probe deeper
 
-**Why:**
-1. Need deep control over quoted field handling (embedded newlines)
-2. Need to simultaneously parse structure AND detect semantic columns
-3. Libraries don't give you the intermediate state needed for column inference
-4. Keep bundle size small (zero extra dependencies)
+**"Why not just use papaparse?"** — papaparse gives you parsed rows, but doesn't tell you which column contains names or LinkedIn URLs. I need to simultaneously parse the CSV structure AND infer column semantics. Custom parser gives full control over both in one pass.
 
-### Parsing Algorithm
+**"What about the 23 unnamed candidates?"** — Their LinkedIn slugs were things like "johndoe" (no separator) or non-standard formats. Rather than building a perfect NLP-based name extractor, a hardcoded map of the 23 known candidates solved the immediate problem. The general algorithm was also improved to only trust slugs matching a first-last pattern.
 
-```typescript
-// 1. Split lines (respecting quoted fields)
-// 2. Split fields per line (respecting commas inside quotes)
-// 3. Detect header row vs. data
-// 4. For each row: build fullText from all fields
-// 5. Detect name column
-// 6. Detect LinkedIn URL column
-// 7. Filter out rows with < 2 filled fields
-```
+**"How does LinkedIn URL detection work?"** — Every field in every row is searched for `linkedin.com/in/`. LinkedIn URLs show up in "LinkedIn" columns, "Profile" columns, "Links" columns, or even inside resume text. Searching all fields catches them regardless of where they appear.
 
-## Name Detection: 7-Level Fallback
-
-The most interesting piece of systems thinking. Candidate names are critical for the UI but CSVs name the column differently (or don't have one at all).
-
-```
-Level 1: Column named "name" or "full_name" or "fullname"
-    │ not found?
-    ▼
-Level 2: Column named "candidate_name"
-    │ not found?
-    ▼
-Level 3: Column named "candidate" or "applicant"
-    │ not found?
-    ▼
-Level 4: Separate "first_name" + "last_name" columns
-    │ not found?
-    ▼
-Level 5: First line of a "resume" text column
-    │ not found?
-    ▼
-Level 6: "grade_reasoning" field → extract name pattern
-    │ not found?
-    ▼
-Level 7: Email prefix (jane.smith@gmail.com → Jane Smith)
-    │ not found?
-    ▼
-Level 8: LinkedIn URL slug (/in/jane-smith → Jane Smith)
-    │ still nothing?
-    ▼
-Fallback: "Candidate {index}"
-```
-
-### LinkedIn Slug Name Extraction
-
-Special case: some CSVs only have LinkedIn URLs. The parser extracts names from URL slugs:
-
-```
-/in/jane-smith-123    → "Jane Smith"
-/in/johndoe           → (skip — can't reliably split)
-/in/jane-smith        → "Jane Smith"
-```
-
-**Edge case handled:** A hardcoded `SLUG_NAMES` map covers the 23 candidates from the assessment CSV whose slugs didn't follow the `first-last` pattern. This is a pragmatic hack for a known dataset, not a general solution — but it solved the "23 unnamed candidates" problem immediately.
-
-## LinkedIn URL Detection
-
-```typescript
-// Search ALL fields in every row for linkedin.com/in/
-for (const field of row) {
-  if (field.includes('linkedin.com/in/')) {
-    candidate.linkedinUrl = normalizeLinkedInUrl(field);
-    break;
-  }
-}
-```
-
-**Why search all fields?** LinkedIn URLs show up in:
-- A "LinkedIn" column (obvious)
-- A "Profile" column
-- A "Links" column
-- Inside resume text blocks
-- In a "Source" or "Application URL" column
-
-## Output Structure
-
-```typescript
-interface Candidate {
-  id: string;          // "candidate-{index}"
-  name: string;        // best-effort extraction
-  fullText: string;    // ALL fields concatenated with " | "
-  linkedinUrl: string; // normalized URL or empty
-}
-```
-
-**Design decision:** `fullText` concatenates everything. The GPT scoring prompt gets ALL the data, not just extracted fields. This means even poorly-structured CSVs still give the AI enough signal to score.
-
-## Testing
-
-```typescript
-// test/parse-csv.test.ts
-describe("parseCSV", () => {
-  it("parses basic CSV")
-  it("handles quoted fields")
-  it("handles embedded newlines")
-  it("detects name column")
-  it("detects LinkedIn URLs")
-  it("handles missing names gracefully")
-  it("filters empty rows")
-});
-```
-
-## Related
+## See also
 - [[Data Flow]] — How parsed candidates feed into scoring
-- [[Scoring Engine]] — How fullText is used in GPT prompts
-- [[LinkedIn Enrichment]] — Post-parse enrichment via LinkedIn DB
+- [[LinkedIn Enrichment]] — What happens after parsing

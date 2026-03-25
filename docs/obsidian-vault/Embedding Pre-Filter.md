@@ -1,115 +1,27 @@
 # Embedding Pre-Filter (HyDE)
 
-Cost-optimization layer that uses embeddings to pre-filter candidates before expensive GPT scoring.
+**Read this out loud in 4 points:**
 
-## The Problem
+1. **Scoring 93 candidates with GPT costs ~$0.14 and takes 60 seconds. The embedding pre-filter lets you score only the top 25 for ~$0.04 in 18 seconds.** Embeddings are cheap (~$0.001 for all candidates), so we use them to find the most promising candidates first, then only those go to GPT.
 
-Scoring 93 candidates with GPT-4o-mini:
-- Cost: ~$0.14
-- Time: ~60 seconds
-- Mostly wasted: if you only want the top 25, you're paying to score 68 irrelevant candidates
+2. **The key innovation is HyDE — Hypothetical Document Embedding.** Normal embedding search compares a job description to a resume, which doesn't work well because they're different document types. HyDE compares the judge's ideal candidate profile (which reads like a resume) to actual resumes. Same document type → much better similarity matching.
 
-## The Solution: HyDE (Hypothetical Document Embedding)
+3. **The user picks how many candidates to score: 10, 25, 50, 100, or All.** This is a cost/thoroughness trade-off they control. Top 10 is fast and cheap but might miss someone. All scores every candidate but costs more. Each candidate's embedding similarity is shown alongside their GPT score.
 
-Instead of scoring all candidates, use cheap embeddings to find the most promising ones first.
+4. **Showing both scores creates a transparency signal.** If a candidate has high GPT score but low embedding similarity, they're a "non-obvious fit" — worth investigating. If both scores are high, it's a clear match. This divergence information helps recruiters find candidates they'd otherwise miss.
 
-### Standard Embedding Approach
-```
-Query: "Enterprise AE with 5+ years..."
-↓ embed query
-↓ embed all candidates
-↓ dot product similarity
-↓ top K candidates → GPT scoring
-```
+---
 
-**Problem:** The query ("ideal candidate description") is short and abstract. Candidates are detailed resumes. The embedding spaces don't align well.
+## If they probe deeper
 
-### HyDE Approach
-```
-Query: "Enterprise AE with 5+ years..."
-↓ generate hypothetical ideal resume (using judge's ideal profile)
-↓ embed the HYPOTHETICAL document (not the query)
-↓ embed all candidates
-↓ dot product similarity
-↓ top K candidates → GPT scoring
-```
+**"What's the actual math?"** — Embed the ideal candidate profile. Embed each candidate's fullText. Compute dot product similarity between ideal and each candidate. Sort by similarity, keep top K.
 
-**Why HyDE works better:** The hypothetical document is in the same "space" as the candidates — it reads like a resume, not a job description. This dramatically improves retrieval precision.
+**"Why not just cosine similarity?"** — Dot product and cosine similarity are equivalent when vectors are normalized (which OpenAI's embeddings are). We use dot product for simplicity.
 
-## Implementation
+**"What if the pre-filter misses a great candidate?"** — That's the trade-off. The "All" option bypasses the pre-filter entirely. The pre-filter is an optimization, not a gate. For high-stakes hires, score all candidates.
 
-```
-1. Take ideal_candidate text from judge preset
-   "High-volume prospector, 200+ activities/week, SDR background..."
+**"How does this make the free tier viable?"** — Free tier = 3 postings/month. At $0.04/run (top 25), that's $0.12/month per free user. Without the pre-filter, it'd be $0.42. The pre-filter reduces platform cost by 70%.
 
-2. This IS the hypothetical document (no generation needed —
-   the judge presets already describe an ideal candidate)
-
-3. Embed with OpenAI text-embedding-3-small:
-   idealEmb = embed(ideal_candidate)
-
-4. Embed each candidate:
-   candEmbs[i] = embed(candidate[i].fullText)
-
-5. Score by dot product:
-   similarity[i] = dot(idealEmb, candEmbs[i])
-
-6. Sort by similarity, keep top K
-
-7. Only those K candidates go to GPT-4o-mini
-```
-
-## Top-K Selection UI
-
-```
-┌──────────────────────────────────┐
-│  Candidates to score:            │
-│  [10] [25] [50] [100] [All]     │
-│                                  │
-│  93 total candidates             │
-│  Scoring top 25 via embedding    │
-│  pre-filter (saves ~73% cost)    │
-└──────────────────────────────────┘
-```
-
-## Cost Comparison
-
-| Top K | GPT Calls | Est. Cost | Est. Time |
-|-------|-----------|-----------|-----------|
-| 10 | 10 | $0.015 | ~8s |
-| 25 | 25 | $0.038 | ~18s |
-| 50 | 50 | $0.075 | ~35s |
-| 100 | 93* | $0.140 | ~60s |
-| All | 93 | $0.140 | ~60s |
-
-*When K ≥ total candidates, all are scored.
-
-Embedding cost for all 93: ~$0.001 (negligible).
-
-## Trade-offs
-
-| Benefit | Risk |
-|---------|------|
-| 73% cost reduction (top 25) | May miss candidates with non-obvious fit |
-| 4x faster scoring | Embedding similarity ≠ GPT judgment |
-| Enables real-time iteration | Pre-filter quality depends on ideal profile text |
-
-### Mitigation
-
-The user can always select "All" to score every candidate. The pre-filter is an optimization, not a gate.
-
-## Similarity Display
-
-Each candidate's embedding similarity score is shown alongside their GPT score:
-
-```
-Jane Smith  |  GPT: 82  |  Embedding: 0.847
-Bob Jones   |  GPT: 71  |  Embedding: 0.792
-```
-
-This lets the recruiter see if GPT and embedding alignment diverge — a signal that the candidate may be interesting for non-obvious reasons.
-
-## Related
-- [[Scoring Engine]] — Full GPT scoring pipeline
+## See also
+- [[Scoring Engine]] — Full scoring pipeline
 - [[Rubric System]] — How judge presets feed ideal candidate text
-- [[Decision Log]] — Why HyDE over simple cosine similarity

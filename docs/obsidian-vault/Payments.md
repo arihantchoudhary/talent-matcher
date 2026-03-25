@@ -1,109 +1,26 @@
 # Payments (Stripe)
 
-Usage-based billing with free, pro, and enterprise tiers.
+**Read this out loud in 4 points:**
 
-## Pricing Model
+1. **Billing is usage-based: each scoring run costs one "posting."** Free gets 3 postings/month, Pro ($49/mo) gets 25. This aligns with how recruiters think ("I have 5 roles to fill") and mirrors the platform's cost structure (each run costs $0.02-0.14 in API fees).
 
-| Plan | Price | Postings/month | Candidates | Features |
-|------|-------|---------------|------------|----------|
-| Free | $0 | 3 | 93 max | CSV export, LinkedIn enrichment |
-| Pro | $49/mo | 25 | Unlimited | + JSON export, stable matching |
-| Enterprise | Custom | Unlimited | Unlimited | + Priority support, custom rubrics |
+2. **The checkout flow goes: frontend → backend → Stripe → webhook → DynamoDB.** User clicks "Upgrade to Pro," frontend calls the backend to create a Stripe Checkout Session, user is redirected to Stripe's hosted page, payment succeeds, Stripe sends a webhook to the backend, backend updates the subscription in DynamoDB.
 
-**"Posting" = one scoring run.** Upload CSV + score = 1 posting used.
+3. **Stripe was moved from frontend to backend within 4 minutes of initial implementation.** First commit had Stripe directly in Next.js. Immediately realized: webhook verification needs a server-side secret, DynamoDB updates are server-side, and the Stripe secret key should never be in frontend env vars. Replatformed to FastAPI backend.
 
-## Architecture
+4. **Usage is tracked per scoring run.** After each successful scoring, the frontend calls `POST /subscription/use` which increments `postings_used`. If `postings_used >= postings_limit`, the endpoint returns 402 and the UI shows an upgrade prompt.
 
-```
-Frontend                          Backend (FastAPI)              Stripe
-   │                                    │                          │
-   │ Click "Upgrade to Pro"             │                          │
-   │────────────────────────────────────→                          │
-   │          POST /checkout            │                          │
-   │          { user_id, price_id }     │──── Create Session ─────→│
-   │                                    │←─── session.url ─────────│
-   │←── { checkout_url } ──────────────│                          │
-   │                                    │                          │
-   │ Redirect to Stripe Checkout ──────────────────────────────────→│
-   │                                    │                          │
-   │                                    │←── Webhook: payment ─────│
-   │                                    │    succeeded             │
-   │                                    │                          │
-   │                                    │ Update DynamoDB:         │
-   │                                    │ plan="pro"               │
-   │                                    │ postings_limit=25        │
-```
+---
 
-## Backend Implementation
+## If they probe deeper
 
-### Checkout
-```python
-@app.post("/talent-pluto/checkout")
-async def create_checkout(user_id: str, price_id: str):
-    session = stripe.checkout.Session.create(
-        payment_method_types=["card"],
-        line_items=[{"price": price_id, "quantity": 1}],
-        mode="subscription",
-        success_url=f"{frontend_url}/settings?success=true",
-        cancel_url=f"{frontend_url}/settings?canceled=true",
-        metadata={"user_id": user_id}
-    )
-    return {"checkout_url": session.url}
-```
+**"Why per-posting instead of per-seat?"** — Per-seat billing penalizes small teams. A solo recruiter filling 20 roles pays the same as a team of 5 filling 4 roles each. Per-posting is fairer and simulates actual platform cost.
 
-### Webhook
-```python
-@app.post("/webhooks")
-async def stripe_webhook(request: Request):
-    event = stripe.Webhook.construct_event(...)
-    if event.type == "checkout.session.completed":
-        user_id = event.data.object.metadata["user_id"]
-        update_subscription(user_id, plan="pro", limit=25)
-```
+**"What about the free tier economics?"** — 3 postings × ~$0.04 (with top-25 pre-filter) = $0.12/month per free user. At scale, free users either convert or cost very little. The HyDE pre-filter is what makes the free tier viable.
 
-### Usage Tracking
-```python
-@app.post("/talent-pluto/subscription/use")
-async def increment_usage(user_id: str):
-    sub = get_subscription(user_id)
-    if sub.postings_used >= sub.postings_limit:
-        raise HTTPException(402, "Posting limit reached")
-    sub.postings_used += 1
-    save_subscription(sub)
-```
+**"How does the price ID fallback work?"** — Stripe price IDs differ between test and live mode. The env var `NEXT_PUBLIC_STRIPE_PRO_PRICE_ID` is authoritative. A hardcoded fallback prevents broken checkout if the env var is missing in development.
 
-## Frontend Integration
-
-### Settings Page
-```typescript
-// Check subscription status on mount
-const sub = await fetchSubscription(userId);
-// Display: plan name, postings used/limit, upgrade button
-
-// Upgrade button
-const { checkout_url } = await createCheckout(userId, priceId);
-window.location.href = checkout_url;
-```
-
-### Price ID Handling
-
-**Problem:** Stripe price IDs differ between test and live mode.
-
-**Solution:** Environment variable `NEXT_PUBLIC_STRIPE_PRO_PRICE_ID` with hardcoded fallback:
-```typescript
-const priceId = process.env.NEXT_PUBLIC_STRIPE_PRO_PRICE_ID
-  || "price_1RBhFXFWmNtTzFGrXB6C1tVK";
-```
-
-## Design Decision: Backend Stripe
-
-Initially Stripe was frontend-only (direct API calls from Next.js). Moved to backend because:
-1. **Webhook verification** requires server-side secret
-2. **DynamoDB updates** happen server-side
-3. **Single source of truth** for subscription state
-4. **No Stripe secret key in frontend** env vars
-
-## Related
+## See also
 - [[Architecture Overview]] — Payment flow in system context
 - [[API Design]] — Checkout and webhook endpoints
-- [[Decision Log]] — Why usage-based over seat-based billing
+- [[Embedding Pre-Filter]] — How pre-filtering makes free tier viable

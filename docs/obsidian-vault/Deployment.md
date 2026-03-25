@@ -1,109 +1,25 @@
 # Deployment
 
-Split deployment: static/SSR frontend on Vercel, API backend on AWS App Runner.
+**Read this out loud in 4 points:**
 
-## Topology
+1. **Frontend on Vercel, backend on AWS App Runner.** Vercel serves the Next.js app (SSR, edge functions, CDN). App Runner runs the FastAPI backend (GPT scoring, LinkedIn DB, DynamoDB). The split exists because Vercel has a 30-second timeout — scoring takes 60+ seconds.
 
-```
-                    ┌──────────────┐
-                    │   Vercel     │
-                    │  CDN + Edge  │
-   Browser ────────→│              │
-                    │  Next.js 15  │
-                    │  SSR + RSC   │
-                    └──────┬───────┘
-                           │
-                           │ HTTPS
-                           ▼
-                    ┌──────────────┐
-                    │  AWS App     │
-                    │  Runner      │
-                    │              │
-                    │  FastAPI     │
-                    │  Python      │
-                    └──┬───┬───┬──┘
-                       │   │   │
-                  ┌────┘   │   └────┐
-                  ▼        ▼        ▼
-             ┌────────┐ ┌──────┐ ┌──────┐
-             │DynamoDB│ │OpenAI│ │  S3  │
-             └────────┘ └──────┘ └──────┘
-```
+2. **App Runner was chosen over Lambda for three reasons: no timeout limits, SSE streaming support, and persistent memory.** Lambda maxes at 15 minutes and doesn't natively support SSE. App Runner keeps the 5MB LinkedIn database in memory between requests — Lambda would cold-start and reload it every time.
 
-## Frontend (Vercel)
+3. **Deployment is automated: push to main triggers Vercel, plus a manual `vercel --prod` for immediate deploys.** The CLAUDE.md file has a rule: after every code change, commit, push, and deploy. No manual deployment steps to forget.
 
-### Configuration
-- **Framework:** Next.js 15 (auto-detected)
-- **Build:** `next build`
-- **Node version:** 20.x
-- **Region:** Auto (edge-optimized)
+4. **DynamoDB for persistence, S3 for photos, OpenAI for scoring.** DynamoDB is serverless and pay-per-use (negligible cost at this scale). S3 hosts LinkedIn profile photos. OpenAI is the only metered external service — cost per run is tracked and displayed to the user.
 
-### Environment Variables
-| Variable | Scope | Purpose |
-|----------|-------|---------|
-| `NEXT_PUBLIC_API_URL` | Client | Backend URL |
-| `NEXT_PUBLIC_STRIPE_PRO_PRICE_ID` | Client | Stripe price ID |
-| `OPENAI_API_KEY` | Server | Fallback GPT key |
-| `LINKEDIN_API_URL` | Server | App Runner URL |
-| `NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY` | Client | Clerk auth |
-| `CLERK_SECRET_KEY` | Server | Clerk auth |
+---
 
-### Deploy Flow
-```bash
-# Auto-deploy on push
-git push origin main → Vercel webhook → build → deploy
+## If they probe deeper
 
-# Manual deploy (CLAUDE.md rule)
-git add -A && git commit -m "..." && git push origin main && vercel --prod
-```
+**"Why not just use Vercel Pro to get longer timeouts?"** — Could work, but App Runner is better architecturally. It centralizes all backend logic (scoring, enrichment, sessions, billing) in one service. Splitting logic across Vercel edge functions and a backend creates unnecessary coupling.
 
-## Backend (AWS App Runner)
+**"What does App Runner cost at idle?"** — Near zero. It scales to zero when no requests are active. Under load, it auto-scales up to 10 instances. For this assessment with occasional scoring runs, the cost is effectively zero.
 
-### Service
-- **URL:** `https://aicm3pweed.us-east-1.awsapprunner.com`
-- **Runtime:** Python 3.11
-- **Framework:** FastAPI + Uvicorn
-- **Auto-scaling:** 1-10 instances
-- **Cold start:** ~5-10 seconds
+**"Any monitoring?"** — Vercel dashboard for frontend deploys and edge logs. CloudWatch for App Runner application logs. DynamoDB console for read/write metrics. OpenAI dashboard for token usage. No custom instrumentation (Sentry, Datadog) — that's a production hardening step.
 
-### Why App Runner, Not Lambda?
-
-1. **Long-running requests** — Scoring 93 candidates takes 60+ seconds. Lambda maxes at 15 minutes but charges per-ms.
-2. **SSE streaming** — Lambda doesn't natively support SSE. App Runner handles persistent connections.
-3. **Persistent state** — LinkedIn DB loaded once in memory, reused across requests. Lambda would reload every cold start.
-4. **Simple deployment** — Docker push → auto-deploy. No SAM/CDK complexity.
-
-### Why Not Vercel Edge Functions?
-
-1. **Timeout** — Vercel edge functions have a 30-second timeout (free tier). Scoring exceeds this.
-2. **Memory** — LinkedIn DB (~5MB) + concurrent GPT calls need more than edge function limits.
-3. **Cost** — App Runner at idle costs ~$0. Under load, it scales to demand.
-
-## Database (DynamoDB)
-
-### Tables
-| Table | Purpose | Read/Write |
-|-------|---------|-----------|
-| `talent-pluto-take-home` | Sessions, candidates | On-demand |
-| `linkedin-scrapes` | LinkedIn profiles (493) | Read-heavy |
-
-### Why DynamoDB?
-
-1. **Serverless** — No provisioning, no maintenance
-2. **Pay-per-use** — Negligible cost at this scale
-3. **Fast reads** — Single-digit ms for session lookups
-4. **Schema-flexible** — Session results are heterogeneous JSON
-
-## Monitoring
-
-| Layer | Tool | What |
-|-------|------|------|
-| Frontend | Vercel Dashboard | Deploy status, edge logs |
-| Backend | CloudWatch | App Runner logs, metrics |
-| Database | DynamoDB Console | Read/write capacity, throttling |
-| AI | OpenAI Dashboard | Token usage, rate limits |
-
-## Related
-- [[Architecture Overview]] — System diagram
+## See also
+- [[Architecture Overview]] — System topology
 - [[API Design]] — Endpoint routing
-- [[Decision Log]] — Infrastructure choices

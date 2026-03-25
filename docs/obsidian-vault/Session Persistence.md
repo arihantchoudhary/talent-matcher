@@ -1,102 +1,25 @@
 # Session Persistence
 
-Every scoring run is saved for historical analysis, comparison, and audit.
+**Read this out loud in 4 points:**
 
-## Dual Storage Strategy
+1. **Every scoring run is saved with full metadata: results, role, judge used, cost, token count, duration, device type.** This isn't just saving results — it's building an audit trail. You can go back and see exactly how a scoring run was configured, what it cost, and which candidates surfaced.
 
-```
-Scoring Complete
-      │
-      ├──→ POST /talent-pluto/sessions → DynamoDB (primary)
-      │         │
-      │    ┌────┴────┐
-      │    │ Success  │──→ Done
-      │    │ Failure  │──→ Fall through to localStorage
-      │    └─────────┘
-      │
-      └──→ localStorage['talent-matcher-sessions'] (fallback)
-           Max 50 sessions, FIFO eviction
-```
+2. **Dual storage: DynamoDB (primary) + localStorage (fallback).** A scoring run costs real money ($0.02-0.14). If the backend is slow (App Runner cold start) or the network hiccups, localStorage catches the save immediately. Max 50 sessions in localStorage with oldest-first eviction.
 
-### Why Dual Storage?
+3. **The history page aggregates across sessions** — total runs, unique candidates scored, average score, total cost. Sessions can be grouped by role or by judge, filtered by judge, and drilled into for full result detail with the same histogram and tier view as the scoring page.
 
-1. **Backend cold starts** — App Runner can take 5-10s on first request. If the POST times out, we don't lose the run.
-2. **Offline resilience** — User on flaky wifi still gets their results saved.
-3. **Cost protection** — A scoring run costs $0.02-0.14 in API fees. Losing that data wastes money.
+4. **A stale closure bug almost shipped: judge, cost, and tokens were saving as null.** The SSE handler captured state from render time, not from when scoring completed. By the time the save function ran, it had old references. Fix: `useRef` to hold current values so the save function always reads the latest state. Classic React hooks pitfall.
 
-## Session Schema
+---
 
-```typescript
-interface Session {
-  id: string;              // UUID
-  role: string;            // "Founding GTM, Legal"
-  role_category: string;   // "Sales"
-  description: string;     // Job description text
-  file_name: string;       // "candidates.csv"
-  candidate_count: number; // 93
-  top_tier: number;        // Candidates scoring ≥70
-  good_fit: number;        // Candidates scoring 50-69
-  avg_score: number;       // Mean score across all candidates
-  results: ScoredCandidate[];
-  duration: number;        // Seconds elapsed
-  user_id: string;         // Clerk user ID
-  user_name: string;       // Display name
-  device: string;          // "desktop" | "mobile"
-  tokens: number;          // Total tokens used
-  cost: number;            // Total API cost in dollars
-  judge: string;           // "John" | "Jake" | etc.
-  created_at: string;      // ISO timestamp
-}
-```
+## If they probe deeper
 
-## Session Analytics (Rankings Page)
+**"What's the DynamoDB schema?"** — Primary key: `session_id` (UUID). Sort key: `created_at`. GSI on `user_id` for per-user queries. Results stored as a JSON string.
 
-The rankings page aggregates across sessions:
+**"Why not just localStorage?"** — No cross-device access. If you score on your laptop and review on your phone, DynamoDB has both. localStorage is a safety net, not the source of truth.
 
-```
-┌─────────────────────────────────────────────┐
-│ All Sessions                                 │
-│                                              │
-│ Total Runs: 5        Unique Candidates: 312  │
-│ Avg Score: 58.3      Total Cost: $0.47       │
-│                                              │
-│ ┌─── By Role ──────────────────────────────┐ │
-│ │ Founding GTM (3 runs)                    │ │
-│ │   Mar 22 | John | 93 candidates | $0.14  │ │
-│ │   Mar 22 | Jake | 93 candidates | $0.14  │ │
-│ │   Mar 22 | Nazar | 25 candidates | $0.04 │ │
-│ │                                          │ │
-│ │ Enterprise AE (2 runs)                   │ │
-│ │   Mar 22 | Christian | 50 cand. | $0.08  │ │
-│ │   Mar 22 | Yash | 50 candidates | $0.08  │ │
-│ └──────────────────────────────────────────┘ │
-│                                              │
-│ Filter by Judge: [All] [John] [Jake] ...     │
-└─────────────────────────────────────────────┘
-```
+**"What about the unique candidate count bug?"** — The history page initially summed `candidate_count` across all runs. Scoring the same 93-candidate CSV 3 times showed "279 unique candidates." Fixed by deduplicating on `file_name` — three runs of the same CSV = 93 unique candidates.
 
-### Unique Candidate Count
-
-**Subtle bug fixed:** Initially showed sum of all candidate_counts across runs. But the same CSV might be scored multiple times (different judges). Fix: deduplicate by `file_name` to show unique candidates per CSV.
-
-## DynamoDB Design
-
-```
-Table: talent-pluto-take-home
-
-PK: session_id (String, UUID)
-SK: created_at (String, ISO)
-
-GSI: user_id-index
-  PK: user_id
-  SK: created_at
-
-Attributes:
-  - All session fields (see schema above)
-  - results stored as JSON string (compressed)
-```
-
-## Related
+## See also
 - [[State Management]] — How sessions fit in the state layers
 - [[API Design]] — Session CRUD endpoints
-- [[Data Flow]] — When sessions are created

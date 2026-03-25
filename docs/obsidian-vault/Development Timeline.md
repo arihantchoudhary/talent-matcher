@@ -1,82 +1,38 @@
 # Development Timeline
 
-100+ commits in ~21 hours. March 21, 5:49 PM → March 22, 3:00 PM.
+**Read this out loud in 4 points:**
 
-## Phase Map
+1. **Built in a single continuous session: March 21, 5:49 PM to March 22, 3:00 PM — about 21 hours.** 100+ commits across 8 phases. From `create-next-app` to a production SaaS with AI scoring, LinkedIn enrichment, Gale-Shapley matching, Stripe billing, and a polished editorial UI.
 
-| Phase | Time | Duration | Focus |
-|-------|------|----------|-------|
-| [[Build Phases#Phase 1|1. Scaffold]] | 5:49-6:06 PM | 17 min | Next.js + roles + CLAUDE.md |
-| [[Build Phases#Phase 2|2. Foundation]] | 6:06-9:47 PM | 3.5 hr | Auth, landing, dashboard, hardcoded data |
-| [[Build Phases#Phase 3|3. AI Scoring]] | 9:47-10:58 PM | 1.2 hr | GPT integration, LinkedIn enrichment, sessions |
-| [[Build Phases#Phase 4|4. Advanced Features]] | 10:58-12:54 AM | 2 hr | Stable matching, name fixes, backend migration |
-| [[Build Phases#Phase 5|5. Analytics & UX]] | 12:54-3:23 AM | 2.5 hr | Rubric editor, stats, export, responsive |
-| [[Build Phases#Phase 6|6. Rubric Perspectives]] | 3:23-4:15 AM | 52 min | Judge presets, animated UI, design system |
-| [[Build Phases#Phase 7|7. Design Polish]] | 4:15-6:29 AM | 2.2 hr | Landing page, scroll animations, design audit |
-| [[Build Phases#Phase 8|8. Production Ready]] | 6:29 AM-3:00 PM | 8.5 hr | HyDE, cost tracking, Stripe, mobile, auth styling |
+2. **Each major feature followed a Build → Fix → Polish rhythm.** Build it (1-3 commits), fix the edge cases that real data exposes (1-2 commits), then polish the UI (1-2 commits). This pattern repeated ~15 times across the build, each cycle taking 30-90 minutes.
 
-## Commit Density
+3. **The scoring engine went through 4 major iterations in one night.** v1: bare GPT call. v2: + LinkedIn enrichment. v3: + configurable rubric + evidence. v4: + HyDE pre-filter + cost tracking. Each iteration was driven by a specific user experience gap, not premature optimization.
 
-```
-5 PM  ██
-6 PM  ████████
-7 PM  ████
-8 PM  ████████
-9 PM  ██████████
-10 PM ████████████
-11 PM ████████████████
-12 AM ██████████████████████
-1 AM  ████████████████████████████
-2 AM  ██████████
-3 AM  ████████████████████████████████
-4 AM  ██████████████████████████████████████████
-5 AM  ████████████████████████████████
-6 AM  ████████████████████
-7 AM  ████████████
-8 AM  ████████
-9 AM  ████
-1 PM  ████████
-3 PM  ████
-```
+4. **All design work happened after 3 AM, after all features were functional.** Design polish on a working product is more efficient than polishing wireframes. The design audit identified 7 specific findings, removed AI template patterns, and pushed for A grades on accessibility metrics.
 
-Peak productivity: 3-5 AM (design polish and advanced features).
+---
 
-## Key Milestones
+## If they probe deeper
 
-| Time | Milestone | Significance |
-|------|-----------|-------------|
-| 5:49 PM | First commit | Project created |
-| 6:43 PM | Clerk auth working | Users can sign in |
-| 8:11 PM | Dashboard with real candidates | 93 candidates visible |
-| 10:14 PM | **GPT scoring live** | Core product works |
-| 10:18 PM | LinkedIn enrichment | Scoring quality jumps |
-| 11:19 PM | **Gale-Shapley shipped** | Multi-role matching |
-| 12:33 AM | Backend migration | Scoring moves to App Runner |
-| 1:27 AM | Rubric editor | Recruiter control over scoring |
-| 3:28 AM | **Judge presets** | Product differentiation |
-| 4:15 AM | Design audit begins | Visual polish pass |
-| 5:13 AM | **HyDE pre-filter** | Cost optimization |
-| 8:54 AM | **Stripe integration** | Monetization |
-| 3:00 PM | Final commit | Production-ready |
+**"What was the hardest phase?"** — Phase 4 (Advanced Features, midnight to 1 AM). Gale-Shapley implementation + discovering the 23 unnamed candidates + migrating scoring to the backend. Three unrelated problems hit at once.
 
-## Patterns in the Timeline
+**"When did the biggest architecture change happen?"** — 12:33 AM: scoring moved from Vercel edge to App Runner. Hit the 30-second timeout during a real 93-candidate run. Recognized and fixed within one commit cycle.
 
-### Build → Fix → Polish Rhythm
-Each major feature followed the same pattern:
-1. **Build** — Get it working (1-3 commits)
-2. **Fix** — Handle edge cases, bugs (1-2 commits)
-3. **Polish** — Make it look right (1-2 commits)
+**"What was peak productivity?"** — 3-5 AM: 20+ commits in 2 hours. This was the design polish + rubric perspectives phase. Features were done, I was iterating on UX and visual design with rapid feedback loops.
 
-### Deepening Iterations
-The scoring engine went through 4 major iterations:
-1. **v1** — Direct GPT call per candidate (commit `a11d091`)
-2. **v2** — + LinkedIn enrichment (commit `32842d6`)
-3. **v3** — + Configurable rubric + evidence (commits `526d6a5`-`65a5ddf`)
-4. **v4** — + HyDE pre-filter + cost tracking (commits `7e4347e`-`460d1b3`)
+**"What was the last thing built?"** — Clerk auth page styling (1-3 PM the next day). The final 4 commits were all CSS: removing Clerk branding, fixing selectors that broke between Clerk versions.
 
-### Night Shift Design
-Most design work happened 3-5 AM — after all features were functional. This is intentional: design polish on a working product, not wireframing before code.
+## Key milestones
+- 5:49 PM — First commit
+- 6:43 PM — Auth working
+- 10:14 PM — **GPT scoring live**
+- 11:19 PM — **Gale-Shapley shipped**
+- 1:27 AM — Rubric editor
+- 3:28 AM — **Judge presets**
+- 5:13 AM — **HyDE pre-filter**
+- 8:54 AM — **Stripe integration**
+- 3:00 PM — Final commit
 
-## Related
+## See also
 - [[Build Phases]] — Detailed breakdown of each phase
 - [[Decision Log]] — Why decisions were made when they were

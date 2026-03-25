@@ -1,148 +1,28 @@
 # Scoring Engine
 
-The core intelligence of Talent Matcher. Transforms unstructured candidate data into a ranked, evidence-backed evaluation.
+**Read this out loud in 4 points:**
 
-## Pipeline
+1. **The engine scores candidates in two stages: embedding pre-filter, then GPT evaluation.** First, cheap embeddings (~$0.001 for all candidates) find the top K most similar to the ideal candidate profile using HyDE (Hypothetical Document Embedding). Then only those top K candidates get the expensive GPT-4o-mini call (~$0.0015 each). The user picks K: 10, 25, 50, 100, or All.
 
-```
-Raw CSV Text + LinkedIn Data
-         │
-         ▼
-┌─── Pre-Filter (Embedding) ───┐
-│ HyDE: Generate ideal profile │
-│ Embed all candidates         │
-│ Dot product similarity       │
-│ Keep top K (10/25/50/100)    │
-└──────────┬───────────────────┘
-           │
-           ▼ (top K candidates)
-┌─── GPT-4o-mini Scoring ─────┐
-│ For each candidate:          │
-│   System: job + rubric       │
-│   User: candidate text       │
-│   Response: structured JSON  │
-│     score (0-100)            │
-│     reasoning (prose)        │
-│     highlights (array)       │
-│     gaps (array)             │
-└──────────┬───────────────────┘
-           │
-           ▼
-┌─── Post-Processing ─────────┐
-│ Sort by score descending     │
-│ Assign tiers                 │
-│ Calculate stats              │
-│ Save session                 │
-└──────────────────────────────┘
-```
+2. **GPT-4o-mini is used instead of GPT-4 because the rubric constrains the output space.** The model doesn't need creative reasoning — it's evaluating structured criteria (Relevant Experience: 20%, Sales Capability: 30%, etc.) against candidate text. Mini is 4x cheaper and 2x faster, and produces equally reliable scores for this structured task.
 
-## HyDE Pre-Filter
+3. **Each candidate gets a score (0-100), reasoning (prose), highlights (what's strong), and gaps (what's missing).** This isn't a black box — the recruiter can see exactly why a candidate scored 72 vs. 85. The rubric weights directly control which criteria matter most, and each criterion gets its own sub-score.
 
-**Problem:** Scoring 93 candidates with GPT costs ~$0.14 and takes ~60s. What if you only want the top 25?
+4. **Reliability is built in: 3 retries with 1-second backoff, batches of 3 concurrent calls, and stream resilience.** If a GPT call fails, it retries twice more. Candidates are processed in batches of 3 to stay under OpenAI rate limits. If the SSE connection drops, results received so far are preserved.
 
-**Solution:** Hypothetical Document Embedding (HyDE)
-1. Take the ideal candidate profile text (from judge preset)
-2. Embed it using OpenAI embeddings API
-3. Embed all 93 candidate texts
-4. Compute dot product similarity
-5. Keep top K candidates, score only those with GPT
+---
 
-**Trade-off:** Embeddings are cheap (~$0.001 for 93 candidates) but may miss candidates whose text doesn't surface match well. The embedding pre-filter is a **recall vs. cost** lever.
+## If they probe deeper
 
-## GPT Prompt Engineering
+**"Why HyDE instead of standard embedding search?"** — Standard approach embeds the job description and compares to resumes. Problem: job descriptions and resumes are different document types — they don't embed in the same space well. HyDE uses the ideal candidate profile (which reads like a resume) as the embedding document, so it's comparing resume-like text to resume-like text.
 
-### System Prompt Structure
-```
-You are a hiring manager evaluating candidates for: {job_title}
+**"How do the 5 judges work?"** — Each judge is a named preset: weights for 6 criteria + an ideal candidate text. John is balanced across all criteria. Jake weights Sales Capability at 35%. Yash weights Experience at 30%. The weights feed into the GPT system prompt, and the ideal candidate text drives the HyDE pre-filter.
 
-Job Description:
-{job_description (first 1500 chars)}
+**"What's the cost breakdown?"** — Embedding all candidates: ~$0.001. GPT per candidate: ~$0.0015. Full run (93 candidates): ~$0.14. Top-25 run: ~$0.04. Tokens and cost are tracked per candidate and shown in the results.
 
-Scoring Rubric:
-- Relevant Experience: {weight}%
-- Industry Fit: {weight}%
-- Sales Capability: {weight}%
-- Stakeholder Presence: {weight}%
-- Cultural Fit: {weight}%
-- Location: {weight}%
+**"How do you prevent GPT from ignoring the weights?"** — The system prompt explicitly says "Weight your overall score according to these percentages." GPT-4o-mini reliably follows this instruction. The rubric + weights format constrains the output space enough that the model produces consistent, weight-respecting scores.
 
-Ideal Candidate Profile:
-{ideal_candidate text from judge preset or custom}
-
-Score each candidate 0-100 and return JSON.
-```
-
-### User Prompt
-```
-Candidate Profile:
-{candidate fullText (CSV fields) + LinkedIn enrichment (first 3000 chars total)}
-
-Return JSON: { "score": <0-100>, "reasoning": "...", "highlights": [...], "gaps": [...] }
-```
-
-### Why GPT-4o-mini?
-
-| Factor | GPT-4o | GPT-4o-mini |
-|--------|--------|-------------|
-| Cost per candidate | ~$0.006 | ~$0.0015 |
-| 93 candidates | ~$0.56 | ~$0.14 |
-| Latency | ~3s | ~1.5s |
-| Quality for rubric eval | Overkill | Sufficient |
-
-For **structured rubric evaluation** (not creative reasoning), mini produces equally reliable scores. The rubric constrains the output space enough that the cheaper model performs well.
-
-## Reliability
-
-### Retry Logic
-```
-For each candidate:
-  attempts = 0
-  while attempts < 3:
-    try:
-      response = openai.chat.completions.create(...)
-      parse JSON from response
-      break
-    except:
-      attempts += 1
-      sleep(1 second)
-```
-
-### Batch Processing
-- Candidates scored in batches of 3 (concurrent)
-- Prevents rate limiting on OpenAI API
-- Each batch completes before next starts
-- SSE events fire per candidate, not per batch
-
-### Stream Resilience
-- Frontend handles partial stream drops
-- If SSE connection breaks mid-scoring, results received so far are preserved
-- Duration tracked for performance monitoring
-
-## Cost Tracking
-
-Every scoring run tracks:
-- **Prompt tokens** per candidate (input to GPT)
-- **Completion tokens** per candidate (GPT response)
-- **Cost** per candidate ($0.15/1M input + $0.60/1M output for mini)
-- **Total run cost** (summed across all candidates)
-- Stored in session metadata for billing audit
-
-## The 5 Judges (Scoring Perspectives)
-
-Each judge is a **named rubric preset** that configures weights + ideal candidate profile:
-
-| Judge | Philosophy | Key Weights |
-|-------|-----------|-------------|
-| **John** (Generalist) | Balanced evaluation | Even weights across all 6 criteria |
-| **Jake** (Hunter) | Pipeline builder | High: Sales Capability, Experience. Low: Cultural Fit |
-| **Christian** (Closer) | Deal maker | High: Sales Capability, Stakeholder. Low: Location |
-| **Yash** (Pedigree) | Brand-name background | High: Experience, Industry. Low: Sales |
-| **Nazar** (Builder) | Startup scrappiness | High: Cultural Fit, Experience. Low: Industry |
-
-→ See [[Rubric System]] for detailed weight matrices.
-
-## Related
-- [[Rubric System]] — Weight configurations and ideal profiles
+## See also
+- [[Rubric System]] — The 5 judges and their weight configurations
 - [[Embedding Pre-Filter]] — HyDE algorithm details
 - [[LinkedIn Enrichment]] — How enrichment improves scoring quality
-- [[Data Flow]] — Where scoring fits in the pipeline

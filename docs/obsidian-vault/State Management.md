@@ -1,111 +1,25 @@
 # State Management
 
-Three layers of state, each with a clear responsibility.
+**Read this out loud in 4 points:**
 
-## Layer 1: React Context (Global UI State)
+1. **Three layers of state: React Context (global UI), component state (local UI), and persistent storage (DynamoDB + localStorage).** Each layer has a clear job. Context holds scoring progress that must survive tab navigation. Component state holds page-specific things like which view mode is active. Persistent storage keeps session history and subscription data across browser sessions.
 
-### ScoringProvider
-**File:** `lib/scoring-context.tsx`
+2. **React Context was chosen over Redux because there's only one global concern: the scoring pipeline.** One provider, one state object, 2-3 consumers. No derived state, no middleware, no action types. If the app grows more global concerns, each can get its own Context. Premature abstraction (Redux toolkit) would add complexity for no value at this scale.
 
-```typescript
-interface ScoringState {
-  isScoring: boolean;
-  progress: { done: number; total: number };
-  results: ScoredCandidate[];
-  logs: Log[];
-  jobTitle: string;
-  error: string | null;
-}
-```
+3. **The scoring Context lives at the dashboard layout level, not the app root.** Only protected routes need scoring state. The landing page and auth pages don't participate. This means the provider wraps `/upload`, `/rankings`, `/settings` etc. but not `/` or `/sign-in`.
 
-**Why Context, not Redux?**
+4. **localStorage is a fallback, not primary storage.** DynamoDB is authoritative for sessions and subscriptions. localStorage catches saves when the backend is unreachable (cold starts, network issues). Max 50 sessions with FIFO eviction to prevent storage bloat. The user's OpenAI API key is also in localStorage — it never leaves the browser.
 
-Single concern. All global state relates to one thing: the scoring pipeline. No need for:
-- Multiple reducers
-- Middleware
-- Action types
-- Selector patterns
+---
 
-Context handles it cleanly because:
-1. State is read by 2-3 components (scoring page, nav progress indicator)
-2. Updates are infrequent (one per scored candidate, not 60fps)
-3. No derived/computed state complexity
+## If they probe deeper
 
-### What it solves
+**"What's in the scoring context state?"** — `{ isScoring, progress: { done, total }, results: ScoredCandidate[], logs: Log[], jobTitle, error }`. That's it. Simple.
 
-**Tab navigation during scoring.** Without context, switching from the scoring tab to settings and back would lose the SSE connection and all results. ScoringProvider lives at the dashboard layout level, surviving tab changes.
+**"What was the bug that made Context necessary?"** — Without it, starting a 60-second scoring run, clicking to Settings, and coming back would show a blank page — the SSE connection was dead and all results were gone. Context preserves the stream state across navigation.
 
-## Layer 2: Component State (Local UI State)
+**"Why not Zustand?"** — Same reason as Redux: overkill for one concern. Zustand is great when you have multiple stores with complex selectors. Here, one Context with one setState does the job.
 
-Each page manages its own UI state via `useState`:
-
-### Upload Page
-```
-- step: "setup" | "scoring" | "results"
-- csvText, fileName (uploaded file)
-- selectedRole (from picker)
-- criteria[] (rubric weights)
-- judge (selected preset)
-- idealCandidate (text)
-- topK (10/25/50/100/all)
-- viewMode ("list" | "card" | "table")
-- expandedCandidate (for detail view)
-- scoreFilter (histogram bucket click)
-- manualRanks (after reranking)
-```
-
-### Rankings Page
-```
-- sessions[] (loaded from backend)
-- selectedSession (detail view)
-- filter (by judge, by role)
-- groupBy ("role" | "judge" | "date")
-```
-
-### Settings Page
-```
-- subscription (plan info)
-- apiKey (from localStorage)
-```
-
-## Layer 3: Persistent State
-
-### DynamoDB (Backend)
-```
-Sessions table:
-  PK: session_id (UUID)
-  SK: user_id
-  Fields: role, results[], timestamps, cost, tokens, judge
-
-LinkedIn profiles table:
-  PK: url (normalized)
-  Fields: name, headline, experience, education, skills, photo
-
-Subscriptions table:
-  PK: user_id
-  Fields: plan, postings_used, postings_limit, stripe_customer_id
-```
-
-### localStorage (Client Fallback)
-
-| Key | Purpose | Limit |
-|-----|---------|-------|
-| `talent-matcher-sessions` | Session backup | Max 50 |
-| `talent-matcher-openai-key` | User's API key | Single key |
-
-### Why localStorage Fallback?
-
-The backend (App Runner) occasionally has cold starts or connectivity issues. Rather than losing a scoring run (which took 60+ seconds and cost money), the fallback saves results locally. Next time the backend is reachable, sessions can be synced.
-
-## State Flow Diagram
-
-```
-User Action → Component State → (optionally) Context → (optionally) Backend
-     ↑                                                         │
-     └─────── Re-render ←── Context Change ←── SSE Event ─────┘
-```
-
-## Related
-- [[Scoring Engine]] — What generates the state updates
-- [[Session Persistence]] — DynamoDB storage details
+## See also
 - [[Architecture Overview]] — Where state fits in the system
+- [[Session Persistence]] — How sessions are stored long-term

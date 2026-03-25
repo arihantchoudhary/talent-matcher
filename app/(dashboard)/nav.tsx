@@ -5,7 +5,8 @@ import { usePathname } from "next/navigation";
 import { useScoringContext } from "@/lib/scoring-context";
 
 const LINKS = [
-  { href: "/upload", label: "New Match" },
+  { href: "/upload", label: "AI Match" },
+  { href: "/rapid-match", label: "Rapid Match" },
   { href: "/stable-match", label: "Stable Match" },
   { href: "/rankings", label: "History" },
   { href: "/roles", label: "Roles" },

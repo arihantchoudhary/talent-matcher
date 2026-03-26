@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Build Phases.md",
+                "file": "Home.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "Build Phases"
+              "title": "Home"
             }
           }
         ]
@@ -94,7 +94,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "Build Phases.md",
+                "file": "Home.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -104,7 +104,7 @@
                 "unlinkedCollapsed": true
               },
               "icon": "links-coming-in",
-              "title": "Backlinks for Build Phases"
+              "title": "Backlinks for Home"
             }
           },
           {
@@ -113,12 +113,12 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "Build Phases.md",
+                "file": "Home.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               },
               "icon": "links-going-out",
-              "title": "Outgoing links from Build Phases"
+              "title": "Outgoing links from Home"
             }
           },
           {
@@ -156,13 +156,13 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "Build Phases.md",
+                "file": "Home.md",
                 "followCursor": false,
                 "showSearch": false,
                 "searchQuery": ""
               },
               "icon": "lucide-list",
-              "title": "Outline of Build Phases"
+              "title": "Outline of Home"
             }
           }
         ]
@@ -186,9 +186,16 @@
   "active": "7261121e4404872c",
   "lastOpenFiles": [
     "Rapid Match.md",
-    "Home.md",
+    "Build Phases.md",
+    "Authentication.md",
+    "Architecture Overview.md",
     "API Design.md",
-    "Data Flow.md",
-    "Architecture Overview.md"
+    "Scoring Engine.md",
+    "Rubric System.md",
+    "Payments.md",
+    "Stable Matching.md",
+    "CSV Parser.md",
+    "Home.md",
+    "Data Flow.md"
   ]
 }

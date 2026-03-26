@@ -42,7 +42,7 @@ export default async function LandingPage() {
                 className="text-base font-medium bg-neutral-900 text-white px-8 py-3.5 rounded-md hover:bg-neutral-800 active:bg-black transition-colors text-center">
                 {ctaLabel}
               </Link>
-              <span className="text-sm text-neutral-400">No credit card required</span>
+              <span className="text-sm text-neutral-400">Upload a CSV, get ranked results</span>
             </div>
           </div>
 
@@ -73,16 +73,16 @@ export default async function LandingPage() {
                     <p className="text-xs text-neutral-500">Total</p>
                   </div>
                   <div className="border border-neutral-200 rounded p-2.5 sm:p-3">
-                    <p className="text-xl sm:text-2xl font-semibold tabular-nums">58</p>
+                    <p className="text-xl sm:text-2xl font-semibold tabular-nums">58<span className="text-xs font-normal text-neutral-400">/100</span></p>
                     <p className="text-xs text-neutral-500">Avg Score</p>
                   </div>
                   <div className="border border-neutral-200 rounded p-2.5 sm:p-3 bg-neutral-900 text-white">
                     <p className="text-xl sm:text-2xl font-semibold tabular-nums">13</p>
-                    <p className="text-xs text-neutral-400">Top Tier</p>
+                    <p className="text-xs text-neutral-400">Score 70+</p>
                   </div>
                   <div className="border border-neutral-200 rounded p-2.5 sm:p-3">
                     <p className="text-xl sm:text-2xl font-semibold tabular-nums">62</p>
-                    <p className="text-xs text-neutral-500">Good Fit</p>
+                    <p className="text-xs text-neutral-500">Score 50-69</p>
                   </div>
                 </div>
 
@@ -151,7 +151,7 @@ export default async function LandingPage() {
                 { t: "Any CSV format", d: "No rigid templates. Auto-detects names, LinkedIn URLs, and fields from any export." },
                 { t: "LinkedIn enrichment", d: "If your CSV has LinkedIn URLs, we pull full profiles — experience, education, skills, photos." },
                 { t: "Scored reasoning", d: "Every candidate gets a score with specific strengths and gaps. Not just a number." },
-                { t: "Stable matching", d: "Multiple open roles? Gale-Shapley algorithm optimally assigns candidates across all positions." },
+                { t: "Stable matching", d: "Multiple open roles? Assigns candidates across positions so no pair would prefer to swap — the same algorithm used to match medical residents to hospitals." },
                 { t: "Session history", d: "Every match is saved. Review past sessions, compare runs, track candidate pipelines." },
                 { t: "Role templates", d: "20 built-in roles across Sales, GTM, Engineering, Product, Finance. Add your own." },
               ].map((f, i) => (
@@ -201,7 +201,7 @@ export default async function LandingPage() {
                 <CRow f="Setup" us="< 1 minute" c1="Weeks" c2="Weeks" c3="Weeks" usWin />
                 <CRow f="Any CSV import" us="Yes" c1="No" c2="No" c3="No" usWin />
                 <CRow f="AI reasoning" us="Per candidate" c1="Match %" c2="Score" c3="Grade" usWin />
-                <CRow f="Stable matching" us="Gale-Shapley" c1="No" c2="No" c3="No" usWin />
+                <CRow f="Multi-role matching" us="Yes" c1="No" c2="No" c3="No" usWin />
                 <CRow f="Self-serve" us="Yes" c1="No" c2="No" c3="No" usWin />
               </tbody>
             </table>
@@ -214,7 +214,7 @@ export default async function LandingPage() {
         <div className="max-w-4xl mx-auto scroll-fade md:flex md:items-center md:justify-between">
           <div>
             <h2 className="text-2xl md:text-3xl font-serif italic mb-2">Ready to match?</h2>
-            <p className="text-neutral-500">Free to start. No credit card.</p>
+            <p className="text-neutral-500">Upload a CSV. Get ranked candidates in minutes.</p>
           </div>
           <Link href={cta}
             className="inline-block mt-6 md:mt-0 text-sm font-medium bg-white text-neutral-900 px-6 py-3 rounded-md hover:bg-neutral-100 active:bg-neutral-200 transition-colors">

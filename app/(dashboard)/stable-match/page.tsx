@@ -264,8 +264,8 @@ export default function StableMatchPage() {
         <div className="w-14 h-14 rounded-2xl bg-neutral-100 flex items-center justify-center mx-auto mb-5 animate-pulse">
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#7c3aed" strokeWidth="2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" /><circle cx="9" cy="7" r="4" /><path d="M22 21v-2a4 4 0 0 0-3-3.87" /><path d="M16 3.13a4 4 0 0 1 0 7.75" /></svg>
         </div>
-        <h2 className="text-xl font-bold">Running Gale-Shapley...</h2>
-        <p className="text-sm text-neutral-500 mt-2">Finding optimal stable assignments</p>
+        <h2 className="text-xl font-bold">Running stable matching...</h2>
+        <p className="text-sm text-neutral-500 mt-2">Assigning candidates to roles so no pair would prefer to swap</p>
       </div>
     );
   }
@@ -275,7 +275,12 @@ export default function StableMatchPage() {
     <div className="max-w-4xl mx-auto px-4 sm:px-6 py-6 sm:py-8">
       <div className="mb-6">
         <h1 className="text-2xl font-bold tracking-tight">Stable Matching</h1>
-        <p className="text-sm text-neutral-500 mt-0.5">Upload a CSV per role, score each, then run Gale-Shapley to optimally assign candidates</p>
+        <p className="text-sm text-neutral-500 mt-0.5">Assign candidates across multiple open roles so no candidate-role pair would both prefer each other over their current match.</p>
+        <details className="mt-3 text-sm text-neutral-600 border border-neutral-200 rounded-lg bg-neutral-50 px-4 py-3">
+          <summary className="font-medium cursor-pointer text-neutral-900">How does this work?</summary>
+          <p className="mt-2 leading-relaxed">This uses the <strong>Gale-Shapley algorithm</strong> (also called "deferred acceptance"). It&apos;s the same algorithm used to match medical residents to hospitals. Each role "proposes" to its highest-scored candidates, candidates choose their best offer, and unmatched roles try their next picks. This repeats until everyone is placed. The result is <strong>stable</strong> — meaning no candidate and role would both prefer to swap their assignments.</p>
+          <p className="mt-2 leading-relaxed">Use this when you have <strong>2+ open roles</strong> and a shared candidate pool. Instead of manually deciding who goes where, the algorithm finds the optimal assignment automatically.</p>
+        </details>
       </div>
 
       {/* Role slots */}
@@ -309,7 +314,7 @@ export default function StableMatchPage() {
         </p>
         <button onClick={runStableMatch} disabled={!readyForMatch}
           className="px-6 py-3 rounded-xl bg-neutral-900 text-white font-semibold text-sm hover:bg-neutral-700 disabled:opacity-40 disabled:cursor-not-allowed transition-colors">
-          Run Gale-Shapley Stable Matching
+          Run Stable Matching
         </button>
       </div>
     </div>

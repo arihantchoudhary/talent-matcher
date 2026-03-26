@@ -42,19 +42,19 @@ export default function UploadPage() {
   ];
   const makeWeights = (w: number[]) => CRITERIA_DEFS.map((c, i) => ({ ...c, weight: w[i] }));
   const PRESETS: Record<string, { label: string; desc: string; criteria: Criterion[]; idealCandidate: string }> = {
-    balanced: { label: "John", desc: "The Generalist — equal weight across all criteria",
+    balanced: { label: "Balanced", desc: "Equal weight across all criteria — experience, industry, sales, presence, culture, location",
       idealCandidate: "2-3 years in consulting or banking. Strong communicator who can engage C-suite buyers. Some exposure to legal or procurement. Based in NYC or SF. Ambitious, coachable, team player. Has carried a quota or driven pipeline.",
       criteria: makeWeights([20, 20, 20, 15, 15, 10]) },
-    hunter: { label: "Jake", desc: "The Hunter — outbound, prospecting, cold outreach",
+    hunter: { label: "Outbound", desc: "Prioritizes prospecting ability — cold outreach volume, pipeline generation, resilience",
       idealCandidate: "Top-performing SDR/BDR with 1-3 years of high-volume outbound. 100+ calls/day, cold email sequences, LinkedIn prospecting. President's Club or top 10% of team. Uses Salesforce, Outreach, Apollo. Resilient, competitive, loves the hunt.",
       criteria: makeWeights([15, 10, 35, 10, 25, 5]) },
-    closer: { label: "Christian", desc: "The Closer — deal sizes, enterprise selling",
+    closer: { label: "Closing", desc: "Prioritizes deal execution — enterprise ACV, complex sales cycles, stakeholder management",
       idealCandidate: "3-5 years closing B2B SaaS deals $100K+ ACV. Enterprise sales cycles 6+ months. Sold to VP/C-suite. MEDDIC or Challenger methodology. Consistently hit quota. Managed complex multi-stakeholder deals with legal, procurement, IT involved.",
       criteria: makeWeights([20, 15, 30, 20, 10, 5]) },
-    pedigree: { label: "Yash", desc: "The Pedigree — top companies, elite schools, brand names",
+    pedigree: { label: "Pedigree", desc: "Prioritizes brand-name experience — top firms, elite schools, fast promotions",
       idealCandidate: "Goldman Sachs, McKinsey, BCG, or top-tier tech (Stripe, Google, Brex). Ivy League or Stanford/MIT. Fast promotions — analyst to associate in 2 years. JD or MBA from a top-10 program. Articulate, polished, trusted by senior executives.",
       criteria: makeWeights([30, 15, 10, 15, 25, 5]) },
-    scrappy: { label: "Nazar", desc: "The Builder — founders, 0-1 builders, scrappiness",
+    scrappy: { label: "Builder", desc: "Prioritizes grit — founding experience, 0→1 building, startup scrappiness, ownership",
       idealCandidate: "Founded or co-founded a company. Built a team or product from zero. Wore many hats — sales, ops, product. Comfortable with ambiguity and limited resources. Startup experience at seed/Series A. High ownership mentality, low ego.",
       criteria: makeWeights([15, 10, 20, 10, 40, 5]) },
     custom: { label: "Custom", desc: "Define your own criteria and weights",
@@ -314,14 +314,19 @@ export default function UploadPage() {
   // ── SCORING ──
   if (step === "scoring") {
     const enrichCount = logs.filter(l => l.step === "enrich").length;
-    const elapsed = Math.round((Date.now() - (scoring.isScoring ? Date.now() : Date.now())) / 1000);
+    // Estimate time remaining based on scoring rate
+    const rate = elapsed > 0 && progress.done > 0 ? progress.done / elapsed : 0;
+    const remaining = rate > 0 ? Math.round((progress.total - progress.done) / rate) : 0;
 
     return (
       <div className="max-w-5xl mx-auto px-4 sm:px-6 py-6 sm:py-8">
-        <h1 className="text-2xl font-bold tracking-tight mb-1">Matching Algorithm</h1>
+        <h1 className="text-2xl font-bold tracking-tight mb-1">Scoring Candidates</h1>
         <p className="text-sm text-neutral-500 mb-4">
           {progress.done} of {progress.total} candidates scored for <span className="font-medium text-neutral-900">{jobTitle}</span>
-          <span className="ml-3 tabular-nums font-mono text-neutral-400">{Math.floor(elapsed / 60)}:{String(elapsed % 60).padStart(2, "0")}</span>
+          <span className="ml-3 tabular-nums font-mono text-neutral-400">{Math.floor(elapsed / 60)}:{String(elapsed % 60).padStart(2, "0")} elapsed</span>
+          {progress.done > 0 && progress.done < progress.total && (
+            <span className="ml-2 tabular-nums font-mono text-neutral-400">~{Math.floor(remaining / 60)}:{String(remaining % 60).padStart(2, "0")} remaining</span>
+          )}
         </p>
 
         {/* Progress bar */}
@@ -496,7 +501,7 @@ export default function UploadPage() {
                       <span className="text-[10px] text-neutral-400 font-mono">#{c.rank}</span>
                       <span className="font-semibold text-sm">{c.name}</span>
                       <span className={`px-2 py-0.5 text-xs font-bold ${c.score >= 70 ? "bg-neutral-900 text-white" : c.score >= 50 ? "bg-neutral-100" : "text-neutral-400"}`}>{c.score}</span>
-                      {c.similarity != null && <span className="text-[10px] text-neutral-400 font-mono" title="Embedding cosine similarity (dot product)">{(c.similarity * 100).toFixed(0)}% sim</span>}
+                      {c.similarity != null && <span className="text-[10px] text-neutral-400 font-mono" title="How closely this candidate's profile matches your ideal candidate description">{(c.similarity * 100).toFixed(0)}% match</span>}
                     </div>
                     <p className="text-xs text-neutral-500 line-clamp-1 mt-0.5">{c.reasoning}</p>
                   </div>
@@ -508,12 +513,12 @@ export default function UploadPage() {
                       {c.linkedin_url && <a href={c.linkedin_url} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 text-xs text-neutral-400 hover:text-neutral-900">LinkedIn</a>}
                       {c.similarity != null && (
                         <div className="flex items-center gap-2 text-[10px]">
-                          <span className="text-neutral-400">GPT: <span className="font-bold text-neutral-900">{c.score}</span></span>
+                          <span className="text-neutral-400">AI score: <span className="font-bold text-neutral-900">{c.score}</span></span>
                           <span className="text-neutral-300">|</span>
-                          <span className="text-neutral-400">Dot product: <span className="font-bold text-neutral-900">{(c.similarity * 100).toFixed(1)}%</span></span>
+                          <span className="text-neutral-400">Profile similarity: <span className="font-bold text-neutral-900">{(c.similarity * 100).toFixed(1)}%</span></span>
                           <span className="text-neutral-300">|</span>
                           <span className={`font-medium ${Math.abs(c.score - c.similarity * 100) > 20 ? "text-amber-600" : "text-neutral-400"}`}>
-                            {Math.abs(c.score - c.similarity * 100) > 20 ? "divergent" : "aligned"}
+                            {Math.abs(c.score - c.similarity * 100) > 20 ? "scores differ — worth reviewing" : "scores agree"}
                           </span>
                         </div>
                       )}
@@ -615,7 +620,7 @@ export default function UploadPage() {
                   <th className="text-left px-4 py-2 text-xs font-semibold text-neutral-500">Reasoning</th>
                   <th className="text-left px-4 py-2 text-xs font-semibold text-neutral-500">Strengths</th>
                   <th className="text-left px-4 py-2 text-xs font-semibold text-neutral-500">Gaps</th>
-                  <th className="text-left px-4 py-2 text-xs font-semibold text-neutral-500">Sim</th>
+                  <th className="text-left px-4 py-2 text-xs font-semibold text-neutral-500">Profile Match</th>
                   <th className="text-left px-4 py-2 text-xs font-semibold text-neutral-500">LinkedIn</th>
                 </tr>
               </thead>
@@ -701,7 +706,7 @@ export default function UploadPage() {
       {/* Judge selection — big, visual, the main event */}
       <div className="border border-neutral-200 bg-white rounded-lg p-5 mb-4">
         <div className="flex items-center justify-between mb-4">
-          <p className="text-sm font-semibold">Choose Your Judge</p>
+          <p className="text-sm font-semibold">Scoring Preset</p>
           <span className={`text-xs tabular-nums ${criteria.reduce((s, c) => s + c.weight, 0) === 100 ? "text-neutral-400" : "text-red-500 font-medium"}`}>
             {criteria.reduce((s, c) => s + c.weight, 0)}%
           </span>
@@ -823,6 +828,16 @@ export default function UploadPage() {
               <span className="text-[10px] font-bold tabular-nums text-neutral-500 w-7 text-right">{c.weight}%</span>
             </div>
           ))}
+        </div>
+      </div>
+
+      {/* How scoring works */}
+      <div className="border border-neutral-200 bg-neutral-50 rounded-lg px-4 py-3 mb-4">
+        <p className="text-[10px] uppercase tracking-[0.15em] text-neutral-400 mb-1.5">How AI scoring works</p>
+        <div className="flex items-start gap-6 text-[11px] text-neutral-600">
+          <div className="flex items-center gap-1.5"><span className="w-4 h-4 rounded-full bg-neutral-200 flex items-center justify-center text-[8px] font-bold shrink-0">1</span>LinkedIn profiles enriched with full work history</div>
+          <div className="flex items-center gap-1.5"><span className="w-4 h-4 rounded-full bg-neutral-200 flex items-center justify-center text-[8px] font-bold shrink-0">2</span>GPT-4o reads each resume + enriched profile</div>
+          <div className="flex items-center gap-1.5"><span className="w-4 h-4 rounded-full bg-neutral-200 flex items-center justify-center text-[8px] font-bold shrink-0">3</span>Scores 0-100 using your weighted rubric above</div>
         </div>
       </div>
 

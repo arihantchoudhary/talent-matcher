@@ -145,8 +145,7 @@ export default function RapidMatchPage() {
               <span className="px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-700 text-[10px] font-bold uppercase tracking-wider">Rapid</span>
             </div>
             <p className="text-sm text-neutral-500">
-              {role.title} &middot; Mean {mean} &middot; Std Dev {stdDev} &middot; {elapsed}ms
-              &middot; {topTier} top tier &middot; {goodFit} good fit
+              {role.title} &middot; Avg score {mean}/100 &middot; {topTier} scored 70+ &middot; {goodFit} scored 50-69 &middot; {elapsed}ms
             </p>
           </div>
           <div className="flex items-center gap-2">
@@ -167,16 +166,16 @@ export default function RapidMatchPage() {
             <div className="text-[10px] text-neutral-400 uppercase mt-0.5">Total</div>
           </div>
           <div className="border border-neutral-200 bg-white rounded-lg p-3 text-center">
-            <div className="text-xl font-bold">{mean}</div>
+            <div className="text-xl font-bold">{mean}<span className="text-xs font-normal text-neutral-400">/100</span></div>
             <div className="text-[10px] text-neutral-400 uppercase mt-0.5">Avg Score</div>
           </div>
           <div className="border border-neutral-900 bg-neutral-900 text-white rounded-lg p-3 text-center">
             <div className="text-xl font-bold">{topTier}</div>
-            <div className="text-[10px] text-neutral-400 uppercase mt-0.5">Top Tier</div>
+            <div className="text-[10px] text-neutral-400 uppercase mt-0.5">{topTier === 1 ? "Candidate" : "Candidates"} 70+</div>
           </div>
           <div className="border border-neutral-200 bg-white rounded-lg p-3 text-center">
             <div className="text-xl font-bold">{goodFit}</div>
-            <div className="text-[10px] text-neutral-400 uppercase mt-0.5">Good Fit</div>
+            <div className="text-[10px] text-neutral-400 uppercase mt-0.5">{goodFit === 1 ? "Candidate" : "Candidates"} 50-69</div>
           </div>
           <div className="border border-emerald-200 bg-emerald-50 rounded-lg p-3 text-center">
             <div className="text-xl font-bold text-emerald-700">{elapsed}ms</div>
